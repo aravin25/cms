@@ -1,4 +1,4 @@
 package org.odyssey.cms.service;
 
-public interface Authicatation {
+public interface Authentication {
 }
