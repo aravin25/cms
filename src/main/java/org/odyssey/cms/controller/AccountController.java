@@ -24,7 +24,7 @@ public class AccountController {
     }
 
     @GetMapping("account/{id}")
-    public Account getAccountById(@PathVariable("id") Integer accountId){
+    public Account getAccountById(@PathVariable("id") Integer accountId) throws AccountException{
         return this.accountService.getAccountById(accountId);
     }
 
