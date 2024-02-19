@@ -15,7 +15,11 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Override
-    public Account createAccount(Account newAccount) {
+    public Account createAccount(Account newAccount) throws AccountException{
+        Optional<Account> optionalAccount = this.accountRepository.findById(newAccount.getAccountId());
+        if(optionalAccount.isPresent()){
+            throw new AccountException("Account already exists!");
+        }
         return this.accountRepository.save(newAccount);
     }
 
@@ -25,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountById(Integer accountId) {
+    public Account getAccountById(Integer accountId){
         return this.accountRepository.findById(accountId).get();
     }
 
