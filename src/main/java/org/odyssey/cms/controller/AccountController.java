@@ -1,6 +1,7 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.entity.Account;
+import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("createAccount")
-    public Account createAccount(@RequestBody Account account){
+    public Account createAccount(@RequestBody Account account) throws AccountException {
         return this.accountService.createAccount(account);
     }
 
@@ -23,7 +24,7 @@ public class AccountController {
     }
 
     @GetMapping("account/{id}")
-    public Account getAccountById(@PathVariable("id") Integer accountId){
+    public Account getAccountById(@PathVariable("id") Integer accountId) throws AccountException{
         return this.accountService.getAccountById(accountId);
     }
 

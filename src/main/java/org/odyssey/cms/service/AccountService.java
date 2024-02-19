@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface AccountService {
     //create
-    Account createAccount(Account newAccount);
+    Account createAccount(Account newAccount) throws AccountException;
 
     //read
-    Account getAccountById(Integer accountId);
+    Account getAccountById(Integer accountId) throws AccountException;
     List<Account> getAllAccounts();
 
     //update
