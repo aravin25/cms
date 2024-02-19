@@ -1,6 +1,5 @@
 package org.odyssey.cms.service;
 
-import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.repository.PaymentRequestRepository;
@@ -12,7 +11,7 @@ import javax.security.auth.login.AccountException;
 import java.util.Optional;
 
 @Service
-public class MerchantServiceImp implements MerchantService{
+public class MerchantServiceImpl implements MerchantService{
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -43,7 +42,7 @@ public class MerchantServiceImp implements MerchantService{
 		else if (accountOptionalCustomer.isEmpty()) {
 			throw new AccountException("merchant Account doesn't exists: ");
 		}
-		PaymentRequest paymentRequest=new PaymentRequest(merchantId,customerId,amount);
+		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId,amount);
 		this.paymentRequestRepository.save(paymentRequest);
 		return true;
 	}
