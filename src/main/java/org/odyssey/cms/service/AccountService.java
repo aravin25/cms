@@ -11,7 +11,7 @@ public interface AccountService {
     Account createAccount(Account newAccount) throws AccountException;
 
     //read
-    Account getAccountById(Integer accountId);
+    Account getAccountById(Integer accountId) throws AccountException;
     List<Account> getAllAccounts();
 
     //update

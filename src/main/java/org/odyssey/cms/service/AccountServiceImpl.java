@@ -29,7 +29,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountById(Integer accountId){
+    public Account getAccountById(Integer accountId) throws AccountException{
+        Optional<Account> optionalAccount = this.accountRepository.findById(accountId);
+        if(!optionalAccount.isPresent()){
+            throw new AccountException("Account does not exist!");
+        }
         return this.accountRepository.findById(accountId).get();
     }
 
