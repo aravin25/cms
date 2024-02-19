@@ -20,6 +20,6 @@ public class User {
     private String type;
     private String status;
 
-    @OneToOne
-    private Account account;
+//    @OneToOne
+//    private Account account;
 }

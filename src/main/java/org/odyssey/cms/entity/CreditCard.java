@@ -26,6 +26,7 @@ public class CreditCard {
     private Integer cvv;
     private Integer amount;
     private String activationStatus;
+    private Double interestRate = 0.02;
 
     @OneToOne
     private Account account;
