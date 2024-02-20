@@ -20,15 +20,29 @@ import java.util.List;
 public class CreditCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer cardNumber;
+    private Integer cardId;
+    private String cardNumber;
     private LocalDate expireDate;
     private Integer cvv;
+<<<<<<< Updated upstream
     private Double creditLimit;
     private Double creditBalance;
+=======
+//    private Integer amount;
+>>>>>>> Stashed changes
     private String activationStatus;
+    private Double creditLimit;
+    private Double creditBalance;
 
+<<<<<<< Updated upstream
     ////@OneToOne
     //private Account account;
     @OneToMany
     private List<Transaction> transactionList = new ArrayList<>();
+=======
+//    @OneToOne
+//    private Account account;
+//    @OneToMany
+//    private List<Transaction> transactionList = new ArrayList<>();
+>>>>>>> Stashed changes
 }
