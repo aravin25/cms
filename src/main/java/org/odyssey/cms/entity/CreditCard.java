@@ -27,9 +27,15 @@ public class CreditCard {
     private Double creditLimit;
     private Double creditBalance;
     private String activationStatus;
+    private Double interestRate = 0.02; // Interest on outstanding balance
 
-//    @OneToOne
-//    private Account account;
-//    @OneToMany
-//    private List<Transaction> transactionList = new ArrayList<>();
+    @OneToOne
+    private Account account;
+    @OneToMany
+    private List<Transaction> transactionList = new ArrayList<>();
+
+    public void addInterest() {
+        creditBalance += creditBalance * interestRate;
+    }
 }
+

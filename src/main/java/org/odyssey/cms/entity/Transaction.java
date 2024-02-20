@@ -5,11 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 public class Transaction {
@@ -19,6 +23,6 @@ public class Transaction {
     private Double amount;
     private LocalDateTime transactionDateTime;
 
-//    @ManyToOne
-//    private CreditCard creditCard;
+    @ManyToOne
+    private CreditCard creditCard;
 }

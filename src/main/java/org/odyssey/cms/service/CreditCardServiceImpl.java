@@ -4,6 +4,7 @@ import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Random;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,11 @@ public class CreditCardServiceImpl implements CreditCardService {
     public CreditCard getCreditCardById(Integer cardNumber) {
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardNumber);
         return optionalCreditCard.orElse(null);
+    }
+  
+    @Override
+    public List<CreditCard> getCreditCards() {
+      return this.creditCardRepository.findAll();
     }
 
     @Override
@@ -94,4 +100,5 @@ public class CreditCardServiceImpl implements CreditCardService {
     public void deleteCreditCard(Integer cardNumber) {
         creditCardRepository.deleteById(cardNumber);
     }
+
 }

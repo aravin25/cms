@@ -5,10 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Getter
 @Setter
@@ -24,6 +27,6 @@ public class User {
     private String type;
     private String status;
 
-//    @OneToOne
-//    private Account account;
+    @OneToOne
+    private Account account;
 }

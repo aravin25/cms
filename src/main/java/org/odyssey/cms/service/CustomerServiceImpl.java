@@ -17,8 +17,13 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
+
+  @Autowired
 	private PaymentRequestRepository paymentRequestRepository;
+  
+  @Override
+	public List<User> getAllUsers() {
+		return this.userRepository.findAll();
 
 	@Override
 	public User createUser(User newUser) throws AccountException {

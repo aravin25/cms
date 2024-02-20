@@ -11,6 +11,7 @@ public interface CustomerService {
 	public User createUser(User newUser)throws AccountException;
 	public User updateUser(User updateUser)throws AccountException;
 	public User getUserById(Integer userId)throws AccountException;
+  List<User> getAllUsers();
 	public List<User> getAllUser();
 	public String deleteUser(Integer userId)throws AccountException;
 	public String paymentNotification(Integer customerId)throws AccountException;
