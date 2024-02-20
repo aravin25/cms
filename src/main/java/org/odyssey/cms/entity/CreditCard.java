@@ -27,6 +27,7 @@ public class CreditCard {
     private Double creditLimit;
     private Double creditBalance;
     private String activationStatus;
+    private String pinNumber;
     private Double interestRate = 0.02; // Interest on outstanding balance
 
     @OneToOne

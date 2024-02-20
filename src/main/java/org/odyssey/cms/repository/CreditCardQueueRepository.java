@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface AdminRepository extends JpaRepository<Admin, Integer> {
-
+public interface CreditCardQueueRepository extends JpaRepository<CreditCardQueue, Integer> {
+    Optional<CreditCardQueue> findByCreditCardNumber(String creditCardNumber);
 }
