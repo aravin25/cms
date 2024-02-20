@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,13 +24,18 @@ public class CreditCard {
     private String cardNumber;
     private LocalDate expireDate;
     private Integer cvv;
-    private Integer amount;
-    private String activationStatus;
     private Double creditLimit;
     private Double creditBalance;
+    private String activationStatus;
+    private Double interestRate = 0.02; // Interest on outstanding balance
 
-//    @OneToOne
-//    private Account account;
-//    @OneToMany
-//    private List<Transaction> transactionList = new ArrayList<>();
+    @OneToOne
+    private Account account;
+    @OneToMany
+    private List<Transaction> transactionList = new ArrayList<>();
+
+    public void addInterest() {
+        creditBalance += creditBalance * interestRate;
+    }
 }
+
