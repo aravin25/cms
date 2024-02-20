@@ -1,10 +1,7 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.entity.CreditCard;
-<<<<<<< Updated upstream
-=======
 import org.odyssey.cms.repository.CreditCardRepository;
->>>>>>> Stashed changes
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,15 +17,10 @@ public class CreditCardController {
 
     @Autowired
     private CreditCardService creditCardService;
-
-<<<<<<< Updated upstream
-    @PostMapping
-=======
     @Autowired
     private CreditCardRepository creditCardRepository;
 
     @PostMapping("/createCard")
->>>>>>> Stashed changes
     public ResponseEntity<CreditCard> createCreditCard(@RequestBody CreditCard creditCard) {
         CreditCard createdCreditCard = creditCardService.createCreditCard(creditCard);
         return new ResponseEntity<>(createdCreditCard, HttpStatus.CREATED);
