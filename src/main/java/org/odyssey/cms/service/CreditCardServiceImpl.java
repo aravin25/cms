@@ -27,6 +27,11 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
         return optionalCreditCard.orElse(null);
     }
+  
+    @Override
+    public List<CreditCard> getCreditCards() {
+      return this.creditCardRepository.findAll();
+    }
 
     @Override
     public List<CreditCard> getAllCreditCards() {
@@ -58,7 +63,6 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("Requested");
-
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
         this.creditCardQueueRepository.save(creditCardQueue);
         return creditCardRepository.save(creditCard);
@@ -111,4 +115,5 @@ public class CreditCardServiceImpl implements CreditCardService {
     public List<CreditCard> getAllAccounts() {
         return null;
     }
+
 }
