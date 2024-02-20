@@ -20,12 +20,14 @@ import java.util.List;
 public class CreditCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer cardNumber;
+    private Integer cardId;
+    private String cardNumber;
     private LocalDate expireDate;
     private Integer cvv;
     private Double creditLimit;
     private Double creditBalance;
     private String activationStatus;
+    private String pinNumber;
 
     ////@OneToOne
     //private Account account;
