@@ -17,22 +17,6 @@ public class CreditCardController {
     @Autowired
     private CreditCardService creditCardService;
 
-    @GetMapping("/{cardNumber}")
-    public ResponseEntity<CreditCard> getCreditCardById(@PathVariable Integer cardNumber) {
-        CreditCard creditCard = creditCardService.getCreditCardById(cardNumber);
-        if (creditCard != null) {
-            return new ResponseEntity<>(creditCard, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CreditCard>> getAllCreditCards() {
-        List<CreditCard> creditCards = creditCardService.getAllCreditCards();
-        return new ResponseEntity<>(creditCards, HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<CreditCard> createCreditCard(@RequestBody CreditCard creditCard) {
         CreditCard createdCreditCard = creditCardService.createCreditCard(creditCard);
@@ -42,16 +26,6 @@ public class CreditCardController {
     @PutMapping("/{cardNumber}/expire-date")
     public ResponseEntity<CreditCard> updateExpireDate(@PathVariable Integer cardNumber, @RequestBody LocalDate newExpireDate) {
         CreditCard updatedCreditCard = creditCardService.updateExpireDate(cardNumber, newExpireDate);
-        if (updatedCreditCard != null) {
-            return new ResponseEntity<>(updatedCreditCard, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PutMapping("/{cardNumber}/amount")
-    public ResponseEntity<CreditCard> updateAmount(@PathVariable Integer cardNumber, @RequestBody Integer newAmount) {
-        CreditCard updatedCreditCard = creditCardService.updateAmount(cardNumber, newAmount);
         if (updatedCreditCard != null) {
             return new ResponseEntity<>(updatedCreditCard, HttpStatus.OK);
         } else {

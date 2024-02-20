@@ -10,7 +10,7 @@ public interface CreditCardService {
     CreditCard getCreditCardById(Integer cardNumber);
     List<CreditCard> getAllCreditCards();
     public CreditCard updateExpireDate(Integer cardNumber, LocalDate newExpireDate);
-    public CreditCard updateAmount(Integer cardNumber, Integer newAmount);
+    public CreditCard updateAmount(Integer cardNumber, Double newAmount);
     public CreditCard updateActivationStatus(Integer cardNumber, String newActivationStatus);
     void deleteCreditCard(Integer cardNumber);
 }

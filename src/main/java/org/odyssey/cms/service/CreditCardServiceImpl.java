@@ -44,11 +44,11 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard updateAmount(Integer cardNumber, Integer newAmount) {
+    public CreditCard updateAmount(Integer cardNumber, Double newAmount) {
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardNumber);
         if (optionalCreditCard.isPresent()) {
             CreditCard existingCreditCard = optionalCreditCard.get();
-            existingCreditCard.setAmount(newAmount);
+            existingCreditCard.setCreditBalance(newAmount);
             return creditCardRepository.save(existingCreditCard);
         } else {
             return null;
