@@ -28,8 +28,8 @@ public class CreditCard {
     private String activationStatus;
     private Double interestRate = 0.02;
 
-    @OneToOne
-    private Account account;
-    @OneToMany
-    private List<Transaction> transactionList = new ArrayList<>();
+//    @OneToOne
+//    private Account account;
+//    @OneToMany
+//    private List<Transaction> transactionList = new ArrayList<>();
 }
