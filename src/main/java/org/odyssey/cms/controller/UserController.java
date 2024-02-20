@@ -27,7 +27,7 @@ public class UserController {
 
 	@PostMapping("cms/merchant/paymentrequest")
 	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
-		return this.merchantService.newRequest(paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
+		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
 	}
 
 	@GetMapping("cms/customer/{customerId}")

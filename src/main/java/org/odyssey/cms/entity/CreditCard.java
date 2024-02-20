@@ -27,9 +27,11 @@ public class CreditCard {
     private Integer cvv;
     private Integer amount;
     private String activationStatus;
+    private Double creditLimit;
+    private Double creditBalance;
 
-    @OneToOne
-    private Account account;
-    @OneToMany
-    private List<Transaction> transactionList = new ArrayList<>();
+//    @OneToOne
+//    private Account account;
+//    @OneToMany
+//    private List<Transaction> transactionList = new ArrayList<>();
 }
