@@ -1,8 +1,6 @@
 package org.odyssey.cms.service;
 
 import org.springframework.stereotype.Service;
-
-
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +22,4 @@ public class CustomerServiceImpl implements CustomerService  {
 		else{
 			return ("payment Request Id: "+customerRequest.getPaymentRequestId()+"\ncustomer have request form"+customerRequest.getMerchantId()+"\namount: "+customerRequest.getRequestAmount());
 		}
-	}
 }
