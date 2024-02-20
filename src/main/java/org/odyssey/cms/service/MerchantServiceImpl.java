@@ -32,7 +32,7 @@ public class MerchantServiceImpl implements MerchantService{
 	}
 
 	@Override
-	public Boolean newRequest(Integer merchantId, Integer customerId,Double amount) throws AccountException {
+	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException {
 		Optional<User> accountOptionalMerchant = this.userRepository.findById(merchantId);
 		Optional<User> accountOptionalCustomer = this.userRepository.findById(customerId);
 		if (accountOptionalMerchant.isEmpty()) {

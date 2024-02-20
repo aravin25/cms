@@ -34,4 +34,13 @@ public class TransactionController {
     public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException {
         this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
     }
+  
+    @PostMapping("cms/transaction")
+    public boolean transactionInitiate(@RequestParam String inputPin, @RequestParam Integer userId, @RequestBody CreditCard creditCard){
+        boolean flag = false;
+        if(transactionService.authPin(inputPin)) {
+            flag = transactionService.processTransaction(userId, creditCard);
+        }
+        return flag;
+    }
 }

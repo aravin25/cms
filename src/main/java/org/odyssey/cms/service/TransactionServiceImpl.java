@@ -1,5 +1,6 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.Transaction;
@@ -13,16 +14,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Objects;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
+  @Autowired
+  PaymentRequestRepository paymentRequestRepository;
 	@Autowired
 	private TransactionRepository transactionRepository;
 	@Autowired
 	private AccountRepository accountRepository;
 	@Autowired
 	private CreditCardRepository creditCardRepository;
-
+  
+  String expectedPin = "xyz@123";
+  
 	@Override
 	public Transaction createTransaction(Transaction newTransaction) throws AccountException {
 		Optional<Transaction> transaction = this.transactionRepository.findById(newTransaction.getTransactionID());
@@ -85,4 +91,29 @@ public class TransactionServiceImpl implements TransactionService {
 		this.creditCardRepository.save(creditCard);
 		return paymentStatus;
 	}
+  
+  @Override
+  public boolean authPin(String inputPin) {
+    return inputPin.equals(expectedPin);
+  }
+  
+  @Override
+  public boolean processTransaction(Integer customerId, CreditCard creditCard) {
+    Double transactionAmount = paymentRequestRepository.findById(customerId).get().getRequestAmount();
+    if(Objects.equals(creditCard.getActivationStatus(), "Completed")) {
+        if (transactionAmount <= 0) {
+//            System.out.println("Not possible");
+          return false;
+        } else if (transactionAmount > creditCard.getCreditLimit() - creditCard.getCreditBalance()) {
+//        System.out.println("Transaction amount is exceeding the credit limit.");
+          return false;
+        } else {
+          creditCard.setCreditBalance(creditCard.getCreditBalance() + transactionAmount);
+          System.out.println("The transaction was successful.");
+          paymentRequestRepository.deleteById(customerId);
+        }
+      }
+     return true;
+  }
 }
+
