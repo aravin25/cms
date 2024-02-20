@@ -24,6 +24,6 @@ public class User {
     private String type;
     private String status;
 
-    //    @OneToOne
+//    @OneToOne
 //    private Account account;
 }
