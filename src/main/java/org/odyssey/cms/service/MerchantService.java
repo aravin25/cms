@@ -8,5 +8,5 @@ import javax.security.auth.login.AccountException;
 @Service
 public interface MerchantService {
 	User createNewMerchant(User newMerchant)throws AccountException;
-	Boolean newRequest(Integer merchantId,Integer customerId,Double amount)throws AccountException;
+	Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId, Double amount)throws AccountException;
 }
