@@ -23,9 +23,9 @@ public class Account {
     private LocalDate openDate;
     private String status;
 
-    @OneToOne
-    private User user;
-    @OneToOne
-    private CreditCard creditCard;
+//    @OneToOne
+//    private User user;
+//    @OneToOne
+//    private CreditCard creditCard;
 
 }

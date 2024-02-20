@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -16,8 +17,8 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer transactionID;
     private Double amount;
-    private LocalDate transactionDate;
+    private LocalDateTime transactionDateTime;
 
-    @ManyToOne
-    private CreditCard creditCard;
+//    @ManyToOne
+//    private CreditCard creditCard;
 }
