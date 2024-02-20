@@ -29,12 +29,12 @@ public class AccountController {
     }
 
     @PutMapping("updateAccount")
-    public Account updateAccount(@RequestBody Account account){
+    public Account updateAccount(@RequestBody Account account)throws AccountException{
         return this.accountService.updateAccount(account);
     }
 
     @DeleteMapping("delAccount/{id}")
-    public Account deleteAccountById(@PathVariable("id") Integer accountId){
+    public Account deleteAccountById(@PathVariable("id") Integer accountId)throws AccountException{
         return this.accountService.deleteAccountById(accountId);
     }
 

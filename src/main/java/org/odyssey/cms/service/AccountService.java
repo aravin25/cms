@@ -15,9 +15,9 @@ public interface AccountService {
     List<Account> getAllAccounts();
 
     //update
-    Account updateAccount(Account account);
+    Account updateAccount(Account account)throws AccountException;
 
     //delete
-    Account deleteAccountById(Integer id);
+    Account deleteAccountById(Integer id)throws AccountException;
 
 }

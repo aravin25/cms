@@ -1,6 +1,7 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.entity.Transaction;
+import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,12 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping("createTransaction")
-    public Transaction createTransaction(@RequestBody Transaction transaction){
+    public Transaction createTransaction(@RequestBody Transaction transaction)throws AccountException {
         return this.transactionService.createTransaction(transaction);
     }
 
     @GetMapping("getTransaction/{id}")
-    public Transaction getTransactionById(@PathVariable("id") Integer transactionId){
+    public Transaction getTransactionById(@PathVariable("id") Integer transactionId)throws AccountException{
         return this.transactionService.getTransactionById(transactionId);
     }
 
