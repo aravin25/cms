@@ -1,9 +1,9 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.User;
+import org.odyssey.cms.exception.AccountException;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountException;
 
 @Service
 public interface MerchantService {

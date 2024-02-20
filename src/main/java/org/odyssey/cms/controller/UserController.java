@@ -38,7 +38,6 @@ public class UserController {
 		return this.customerService.paymentNotification(customerId);
 	}
 
-	private CustomerService customerService;
 	@PostMapping("cms/createUser")
 	public User createnewUser(@RequestBody User user) throws AccountException {
 		return this.customerService.createUser(user);
