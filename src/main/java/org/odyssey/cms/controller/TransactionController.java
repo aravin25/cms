@@ -1,7 +1,9 @@
 package org.odyssey.cms.controller;
 
+import org.odyssey.cms.dto.CreditBalancePaymentDTO;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +28,10 @@ public class TransactionController {
     @GetMapping("getAllTransactions")
     public List<Transaction> getAllTransactions(){
         return this.transactionService.getAllTransactions();
+    }
+
+    @PostMapping("cms/transaction/creditBalancePayment")
+    public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException {
+        this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
     }
 }

@@ -22,10 +22,11 @@ public class Account {
     private Double balance;
     private LocalDate openDate;
     private String status;
+    private String password;
 
-//    @OneToOne
-//    private User user;
-//    @OneToOne
-//    private CreditCard creditCard;
+    @OneToOne
+    private User user;
+    @OneToOne
+    private CreditCard creditCard;
 
 }
