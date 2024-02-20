@@ -27,8 +27,8 @@ public class CreditCard {
     private Integer amount;
     private String activationStatus;
 
-    @OneToOne
-    private Account account;
+    ////@OneToOne
+    //private Account account;
     @OneToMany
     private List<Transaction> transactionList = new ArrayList<>();
 }
