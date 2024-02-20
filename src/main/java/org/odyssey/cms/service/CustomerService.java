@@ -13,5 +13,6 @@ public interface CustomerService {
 	public User getUserById(Integer userId)throws AccountException;
 	public List<User> getAllUser();
 	public String deleteUser(Integer userId)throws AccountException;
+	public String paymentNotification(Integer customerId)throws AccountException;
 
 }
