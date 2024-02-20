@@ -38,16 +38,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account updateAccount(Account account) {
+    public Account updateAccount(Account account)throws AccountException {
+        Optional<Account> optionalAccount = this.accountRepository.findById(account.getAccountId());
+        if(!optionalAccount.isPresent()){
+            throw new AccountException("Account does not exists!");
+        }
         return this.accountRepository.save(account);
     }
 
     @Override
-    public Account deleteAccountById(Integer id) {
+    public Account deleteAccountById(Integer id)throws AccountException {
         Optional<Account> accountOpt = this.accountRepository.findById(id);
-        // exception handling
         if(!accountOpt.isPresent()){
-            System.out.println("Account does not exist.");
+            throw new AccountException("Account does not exist.");
         }
         this.accountRepository.deleteById(id);
         return accountOpt.get();
