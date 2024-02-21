@@ -1,6 +1,7 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.dto.CreditBalancePaymentDTO;
+import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;

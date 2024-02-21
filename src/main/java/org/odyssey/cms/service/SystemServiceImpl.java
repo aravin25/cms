@@ -17,7 +17,7 @@ public class SystemServiceImpl implements SystemService {
 	@Scheduled(fixedRate = 10000)
 	@Override
 	public void batchProcess() {
-		List<CreditCard> creditCardList = this.creditCardService.getCreditCards();
+		List<CreditCard> creditCardList = this.creditCardService.getAllCreditCards();
 
 		for (CreditCard creditCard : creditCardList) {
 			Double creditBalance = creditCard.getCreditBalance();

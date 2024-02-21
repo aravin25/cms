@@ -23,7 +23,8 @@ public class CustomerServiceImpl implements CustomerService {
   
   @Override
 	public List<User> getAllUsers() {
-		return this.userRepository.findAll();
+	  return this.userRepository.findAll();
+  }
 
 	@Override
 	public User createUser(User newUser) throws AccountException {

@@ -27,11 +27,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
         return optionalCreditCard.orElse(null);
     }
-  
-    @Override
-    public List<CreditCard> getCreditCards() {
-      return this.creditCardRepository.findAll();
-    }
+
 
     @Override
     public List<CreditCard> getAllCreditCards() {
