@@ -10,34 +10,35 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@RequestMapping("creditcard")
 @RestController
 public class CreditCardController {
 
     @Autowired
     private CreditCardService creditCardService;
 
-    @PostMapping("createCreditCard")
+    @PostMapping("create")
     public CreditCard createCreditCard(@RequestBody CreditCard creditCard) throws AccountException {
         return this.creditCardService.createCreditCard(creditCard);
 
     }
 
-    @GetMapping("getAllCreditCard")
+    @GetMapping("All")
     public List<CreditCard> getAllCreditCard()throws AccountException{
         return this.creditCardService.getAllAccounts();
     }
 
-    @PutMapping("{cardNumber}/putExpireDate")
+    @PutMapping("updateexpiredate/{cardNumber}/putExpireDate")
     public CreditCard updateExpireDate(@PathVariable String cardNumber, @RequestBody LocalDate newExpireDate) throws AccountException{
         return this.creditCardService.updateExpireDate(cardNumber,newExpireDate);
     }
 
-    @PutMapping("{cardNumber}/putActivationStatus")
+    @PutMapping("updateactivationstatus/{cardNumber}/putActivationStatus")
     public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException{
         return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
     }
 
-    @DeleteMapping("{cardNumber}")
+    @DeleteMapping("delete/{cardNumber}")
     public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException{
         return this.creditCardService.deleteByCreditCard(cardNumber);
     }
