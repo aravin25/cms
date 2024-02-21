@@ -11,32 +11,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("transaction")
 @RestController
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping("createTransaction")
+    @PostMapping("create")
     public Transaction createTransaction(@RequestBody Transaction transaction)throws AccountException {
         return this.transactionService.createTransaction(transaction);
     }
 
-    @GetMapping("getTransaction/{id}")
+    @GetMapping("/{id}")
     public Transaction getTransactionById(@PathVariable("id") Integer transactionId)throws AccountException{
         return this.transactionService.getTransactionById(transactionId);
     }
 
-    @GetMapping("getAllTransactions")
+    @GetMapping("All")
     public List<Transaction> getAllTransactions(){
         return this.transactionService.getAllTransactions();
     }
 
-    @PostMapping("cms/transaction/creditBalancePayment")
+    @PostMapping("creditBalancePayment")
     public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException {
         this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
     }
   
-    @PostMapping("cms/transaction")
+    @PostMapping("initiate")
     public boolean transactionInitiate(@RequestParam String inputPin, @RequestParam Integer userId, @RequestBody CreditCard creditCard){
         boolean flag = false;
         if(transactionService.authPin(inputPin)) {

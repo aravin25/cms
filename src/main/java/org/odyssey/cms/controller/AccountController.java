@@ -8,32 +8,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("account")
 @RestController
 public class AccountController {
     @Autowired
     private AccountService accountService;
-
-    @PostMapping("createAccount")
+    @PostMapping("create")
     public Account createAccount(@RequestBody Account account) throws AccountException {
         return this.accountService.createAccount(account);
     }
 
-    @GetMapping("getAllAccounts")
+    @GetMapping("All")
     public List<Account> getAllAccounts(){
         return this.accountService.getAllAccounts();
     }
 
-    @GetMapping("account/{id}")
+    @GetMapping("{id}")
     public Account getAccountById(@PathVariable("id") Integer accountId) throws AccountException{
         return this.accountService.getAccountById(accountId);
     }
 
-    @PutMapping("updateAccount")
+    @PutMapping("update")
     public Account updateAccount(@RequestBody Account account)throws AccountException{
         return this.accountService.updateAccount(account);
     }
 
-    @DeleteMapping("delAccount/{id}")
+    @DeleteMapping("delete/{id}")
     public Account deleteAccountById(@PathVariable("id") Integer accountId)throws AccountException{
         return this.accountService.deleteAccountById(accountId);
     }
