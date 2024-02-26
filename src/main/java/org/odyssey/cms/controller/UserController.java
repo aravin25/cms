@@ -29,7 +29,7 @@ public class UserController {
 	private MerchantService merchantService;
 	@Autowired
 	private CustomerService customerService;
-	private UserRepository userRepository
+	private UserRepository userRepository;
 	private Invoice invoice;
 
 	@PostMapping("/merchant")
