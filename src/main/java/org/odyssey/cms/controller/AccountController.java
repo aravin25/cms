@@ -18,7 +18,7 @@ public class AccountController {
         return this.accountService.createAccount(account);
     }
 
-    @GetMapping("All")
+    @GetMapping("all")
     public List<Account> getAllAccounts(){
         return this.accountService.getAllAccounts();
     }

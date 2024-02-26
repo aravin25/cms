@@ -1,6 +1,8 @@
 package org.odyssey.cms.controller;
 
+import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.PaymentRequest;
+import org.odyssey.cms.repository.UserRepository;
 import org.odyssey.cms.service.MerchantService;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.User;
@@ -26,7 +28,7 @@ public class UserController {
 	private CustomerService customerService;
 
 	@PostMapping("/merchant")
-	public User createMerchant(@RequestBody User user)throws AccountException{
+	public User createMerchant(@RequestBody User user) throws AccountException{
 		
 		return this.merchantService.createNewMerchant(user);
 	}
@@ -42,11 +44,11 @@ public class UserController {
 	}
 
 	@PostMapping("/create")
-	public User createnewUser(@RequestBody User user) throws AccountException {
-		return this.customerService.createUser(user);
+	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException {
+		return this.customerService.createUser(userRegistrationDTO);
 	}
 
-	@GetMapping("All")
+	@GetMapping("all")
 	public List<User> getAllUser(){
 		return this.customerService.getAllUser();
 	}

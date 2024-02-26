@@ -1,9 +1,11 @@
 package org.odyssey.cms.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -31,9 +33,11 @@ public class CreditCard {
     private String pinNumber;
     private Double interestRate = 0.02; // Interest on outstanding balance
 
-    @OneToOne
+    @OneToOne(mappedBy = "creditCard")
+    @JsonManagedReference
     private Account account;
-    @OneToMany
+    @OneToMany(mappedBy = "creditCard")
+    @JsonManagedReference
     private List<Transaction> transactionList = new ArrayList<>();
 
     public void addInterest() {

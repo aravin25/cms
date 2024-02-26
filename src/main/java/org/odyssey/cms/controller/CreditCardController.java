@@ -23,9 +23,9 @@ public class CreditCardController {
 
     }
 
-    @GetMapping("All")
+    @GetMapping("all")
     public List<CreditCard> getAllCreditCard()throws AccountException{
-        return this.creditCardService.getAllAccounts();
+        return this.creditCardService.getAllCreditCards();
     }
 
     @PutMapping("updateexpiredate/{cardNumber}/putExpireDate")
