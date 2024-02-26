@@ -1,11 +1,13 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.Account;
+import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private CreditCardService creditCardService;
 
     @Override
     public Account createAccount(Account newAccount) throws AccountException{
@@ -20,6 +24,13 @@ public class AccountServiceImpl implements AccountService {
         if(optionalAccount.isPresent()){
             throw new AccountException("Account already exists!");
         }
+        newAccount.setOpenDate(LocalDate.now());
+
+        CreditCard creditCard = new CreditCard();
+        creditCardService.createCreditCard(creditCard);
+
+        newAccount.setCreditCard(creditCard);
+
         return this.accountRepository.save(newAccount);
     }
 

@@ -17,6 +17,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     private static final Random random = new Random(System.currentTimeMillis());
     @Autowired
     private CreditCardRepository creditCardRepository;
+    @Autowired
     private CreditCardQueueRepository creditCardQueueRepository;
 
     @Override
@@ -59,6 +60,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("Requested");
+        creditCard.setPinNumber("1234");
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
         this.creditCardQueueRepository.save(creditCardQueue);
         return creditCardRepository.save(creditCard);

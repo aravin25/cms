@@ -1,6 +1,7 @@
 package org.odyssey.cms.service;
 
 import lombok.Setter;
+import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.entity.PaymentRequest;
@@ -17,22 +18,44 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private UserRepository userRepository;
-
-  @Autowired
+	@Autowired
 	private PaymentRequestRepository paymentRequestRepository;
-  
-  @Override
+	@Autowired
+	private AccountService accountService;
+
+	@Override
 	public List<User> getAllUsers() {
 	  return this.userRepository.findAll();
   }
 
 	@Override
-	public User createUser(User newUser) throws AccountException {
-		Optional<User> addUser = userRepository.findById(newUser.getUserId());
+	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException {
+		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
 			throw new AccountException("User already exist");
 		}
-		return userRepository.save(newUser);
+
+		User user = new User();
+		user.setUserId(userRegistrationDTO.getUserId());
+		user.setName(userRegistrationDTO.getName());
+		user.setPhone(userRegistrationDTO.getPhone());
+		user.setEmail(userRegistrationDTO.getEmail());
+		user.setAddress(userRegistrationDTO.getAddress());
+		user.setType(userRegistrationDTO.getType());
+		user.setStatus(userRegistrationDTO.getStatus());
+
+		Account account = new Account();
+		account.setAccountId(0);
+		account.setBalance(0.0);
+		account.setPassword(userRegistrationDTO.getAccountPassword());
+		account.setStatus("");
+
+		account = this.accountService.createAccount(account);
+
+		user.setAccount(account);
+		this.userRepository.save(user);
+
+		return user;
 	}
 
 	@Override
