@@ -62,7 +62,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setCreditBalance(100000.0);
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
-        creditCard.setActivationStatus("Requested");
+        creditCard.setActivationStatus("REQUESTED");
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
         this.creditCardQueueRepository.save(creditCardQueue);
         return creditCardRepository.save(creditCard);

@@ -32,7 +32,7 @@ public class CreditCardController {
         return this.creditCardService.updateExpireDate(cardNumber,newExpireDate);
     }
 
-    @PutMapping("{cardNumber}/putActivationStatus")
+    @PutMapping("/creditCard/{cardNumber}/putActivationStatus")
     public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException{
         return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
     }
