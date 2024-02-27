@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,12 +26,23 @@ public class CreditCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer cardId;
+    @NotNull
+    @NotBlank
     private String cardNumber;
+    @NotNull
+    @NotBlank
     private LocalDate expireDate;
     private Integer cvv;
+    @NotNull
+    @NotBlank
     private Double creditLimit;
+    @NotNull
+    @NotBlank
     private Double creditBalance;
+    @NotNull
+    @NotBlank
     private String activationStatus;
+    @NotNull
     private String pinNumber;
     private Double interestRate = 0.02; // Interest on outstanding balance
 
