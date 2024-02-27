@@ -31,8 +31,7 @@ public class UserController {
 	private CustomerService customerService;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private Invoice invoice;
+
 
 	@PostMapping("/merchant")
 	public User createMerchant(@RequestBody User user) throws AccountException{
@@ -77,59 +76,11 @@ public class UserController {
 
 	@GetMapping("cms/customer/requestInvoice")
 	public Invoice generateCustomerInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException {
-		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
-		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
-		if(optionalCustomer.isEmpty()){
-			throw new UserException("Customer does not exist");
-		} else if (optionalMerchant.isEmpty()) {
-			throw new UserException("Merchant does not exist");
-		}
-		User customer = optionalCustomer.get();
-		User merchant = optionalMerchant.get();
-		StringBuilder invoiceBody = new StringBuilder();
-		invoiceBody.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		invoiceBody.append("<Invoice>\n");
-		invoiceBody.append("	<Id>" + invoice.getInvoiceId() + "</Id>");
-		invoiceBody.append("  <Customer>\n");
-		invoiceBody.append("    <Name>" + customer.getName() + "</Name>\n");
-		invoiceBody.append("    <Address>" + customer.getAddress() + "</Address>\n");
-		invoiceBody.append("  </Customer>\n");
-		invoiceBody.append("  <Transaction>\n");
-		invoiceBody.append("    <Amount>" + transaction.getAmount() + "</Amount>\n");
-		invoiceBody.append("    <Date>" + transaction.getTransactionDateTime() + "</Date>\n");
-		invoiceBody.append("    <Merchant>" + merchant.getName() + "</Merchant>\n");
-		invoiceBody.append("  </Transaction>\n");
-		invoiceBody.append("</Invoice>\n");
-		invoice.setInvoiceBody(invoiceBody.toString());
-		return this.invoice;
+		return customerService.generateCustomerInvoice(transaction,paymentRequest);
 	}
 
 	@GetMapping("cms/merchant/requestInvoice")
 	public Invoice generateMerchantInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException{
-		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
-		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
-		if(optionalMerchant.isEmpty()){
-			throw new UserException("Merchant does not exist");
-		} else if (optionalCustomer.isEmpty()) {
-			throw new UserException("Customer does not exist");
-		}
-		User merchant = optionalMerchant.get();
-		User customer = optionalCustomer.get();
-		StringBuilder invoiceBody = new StringBuilder();
-		invoiceBody.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		invoiceBody.append("<Invoice>\n");
-		invoiceBody.append("	<Id>" + invoice.getInvoiceId() + "</Id>");
-		invoiceBody.append("  <Merchant>\n");
-		invoiceBody.append("    <Name>" + merchant.getName() + "</Name>\n");
-		invoiceBody.append("    <Address>" + merchant.getAddress() + "</Address>\n");
-		invoiceBody.append("  </Merchant>\n");
-		invoiceBody.append("  <Transaction>\n");
-		invoiceBody.append("    <Amount>" + transaction.getAmount() + "</Amount>\n");
-		invoiceBody.append("    <Date>" + transaction.getTransactionDateTime() + "</Date>\n");
-		invoiceBody.append("    <Customer>" + customer.getName() + "</Customer>\n");
-		invoiceBody.append("  </Transaction>\n");
-		invoiceBody.append("</Invoice>\n");
-		invoice.setInvoiceBody(invoiceBody.toString());
-		return this.invoice;
+		return merchantService.generateMerchantInvoice(transaction,paymentRequest);
 	}
 }

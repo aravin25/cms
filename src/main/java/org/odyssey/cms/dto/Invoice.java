@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Invoice {
-    @NotNull
     private Integer invoiceId;
-    @NotNull
-    @NotBlank
     private String invoiceBody;
 }

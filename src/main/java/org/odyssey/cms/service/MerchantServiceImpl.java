@@ -1,8 +1,11 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.entity.PaymentRequest;
+import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +47,35 @@ public class MerchantServiceImpl implements MerchantService{
 		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId,amount);
 		this.paymentRequestRepository.save(paymentRequest);
 		return true;
+	}
+
+	@Override
+	public Invoice generateMerchantInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException {
+		Invoice invoice=new Invoice();
+		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
+		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
+		if(optionalMerchant.isEmpty()){
+			throw new UserException("Merchant does not exist");
+		} else if (optionalCustomer.isEmpty()) {
+			throw new UserException("Customer does not exist");
+		}
+		User merchant = optionalMerchant.get();
+		User customer = optionalCustomer.get();
+		StringBuilder invoiceBody = new StringBuilder();
+		invoiceBody.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		invoiceBody.append("<Invoice>\n");
+		invoiceBody.append("	<Id>" + invoice.getInvoiceId() + "</Id>");
+		invoiceBody.append("  <Merchant>\n");
+		invoiceBody.append("    <Name>" + merchant.getName() + "</Name>\n");
+		invoiceBody.append("    <Address>" + merchant.getAddress() + "</Address>\n");
+		invoiceBody.append("  </Merchant>\n");
+		invoiceBody.append("  <Transaction>\n");
+		invoiceBody.append("    <Amount>" + transaction.getAmount() + "</Amount>\n");
+		invoiceBody.append("    <Date>" + transaction.getTransactionDateTime() + "</Date>\n");
+		invoiceBody.append("    <Customer>" + customer.getName() + "</Customer>\n");
+		invoiceBody.append("  </Transaction>\n");
+		invoiceBody.append("</Invoice>\n");
+		invoice.setInvoiceBody(invoiceBody.toString());
+		return invoice;
 	}
 }
