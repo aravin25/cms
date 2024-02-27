@@ -8,6 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +24,14 @@ import java.time.LocalDate;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private Integer accountId;
+    @NotNull
+    @Min(1000)
     private Double balance;
+    @NotNull
     private LocalDate openDate;
-    private String status;
+    @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
     private String password;
 
     @OneToOne(mappedBy = "account")
