@@ -4,9 +4,9 @@ import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
+import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.UserRepository;
 import org.odyssey.cms.service.MerchantService;
-import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.service.CustomerService;
@@ -29,7 +29,9 @@ public class UserController {
 	private MerchantService merchantService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
 	private UserRepository userRepository;
+	@Autowired
 	private Invoice invoice;
 
 	@PostMapping("/merchant")
@@ -74,13 +76,13 @@ public class UserController {
 	}
 
 	@GetMapping("cms/customer/requestInvoice")
-	public Invoice generateCustomerInvoice(Transaction transaction, PaymentRequest paymentRequest) throws AccountException {
+	public Invoice generateCustomerInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException {
 		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
 		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
 		if(optionalCustomer.isEmpty()){
-			throw new AccountException("Customer does not exist");
+			throw new UserException("Customer does not exist");
 		} else if (optionalMerchant.isEmpty()) {
-			throw new AccountException("Merchant does not exist");
+			throw new UserException("Merchant does not exist");
 		}
 		User customer = optionalCustomer.get();
 		User merchant = optionalMerchant.get();
@@ -103,13 +105,13 @@ public class UserController {
 	}
 
 	@GetMapping("cms/merchant/requestInvoice")
-	public Invoice generateMerchantInvoice(Transaction transaction, PaymentRequest paymentRequest) throws AccountException{
+	public Invoice generateMerchantInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException{
 		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
 		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
 		if(optionalMerchant.isEmpty()){
-			throw new AccountException("Merchant does not exist");
+			throw new UserException("Merchant does not exist");
 		} else if (optionalCustomer.isEmpty()) {
-			throw new AccountException("Customer does not exist");
+			throw new UserException("Customer does not exist");
 		}
 		User merchant = optionalMerchant.get();
 		User customer = optionalCustomer.get();
