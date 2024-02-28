@@ -67,7 +67,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 		Account account = optionalAccount.get();
 
-		if (account.getBalance() < amount) {
+		if (amount != null && account.getBalance() < amount) {
 			throw new AccountException("Account doesn't have sufficient balance");
 		}
 		if (!account.getPassword().equals(password)) {
@@ -82,13 +82,18 @@ public class TransactionServiceImpl implements TransactionService {
 
 		String paymentStatus = "";
 
-		if (amount > creditCard.getCreditBalance()) {
+		if (amount == null) {
+			account.setBalance(account.getBalance() - creditCard.getCreditBalance());
+			creditCard.setCreditBalance(0.0);
+		} else if (amount > creditCard.getCreditBalance()) {
 			throw new AccountException("User is paying more than the outstanding credit balance");
 		} else {
 			creditCard.setCreditBalance(creditCard.getCreditBalance() - amount);
+			account.setBalance(account.getBalance() - amount);
 		}
 
 		this.creditCardRepository.save(creditCard);
+		this.accountRepository.save(account);
 		return paymentStatus;
 	}
   
