@@ -1,6 +1,7 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.dto.CreditBalancePaymentDTO;
+import org.odyssey.cms.dto.TransactionDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
@@ -38,10 +39,10 @@ public class TransactionController {
     }
   
     @PostMapping("initiate")
-    public boolean transactionInitiate(@RequestParam String inputPin, @RequestParam Integer userId, @RequestBody CreditCard creditCard){
+    public boolean transactionInitiate(@RequestBody TransactionDTO transactionDTO){
         boolean flag = false;
-        if(transactionService.authPin(inputPin)) {
-            flag = transactionService.processTransaction(userId, creditCard);
+        if(transactionService.authPin(transactionDTO.getInputPin())) {
+            flag = transactionService.processTransaction(transactionDTO.getUserId(), transactionDTO.getCreditCard());
         }
         return flag;
     }

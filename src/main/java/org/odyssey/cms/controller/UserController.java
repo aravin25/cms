@@ -65,7 +65,7 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public User updateAccount(@RequestBody User user)throws AccountException{
+	public User updateUser(@RequestBody User user)throws AccountException{
 		return this.customerService.updateUser(user);
 	}
 
