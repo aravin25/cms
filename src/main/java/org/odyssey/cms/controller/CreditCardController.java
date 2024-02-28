@@ -1,5 +1,6 @@
 package org.odyssey.cms.controller;
 
+import jakarta.validation.Valid;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.repository.CreditCardRepository;
@@ -18,7 +19,7 @@ public class CreditCardController {
     private CreditCardService creditCardService;
 
     @PostMapping("createCreditCard")
-    public CreditCard createCreditCard(@RequestBody CreditCard creditCard) throws AccountException {
+    public CreditCard createCreditCard(@Valid @RequestBody CreditCard creditCard) throws AccountException {
         return this.creditCardService.createCreditCard(creditCard);
 
     }

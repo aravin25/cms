@@ -1,5 +1,6 @@
 package org.odyssey.cms.controller;
 
+import jakarta.validation.Valid;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.PaymentRequest;
@@ -34,13 +35,13 @@ public class UserController {
 
 
 	@PostMapping("/merchant")
-	public User createMerchant(@RequestBody User user) throws AccountException{
+	public User createMerchant(@Valid @RequestBody User user) throws AccountException{
 		
 		return this.merchantService.createNewMerchant(user);
 	}
 
 	@PostMapping("/merchant/paymentrequest")
-	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
+	public Boolean newPaymentRequest(@Valid @RequestBody PaymentRequest paymentRequest)throws AccountException{
 		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
 	}
 
@@ -50,7 +51,7 @@ public class UserController {
 	}
 
 	@PostMapping("/create")
-	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException {
+	public User createnewUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException {
 		return this.customerService.createUser(userRegistrationDTO);
 	}
 
@@ -65,7 +66,7 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public User updateAccount(@RequestBody User user)throws AccountException{
+	public User updateAccount(@Valid @RequestBody User user)throws AccountException{
 		return this.customerService.updateUser(user);
 	}
 
