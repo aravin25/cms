@@ -19,6 +19,5 @@ public class CreditBalancePaymentDTO {
 	@NotBlank
 	private String password;
 	@NotNull
-	@Min(1)
 	private Double amount;
 }

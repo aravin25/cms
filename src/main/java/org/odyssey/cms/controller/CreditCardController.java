@@ -17,13 +17,13 @@ public class CreditCardController {
     @Autowired
     private CreditCardService creditCardService;
 
-    @PostMapping("create")
+    @PostMapping("createCreditCard")
     public CreditCard createCreditCard(@RequestBody CreditCard creditCard) throws AccountException {
         return this.creditCardService.createCreditCard(creditCard);
 
     }
 
-    @GetMapping("all")
+    @GetMapping("getAllCreditCard")
     public List<CreditCard> getAllCreditCard()throws AccountException{
         return this.creditCardService.getAllCreditCards();
     }

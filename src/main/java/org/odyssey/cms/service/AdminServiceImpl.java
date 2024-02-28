@@ -1,6 +1,5 @@
 package org.odyssey.cms.service;
 
-import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
@@ -9,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class adminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService{
     @Autowired
     private CreditCardRepository creditCardRepository;
     @Autowired
@@ -19,7 +19,7 @@ public class adminServiceImpl implements AdminService{
     @Autowired
     private CreditCardService creditCardService;
     @Override
-    public String approveCreditCard() throws AccountException {
+    public String approveAllCreditCard() throws AccountException {
 
         List<CreditCardQueue> creditCardQueueList=creditCardQueueRepository.findAll();
         if(creditCardQueueList.isEmpty()){
@@ -29,6 +29,20 @@ public class adminServiceImpl implements AdminService{
             String creditCardNumber=creditCardQueueObject.getCreditCardNumber();
             creditCardService.updateActivationStatus(creditCardNumber,"ACTIVATED");
             creditCardQueueRepository.delete(creditCardQueueObject);
+        }
+        return "ACTIVATION COMPLETED";
+    }
+
+    @Override
+    public String approveIndividualCreditCard(String creditCardNumber) throws AccountException {
+
+        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCreditCardNumber(creditCardNumber);
+        if(creditCardQueue.isEmpty()){
+            throw new AccountException("CREDIT CARD NUMBER NOT PRESENT");
+        }
+        if (creditCardQueue.isPresent()){
+            creditCardService.updateActivationStatus(creditCardNumber,"ACTIVATED");
+            creditCardQueueRepository.delete(creditCardQueue.get());
         }
         return "ACTIVATION COMPLETED";
     }
