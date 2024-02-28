@@ -14,6 +14,5 @@ public class RequestNotificationDto {
 	@NotNull
 	Integer merchantId;
 	@NotNull
-	@Min(1)
 	Double amount;
 }

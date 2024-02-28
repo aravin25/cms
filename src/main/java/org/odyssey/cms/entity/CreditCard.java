@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,14 +31,11 @@ public class CreditCard {
     @NotBlank
     private String cardNumber;
     @NotNull
-    @NotBlank
     private LocalDate expireDate;
     private Integer cvv;
     @NotNull
-    @NotBlank
     private Double creditLimit;
     @NotNull
-    @NotBlank
     private Double creditBalance;
     @NotNull
     @NotBlank
