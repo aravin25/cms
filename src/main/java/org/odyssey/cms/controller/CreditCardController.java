@@ -1,8 +1,8 @@
 package org.odyssey.cms.controller;
 
+import org.odyssey.cms.dto.CreditCardDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
-import org.odyssey.cms.repository.CreditCardRepository;
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,10 @@ public class CreditCardController {
     private CreditCardService creditCardService;
 
     @PostMapping("createCreditCard")
-    public CreditCard createCreditCard(@RequestBody CreditCard creditCard) throws AccountException {
+    public CreditCard createCreditCard(@RequestBody CreditCardDTO creditCardDTO) throws AccountException {
+        CreditCard creditCard = new CreditCard();
+        creditCard.setCardId(0);
+        creditCard.setPinNumber(creditCardDTO.getPinNumber());
         return this.creditCardService.createCreditCard(creditCard);
 
     }
@@ -28,12 +31,7 @@ public class CreditCardController {
         return this.creditCardService.getAllCreditCards();
     }
 
-    @PutMapping("updateexpiredate/{cardNumber}/putExpireDate")
-    public CreditCard updateExpireDate(@PathVariable String cardNumber, @RequestBody LocalDate newExpireDate) throws AccountException{
-        return this.creditCardService.updateExpireDate(cardNumber,newExpireDate);
-    }
-
-    @PutMapping("updateactivationstatus/{cardNumber}/putActivationStatus")
+    @PutMapping("updateActivationStatus/{cardNumber}")
     public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException{
         return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
     }

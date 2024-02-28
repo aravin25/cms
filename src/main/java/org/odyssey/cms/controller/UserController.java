@@ -1,7 +1,9 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.dto.Invoice;
+import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
+import org.odyssey.cms.dto.UserUpdateDTO;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.UserException;
@@ -34,9 +36,9 @@ public class UserController {
 
 
 	@PostMapping("/merchant")
-	public User createMerchant(@RequestBody User user) throws AccountException{
+	public User createMerchant(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException{
 		
-		return this.merchantService.createNewMerchant(user);
+		return this.merchantService.createNewMerchant(userRegistrationDTO);
 	}
 
 	@PostMapping("/merchant/paymentrequest")
@@ -65,8 +67,8 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public User updateUser(@RequestBody User user)throws AccountException{
-		return this.customerService.updateUser(user);
+	public User updateUser(@RequestBody UserUpdateDTO userUpdateDTO)throws AccountException{
+		return this.customerService.updateUser(userUpdateDTO);
 	}
 
 	@DeleteMapping("delete/{userId}")
@@ -75,12 +77,12 @@ public class UserController {
 	}
 
 	@GetMapping("cms/customer/requestInvoice")
-	public Invoice generateCustomerInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException {
-		return customerService.generateCustomerInvoice(transaction,paymentRequest);
+	public Invoice generateCustomerInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException {
+		return customerService.generateCustomerInvoice(requestInvoiceDTO);
 	}
 
 	@GetMapping("cms/merchant/requestInvoice")
-	public Invoice generateMerchantInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException{
-		return merchantService.generateMerchantInvoice(transaction,paymentRequest);
+	public Invoice generateMerchantInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException{
+		return merchantService.generateMerchantInvoice(requestInvoiceDTO);
 	}
 }

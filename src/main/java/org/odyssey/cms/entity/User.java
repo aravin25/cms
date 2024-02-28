@@ -41,9 +41,6 @@ public class User {
     @NotNull
     @NotBlank
     private String type;
-    @NotNull
-    @NotBlank
-    private String status;
 
     @OneToOne
     @JoinColumn(name = "account_id")
