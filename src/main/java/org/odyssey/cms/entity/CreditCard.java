@@ -51,7 +51,7 @@ public class CreditCard {
     private List<Transaction> transactionList = new ArrayList<>();
 
     public void addInterest() {
-        creditBalance += Math.round(creditBalance * interestRate);
+        creditBalance += (double) Math.round(100 * creditBalance * interestRate) / 100;
     }
 }
 
