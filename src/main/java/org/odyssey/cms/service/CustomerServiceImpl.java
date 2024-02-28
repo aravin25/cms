@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Account account = new Account();
 		account.setAccountId(0);
-		account.setBalance(0.0);
+		account.setBalance(1000000.0);
 		account.setPassword(userRegistrationDTO.getAccountPassword());
 
 		account = this.accountService.createAccount(account);

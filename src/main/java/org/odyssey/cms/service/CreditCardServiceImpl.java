@@ -56,7 +56,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
         creditCard.setCardNumber(cardNum);
         creditCard.setCvv(x);
-        creditCard.setCreditBalance(100000.0);
+        creditCard.setCreditBalance(50000.0);
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("REQUESTED");
