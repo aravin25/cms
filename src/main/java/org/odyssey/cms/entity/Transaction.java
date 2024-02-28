@@ -26,7 +26,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer transactionID;
     @NotNull
-    @Min(1)
+    @Min(100)
     private Double amount;
     @NotNull
     private LocalDateTime transactionDateTime;
