@@ -95,16 +95,6 @@ public class CustomerServiceImpl implements CustomerService {
 		return "successfully deleted";
 	}
 
-	@Override
-	public String paymentNotification(Integer customerId) throws AccountException {
-		Optional<PaymentRequest> customerPaymentRequest = this.paymentRequestRepository.findByCustomerId(customerId);
-		PaymentRequest customerRequest = customerPaymentRequest.get();
-		if (customerPaymentRequest.isEmpty()) {
-			return "customer don't have any PaymentRequest";
-		} else {
-			return ("payment Request Id: " + customerRequest.getPaymentRequestId() + "\ncustomer have request form" + customerRequest.getMerchantId() + "\namount: " + customerRequest.getRequestAmount());
-		}
-	}
 
 	@Override
 	public Invoice generateCustomerInvoice(Transaction transaction,PaymentRequest paymentRequest) throws UserException {
