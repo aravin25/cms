@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +42,7 @@ public class CreditCard {
     @NotBlank
     private String activationStatus;
     @NotNull
-    private String pinNumber;
+    private Integer pinNumber;
     private Double interestRate = 0.018; // Interest on outstanding balance
 
     @OneToOne(mappedBy = "creditCard")
