@@ -15,7 +15,7 @@ public class AccountController {
     private AccountService accountService;
     @PostMapping("create")
     public Account createAccount(@RequestBody Account account) throws AccountException {
-        return this.accountService.createAccount(account);
+        return this.accountService.createAccount(account, "Customer");
     }
 
     @GetMapping("all")

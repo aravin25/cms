@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AccountService {
     //create
-    Account createAccount(Account newAccount) throws AccountException;
+    Account createAccount(Account newAccount, String type) throws AccountException;
 
     //read
     Account getAccountById(Integer accountId) throws AccountException;

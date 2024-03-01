@@ -19,17 +19,18 @@ public class AccountServiceImpl implements AccountService {
     private CreditCardService creditCardService;
 
     @Override
-    public Account createAccount(Account newAccount) throws AccountException{
+    public Account createAccount(Account newAccount, String type) throws AccountException {
         Optional<Account> optionalAccount = this.accountRepository.findById(newAccount.getAccountId());
         if(optionalAccount.isPresent()){
             throw new AccountException("Account already exists!");
         }
         newAccount.setOpenDate(LocalDate.now());
 
-        CreditCard creditCard = new CreditCard();
-        creditCardService.createCreditCard(creditCard);
-
-        newAccount.setCreditCard(creditCard);
+        if (type.equals("Customer")) {
+            CreditCard creditCard = new CreditCard();
+            creditCardService.createCreditCard(creditCard);
+            newAccount.setCreditCard(creditCard);
+        }
 
         return this.accountRepository.save(newAccount);
     }
@@ -40,27 +41,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountById(Integer accountId) throws AccountException{
+    public Account getAccountById(Integer accountId) throws AccountException {
         Optional<Account> optionalAccount = this.accountRepository.findById(accountId);
-        if(!optionalAccount.isPresent()){
+        if(optionalAccount.isEmpty()){
             throw new AccountException("Account does not exist!");
         }
-        return this.accountRepository.findById(accountId).get();
+        return optionalAccount.get();
     }
 
     @Override
-    public Account updateAccount(Account account)throws AccountException {
+    public Account updateAccount(Account account) throws AccountException {
         Optional<Account> optionalAccount = this.accountRepository.findById(account.getAccountId());
-        if(!optionalAccount.isPresent()){
-            throw new AccountException("Account does not exists!");
+        if(optionalAccount.isEmpty()){
+            throw new AccountException("Account does not exist!");
         }
         return this.accountRepository.save(account);
     }
 
     @Override
-    public Account deleteAccountById(Integer id)throws AccountException {
+    public Account deleteAccountById(Integer id) throws AccountException {
         Optional<Account> accountOpt = this.accountRepository.findById(id);
-        if(!accountOpt.isPresent()){
+        if(accountOpt.isEmpty()){
             throw new AccountException("Account does not exist.");
         }
         this.accountRepository.deleteById(id);

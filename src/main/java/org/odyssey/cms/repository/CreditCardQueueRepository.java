@@ -1,6 +1,5 @@
 package org.odyssey.cms.repository;
 
-import org.odyssey.cms.entity.Admin;
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.springframework.data.jpa.repository.JpaRepository;
 

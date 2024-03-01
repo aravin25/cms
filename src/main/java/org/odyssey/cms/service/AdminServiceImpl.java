@@ -2,6 +2,8 @@ package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
+import org.odyssey.cms.exception.CreditCardQueueException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +13,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
     @Autowired
     private CreditCardRepository creditCardRepository;
     @Autowired
     private CreditCardQueueRepository creditCardQueueRepository;
     @Autowired
     private CreditCardService creditCardService;
+
     @Override
-    public String approveAllCreditCard() throws AccountException {
+    public String approveAllCreditCard() throws CreditCardQueueException, AccountException, CreditCardException {
 
         List<CreditCardQueue> creditCardQueueList=creditCardQueueRepository.findAll();
         if(creditCardQueueList.isEmpty()){
-            throw new AccountException("NO ELEMENT PRESENT IN THE CREDIT CARD QUEUE");
+            throw new CreditCardQueueException("NO ELEMENT PRESENT IN THE CREDIT CARD QUEUE");
         }
         for(CreditCardQueue creditCardQueueObject :creditCardQueueList){
             String creditCardNumber=creditCardQueueObject.getCreditCardNumber();
@@ -34,16 +37,14 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public String approveIndividualCreditCard(String creditCardNumber) throws AccountException {
+    public String approveIndividualCreditCard(String creditCardNumber) throws CreditCardQueueException, AccountException, CreditCardException {
 
         Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCreditCardNumber(creditCardNumber);
         if(creditCardQueue.isEmpty()){
-            throw new AccountException("CREDIT CARD NUMBER NOT PRESENT");
+            throw new CreditCardQueueException("CREDIT CARD NUMBER NOT PRESENT");
         }
-        if (creditCardQueue.isPresent()){
-            creditCardService.updateActivationStatus(creditCardNumber,"ACTIVATED");
-            creditCardQueueRepository.delete(creditCardQueue.get());
-        }
-        return "ACTIVATION COMPLETED";
+		creditCardService.updateActivationStatus(creditCardNumber, "ACTIVATED");
+		creditCardQueueRepository.delete(creditCardQueue.get());
+		return "ACTIVATION COMPLETED";
     }
 }

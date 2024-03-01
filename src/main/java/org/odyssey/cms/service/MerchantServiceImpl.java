@@ -8,6 +8,7 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -25,10 +26,10 @@ public class MerchantServiceImpl implements MerchantService{
 	private PaymentRequestRepository paymentRequestRepository;
 
 	@Override
-	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException {
+	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
 		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
-			throw new AccountException("User already exist");
+			throw new UserException("User already exist");
 		}
 
 		User user = new User();
@@ -41,10 +42,10 @@ public class MerchantServiceImpl implements MerchantService{
 
 		Account account = new Account();
 		account.setAccountId(0);
-		account.setBalance(0.0);
+		account.setBalance(10000.0);
 		account.setPassword(userRegistrationDTO.getAccountPassword());
 
-		account = this.accountService.createAccount(account);
+		account = this.accountService.createAccount(account, "Merchant");
 
 		user.setAccount(account);
 		this.userRepository.save(user);
@@ -68,11 +69,11 @@ public class MerchantServiceImpl implements MerchantService{
 	}
 
 	@Override
-	public Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException {
+	public Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException {
 		Invoice invoice=new Invoice();
 		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.transaction.getTransactionID());
 		if (optionalPaymentRequest.isEmpty()){
-			throw new UserException("Payment does not exist");
+			throw new PaymentRequestException("Payment does not exist");
 		}
 		Optional<User> optionalCustomer = this.userRepository.findById(requestInvoiceDTO.paymentRequest.getCustomerId());
 		Optional<User> optionalMerchant = this.userRepository.findById(requestInvoiceDTO.paymentRequest.getMerchantId());
