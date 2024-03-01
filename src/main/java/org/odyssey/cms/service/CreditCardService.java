@@ -9,12 +9,12 @@ import java.util.List;
 
 @Service
 public interface CreditCardService {
-    CreditCard getCreditCardById(String cardNumber)throws AccountException;
+    CreditCard getCreditCardById(Integer cardId)throws AccountException;
     List<CreditCard> getAllCreditCards();
     CreditCard createCreditCard(CreditCard creditCard)throws AccountException;
-    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate)throws AccountException;
-    public CreditCard updateAmount(String cardNumber, Double newAmount)throws AccountException;
-    public CreditCard updateActivationStatus(String cardNumber, String newActivationStatus)throws AccountException;
-    String deleteByCreditCard(String cardNumber)throws AccountException;
+    //public CreditCard updateExpireDate(Integer cardId, LocalDate newExpireDate)throws AccountException;
+    public CreditCard updateAmount(Integer cardId, Double newAmount)throws AccountException;
+    public CreditCard updateActivationStatus(Integer cardId, String newActivationStatus)throws AccountException;
+    Integer deleteByCreditCard(Integer cardId)throws AccountException;
     List<CreditCard> getAllAccounts();
 }

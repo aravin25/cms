@@ -26,22 +26,22 @@ public class AdminServiceImpl implements AdminService{
             throw new AccountException("NO ELEMENT PRESENT IN THE CREDIT CARD QUEUE");
         }
         for(CreditCardQueue creditCardQueueObject :creditCardQueueList){
-            String creditCardNumber=creditCardQueueObject.getCreditCardNumber();
-            creditCardService.updateActivationStatus(creditCardNumber,"ACTIVATED");
+            Integer creditId=creditCardQueueObject.getCardId();
+            creditCardService.updateActivationStatus(creditId,"ACTIVATED");
             creditCardQueueRepository.delete(creditCardQueueObject);
         }
         return "ACTIVATION COMPLETED";
     }
 
     @Override
-    public String approveIndividualCreditCard(String creditCardNumber) throws AccountException {
+    public String approveIndividualCreditCard(Integer cardId) throws AccountException {
 
-        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCreditCardNumber(creditCardNumber);
+        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findById(cardId);
         if(creditCardQueue.isEmpty()){
             throw new AccountException("CREDIT CARD NUMBER NOT PRESENT");
         }
         if (creditCardQueue.isPresent()){
-            creditCardService.updateActivationStatus(creditCardNumber,"ACTIVATED");
+            creditCardService.updateActivationStatus(cardId,"ACTIVATED");
             creditCardQueueRepository.delete(creditCardQueue.get());
         }
         return "ACTIVATION COMPLETED";

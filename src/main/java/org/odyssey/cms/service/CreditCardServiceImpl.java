@@ -21,8 +21,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     private CreditCardQueueRepository creditCardQueueRepository;
 
     @Override
-    public CreditCard getCreditCardById(String cardNumber) throws AccountException{
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+    public CreditCard getCreditCardById(Integer cardId) throws AccountException{
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         if(optionalCreditCard.isEmpty()){
             throw new AccountException("Credit card not found.");
         }
@@ -61,25 +61,14 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("REQUESTED");
         creditCard.setPinNumber("1234");
-        CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
+        CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardId());
         this.creditCardQueueRepository.save(creditCardQueue);
         return creditCardRepository.save(creditCard);
     }
 
     @Override
-    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws AccountException{
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
-        if(optionalCreditCard.isEmpty()){
-            throw new AccountException("Credit card not found.");
-        }
-        CreditCard existingCreditCard = optionalCreditCard.get();
-        existingCreditCard.setExpireDate(newExpireDate);
-        return creditCardRepository.save(existingCreditCard);
-    }
-
-    @Override
-    public CreditCard updateAmount(String cardNumber, Double newAmount) throws AccountException{
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+    public CreditCard updateAmount(Integer cardId, Double newAmount) throws AccountException{
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         if(optionalCreditCard.isEmpty()){
             throw new AccountException("Credit card not found.");
         }
@@ -89,8 +78,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard updateActivationStatus(String cardNumber, String newActivationStatus) throws AccountException{
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+    public CreditCard updateActivationStatus(Integer cardId, String newActivationStatus) throws AccountException{
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         if(optionalCreditCard.isEmpty()){
             throw new AccountException("Credit card not found.");
         }
@@ -100,13 +89,13 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public String deleteByCreditCard(String cardNumber) throws AccountException {
-        if(creditCardRepository.findByCardNumber(cardNumber).isEmpty()){
+    public Integer deleteByCreditCard(Integer cardId) throws AccountException {
+        if(creditCardRepository.findById(cardId).isEmpty()){
             throw new AccountException("Credit card not found.");
         }
-        creditCardRepository.deleteByCardNumber(cardNumber);
+        creditCardRepository.deleteById(cardId);
 
-        return cardNumber;
+        return cardId;
     }
 
     @Override

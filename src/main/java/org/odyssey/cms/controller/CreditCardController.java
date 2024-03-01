@@ -3,6 +3,7 @@ package org.odyssey.cms.controller;
 import org.odyssey.cms.dto.CreditCardDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.repository.CreditCardRepository;
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +32,13 @@ public class CreditCardController {
         return this.creditCardService.getAllCreditCards();
     }
 
-    @PutMapping("updateActivationStatus/{cardNumber}")
-    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException{
-        return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
+    @PutMapping("updateActivationStatus/{cardId}")
+    public CreditCard updateActivationStatus(@PathVariable Integer cardId, @RequestBody String newActivationStatus) throws AccountException{
+        return this.creditCardService.updateActivationStatus(cardId, newActivationStatus);
     }
 
-    @DeleteMapping("delete/{cardNumber}")
-    public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException{
-        return this.creditCardService.deleteByCreditCard(cardNumber);
+    @DeleteMapping("delete/{cardId}")
+    public Integer deleteCreditCard(@PathVariable Integer cardId) throws AccountException{
+        return this.creditCardService.deleteByCreditCard(cardId);
     }
 }

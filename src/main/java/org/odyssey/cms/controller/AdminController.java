@@ -20,8 +20,8 @@ public class AdminController {
     }
 
     @PutMapping("/admin/{cardNumber}/putActivationStatus")
-    public String updateIndividualCreditCardStatus(@PathVariable String cardNumber) throws AccountException{
-        return this.adminService.approveIndividualCreditCard(cardNumber);
+    public String updateIndividualCreditCardStatus(@PathVariable Integer cardId) throws AccountException{
+        return this.adminService.approveIndividualCreditCard(cardId);
     }
 
 }
