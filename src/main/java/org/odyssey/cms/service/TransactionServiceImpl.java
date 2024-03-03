@@ -1,5 +1,6 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
@@ -26,15 +27,19 @@ public class TransactionServiceImpl implements TransactionService {
 	private AccountRepository accountRepository;
 	@Autowired
 	private CreditCardRepository creditCardRepository;
+
+	@Autowired
+	private NotificationService notificationService;
   
   String expectedPin = "xyz@123";
   
 	@Override
-	public Transaction createTransaction(Transaction newTransaction) throws AccountException {
+	public Transaction createTransaction(Transaction newTransaction) throws AccountException, NotificationException {
 		Optional<Transaction> transaction = this.transactionRepository.findById(newTransaction.getTransactionID());
 		if (transaction.isPresent()) {
 			throw new AccountException("transaction already exists!");
 		}
+		notificationService.saveNotification(newTransaction.getCreditCard().getAccount().getUser().getUserId(),"Transaction","Transaction created");
 		return this.transactionRepository.save(newTransaction);
 	}
 
@@ -58,7 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public String creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException {
+	public String creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException,NotificationException{
 		Optional<Account> optionalAccount = this.accountRepository.findById(accountId);
 
 		if (optionalAccount.isEmpty()) {
@@ -89,6 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		this.creditCardRepository.save(creditCard);
+		notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Balance Payment");
 		return paymentStatus;
 	}
   
@@ -98,7 +104,7 @@ public class TransactionServiceImpl implements TransactionService {
   }
   
   @Override
-  public boolean processTransaction(Integer customerId, CreditCard creditCard) {
+  public boolean processTransaction(Integer customerId, CreditCard creditCard)throws NotificationException {
     Double transactionAmount = paymentRequestRepository.findById(customerId).get().getRequestAmount();
     if(Objects.equals(creditCard.getActivationStatus(), "Completed")) {
         if (transactionAmount <= 0) {
@@ -113,6 +119,7 @@ public class TransactionServiceImpl implements TransactionService {
           paymentRequestRepository.deleteById(customerId);
         }
       }
+	notificationService.saveNotification(customerId,"Transaction","Processing");
      return true;
   }
 }

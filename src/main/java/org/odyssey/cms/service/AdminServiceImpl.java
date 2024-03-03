@@ -2,6 +2,7 @@ package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class AdminServiceImpl implements AdminService{
     @Autowired
     private CreditCardService creditCardService;
     @Override
-    public String approveAllCreditCard() throws AccountException {
+    public String approveAllCreditCard() throws AccountException, NotificationException {
 
         List<CreditCardQueue> creditCardQueueList=creditCardQueueRepository.findAll();
         if(creditCardQueueList.isEmpty()){
@@ -34,7 +35,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public String approveIndividualCreditCard(String creditCardNumber) throws AccountException {
+    public String approveIndividualCreditCard(String creditCardNumber) throws AccountException,NotificationException{
 
         Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCreditCardNumber(creditCardNumber);
         if(creditCardQueue.isEmpty()){

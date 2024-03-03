@@ -6,6 +6,7 @@ import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping("create")
-    public Transaction createTransaction(@RequestBody Transaction transaction)throws AccountException {
+    public Transaction createTransaction(@RequestBody Transaction transaction)throws AccountException,NotificationException{
         return this.transactionService.createTransaction(transaction);
     }
 
@@ -34,12 +35,12 @@ public class TransactionController {
     }
 
     @PostMapping("creditBalancePayment")
-    public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException {
+    public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException, NotificationException {
         this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
     }
   
     @PostMapping("initiate")
-    public boolean transactionInitiate(@RequestBody TransactionDTO transactionDTO){
+    public boolean transactionInitiate(@RequestBody TransactionDTO transactionDTO)throws NotificationException{
         boolean flag = false;
         if(transactionService.authPin(transactionDTO.getInputPin())) {
             flag = transactionService.processTransaction(transactionDTO.getUserId(), transactionDTO.getCreditCard());

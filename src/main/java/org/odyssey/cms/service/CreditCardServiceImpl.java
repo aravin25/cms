@@ -2,6 +2,7 @@ package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class CreditCardServiceImpl implements CreditCardService {
     @Autowired
     private CreditCardQueueRepository creditCardQueueRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public CreditCard getCreditCardById(String cardNumber) throws AccountException{
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
@@ -36,7 +40,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard createCreditCard(CreditCard creditCard) throws AccountException{
+    public CreditCard createCreditCard(CreditCard creditCard) throws AccountException, NotificationException {
         String bin = "4";
         int length = 16;
         StringBuilder cardNumber = new StringBuilder(bin);
@@ -63,28 +67,31 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setPinNumber("1234");
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
         this.creditCardQueueRepository.save(creditCardQueue);
+        notificationService.saveNotification(creditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
         return creditCardRepository.save(creditCard);
     }
 
     @Override
-    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws AccountException{
+    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws AccountException,NotificationException{
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
         if(optionalCreditCard.isEmpty()){
             throw new AccountException("Credit card not found.");
         }
         CreditCard existingCreditCard = optionalCreditCard.get();
         existingCreditCard.setExpireDate(newExpireDate);
+        notificationService.saveNotification(existingCreditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard ExpireDate Updated");
         return creditCardRepository.save(existingCreditCard);
     }
 
     @Override
-    public CreditCard updateAmount(String cardNumber, Double newAmount) throws AccountException{
+    public CreditCard updateAmount(String cardNumber, Double newAmount) throws AccountException,NotificationException{
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
         if(optionalCreditCard.isEmpty()){
             throw new AccountException("Credit card not found.");
         }
         CreditCard existingCreditCard = optionalCreditCard.get();
         existingCreditCard.setCreditBalance(newAmount);
+        notificationService.saveNotification(existingCreditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard Update Amount");
         return creditCardRepository.save(existingCreditCard);
     }
 
@@ -100,12 +107,13 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public String deleteByCreditCard(String cardNumber) throws AccountException {
+    public String deleteByCreditCard(String cardNumber) throws AccountException,NotificationException {
         if(creditCardRepository.findByCardNumber(cardNumber).isEmpty()){
             throw new AccountException("Credit card not found.");
         }
         creditCardRepository.deleteByCardNumber(cardNumber);
-
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+        notificationService.saveNotification(optionalCreditCard.get().getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
         return cardNumber;
     }
 

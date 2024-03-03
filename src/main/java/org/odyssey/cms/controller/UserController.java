@@ -4,6 +4,7 @@ import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.UserRepository;
 import org.odyssey.cms.service.MerchantService;
@@ -34,19 +35,19 @@ public class UserController {
 
 
 	@PostMapping("/merchant")
-	public User createMerchant(@RequestBody User user) throws AccountException{
+	public User createMerchant(@RequestBody User user) throws AccountException,NotificationException{
 		
 		return this.merchantService.createNewMerchant(user);
 	}
 
 	@PostMapping("/merchant/paymentrequest")
-	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
+	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException,NotificationException{
 		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
 	}
 
 
 	@PostMapping("/create")
-	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException {
+	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, NotificationException {
 		return this.customerService.createUser(userRegistrationDTO);
 	}
 
@@ -61,7 +62,7 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public User updateUser(@RequestBody User user)throws AccountException{
+	public User updateUser(@RequestBody User user)throws AccountException,NotificationException{
 		return this.customerService.updateUser(user);
 	}
 

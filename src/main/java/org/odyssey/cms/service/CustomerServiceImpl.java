@@ -8,6 +8,7 @@ import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -26,13 +27,16 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	@Override
 	public List<User> getAllUsers() {
 	  return this.userRepository.findAll();
   }
 
 	@Override
-	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException {
+	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, NotificationException {
 		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
 			throw new AccountException("User already exist");
@@ -56,18 +60,19 @@ public class CustomerServiceImpl implements CustomerService {
 
 		user.setAccount(account);
 		this.userRepository.save(user);
-
+		notificationService.saveNotification(user.getUserId(),"Customer","customer created");
 		return user;
 	}
 
 	@Override
-	public User updateUser(User updateUser) throws AccountException {
+	public User updateUser(User updateUser) throws AccountException,NotificationException{
 		Optional<User> addUser = userRepository.findById(updateUser.getUserId());
 		if (!addUser.isPresent()) {
 			throw new AccountException("User not exist");
 		} else if (addUser.equals(updateUser)) {
 			throw new AccountException("no change required");
 		}
+		notificationService.saveNotification(addUser.get().getUserId(),"Customer","Detaile Updated");
 		return userRepository.save(updateUser);
 	}
 

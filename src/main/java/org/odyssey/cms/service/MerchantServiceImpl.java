@@ -5,6 +5,7 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -19,8 +20,11 @@ public class MerchantServiceImpl implements MerchantService{
 	@Autowired
 	private PaymentRequestRepository paymentRequestRepository;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	@Override
-	public User createNewMerchant(User newMerchant) throws AccountException {
+	public User createNewMerchant(User newMerchant) throws AccountException, NotificationException {
 		if (!newMerchant.getType().equals("merchant")){
 			throw new AccountException("this user is not a merchant user");
 		}
@@ -30,21 +34,23 @@ public class MerchantServiceImpl implements MerchantService{
 		if (accountOptional.isPresent()) {
 			throw new AccountException("user already exists\n" + accountOptional.get().toString());
 		}
-
+		notificationService.saveNotification(newMerchant.getUserId(),"Merchant","user merchant created");
 		return userRepository.save(newMerchant);
 	}
 
 	@Override
-	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException {
+	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException,NotificationException{
 		Optional<User> accountOptionalMerchant = this.userRepository.findById(merchantId);
 		Optional<User> accountOptionalCustomer = this.userRepository.findById(customerId);
 		if (accountOptionalMerchant.isEmpty()) {
 			throw new AccountException("merchant Account doesn't exists: ");
 		}
 		else if (accountOptionalCustomer.isEmpty()) {
-			throw new AccountException("merchant Account doesn't exists: ");
+			throw new AccountException("customer Account doesn't exists: ");
 		}
 		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId,amount);
+		notificationService.saveNotification(merchantId,"Merchant","merchant Requested a payment of"+amount+" to "+customerId);
+		notificationService.saveNotification(customerId,"Customer","customer receved a Requested of"+amount+" form "+merchantId);
 		this.paymentRequestRepository.save(paymentRequest);
 		return true;
 	}

@@ -6,6 +6,7 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.UserException;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 @Service
 public interface CustomerService {
-	public User createUser(UserRegistrationDTO userRegistrationDTO)throws AccountException;
-	public User updateUser(User updateUser)throws AccountException;
+	public User createUser(UserRegistrationDTO userRegistrationDTO)throws AccountException, NotificationException;
+	public User updateUser(User updateUser)throws AccountException,NotificationException;
 	public User getUserById(Integer userId)throws AccountException;
   List<User> getAllUsers();
 	public List<User> getAllUser();
