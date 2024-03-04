@@ -20,6 +20,6 @@ public class CreditCardQueue {
     private Integer queueNumber;
     @NotNull
     @NotBlank
-    private Integer cardId;
+    private String creditCardNumber;
 
 }

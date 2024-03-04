@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CreditCardQueueRepository extends JpaRepository<CreditCardQueue, Integer> {
-    Optional<CreditCardQueue> findByCardId(Integer cardId);
+    Optional<CreditCardQueue> findByCreditCardNumber(String creditCardNumber);
 }

@@ -3,7 +3,9 @@ package org.odyssey.cms.controller;
 import org.odyssey.cms.dto.CreditCardDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.repository.CreditCardRepository;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("creditCard")
+@RequestMapping("creditcard")
 @RestController
 public class CreditCardController {
 
@@ -30,6 +32,7 @@ public class CreditCardController {
         creditCard.setCardId(0);
         creditCard.setPinNumber(creditCardDTO.getPinNumber());
         return this.creditCardService.createCreditCard(creditCard);
+
     }
 
     @GetMapping("getAllCreditCard")
@@ -37,13 +40,13 @@ public class CreditCardController {
         return this.creditCardService.getAllCreditCards();
     }
 
-    @PutMapping("update/{cardId}/activationStatus")
-    public CreditCard updateActivationStatus(@PathVariable Integer cardId, @RequestBody String newActivationStatus) throws AccountException, CreditCardException,NotificationException {
-        return this.creditCardService.updateActivationStatus(cardId, newActivationStatus);
+    @PutMapping("updateActivationStatus/{cardNumber}")
+    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException, CreditCardException,NotificationException {
+        return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
     }
 
-    @DeleteMapping("delete/{cardId}")
-    public CreditCard deleteCreditCard(@PathVariable Integer cardId) throws AccountException, CreditCardException,NotificationException{
-        return this.creditCardService.deleteByCreditCard(cardId);
+    @DeleteMapping("delete/{cardNumber}")
+    public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException, CreditCardException,NotificationException{
+        return this.creditCardService.deleteByCreditCard(cardNumber);
     }
 }
