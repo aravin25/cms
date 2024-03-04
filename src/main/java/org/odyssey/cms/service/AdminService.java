@@ -6,6 +6,6 @@ import org.odyssey.cms.exception.CreditCardQueueException;
 import org.odyssey.cms.exception.NotificationException;
 
 public interface AdminService {
-    public String approveAllCreditCard() throws AccountException, CreditCardQueueException, CreditCardException,NotificationException;
-    public String approveIndividualCreditCard(String creditCardNumber) throws AccountException, CreditCardQueueException, CreditCardException,NotificationException;
+    public String approveAllCreditCard()throws AccountException, CreditCardQueueException, CreditCardException,NotificationException;
+    public String approveIndividualCreditCard(Integer cardId) throws AccountException, CreditCardQueueException, CreditCardException,NotificationException;
 }

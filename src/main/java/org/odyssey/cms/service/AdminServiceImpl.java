@@ -1,5 +1,6 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.NotificationException;
@@ -30,21 +31,24 @@ public class AdminServiceImpl implements AdminService {
             throw new CreditCardQueueException("NO ELEMENT PRESENT IN THE CREDIT CARD QUEUE");
         }
         for(CreditCardQueue creditCardQueueObject :creditCardQueueList){
-            String creditCardNumber=creditCardQueueObject.getCreditCardNumber();
-            creditCardService.updateActivationStatus(creditCardNumber,"ACTIVATED");
+            Integer creditId=creditCardQueueObject.getCardId();
+            creditCardService.updateActivationStatus(creditId,"ACTIVATED");
             creditCardQueueRepository.delete(creditCardQueueObject);
         }
         return "ACTIVATION COMPLETED";
     }
 
     @Override
-    public String approveIndividualCreditCard(String creditCardNumber) throws CreditCardQueueException, AccountException, CreditCardException,NotificationException {
-        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCreditCardNumber(creditCardNumber);
+<<<<public String approveIndividualCreditCard(Integer cardId) throws CreditCardQueueException, AccountException, CreditCardException,NotificationException {
+        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCardId(cardId);
+
         if(creditCardQueue.isEmpty()){
             throw new CreditCardQueueException("CREDIT CARD NUMBER NOT PRESENT");
         }
-		creditCardService.updateActivationStatus(creditCardNumber, "ACTIVATED");
-		creditCardQueueRepository.delete(creditCardQueue.get());
-		return "ACTIVATION COMPLETED";
+        if (creditCardQueue.isPresent()){
+            creditCardService.updateActivationStatus(cardId,"ACTIVATED");
+            creditCardQueueRepository.delete(creditCardQueue.get());
+        }
+        return "ACTIVATION COMPLETED";
     }
 }
