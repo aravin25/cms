@@ -72,7 +72,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public void creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException {
+	public void creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException, NotificationException {
 		Optional<Account> optionalAccount = this.accountRepository.findById(accountId);
 
 		if (optionalAccount.isEmpty()) {
@@ -108,7 +108,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		this.creditCardRepository.save(creditCard);
-    notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Balance Payment");
+    	this.notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Balance Payment");
 		this.accountRepository.save(account);
 	}
 
@@ -168,8 +168,10 @@ public class TransactionServiceImpl implements TransactionService {
 				this.accountRepository.save(merchantAccount);
 				this.creditCardRepository.save(creditCard);
 			}
+		} else {
+			return false;
 		}
-    notificationService.saveNotification(customerId,"Transaction","Processing");
+    //notificationService.saveNotification(customerId,"Transaction","Processing");
 		return true;
 	}
 }
