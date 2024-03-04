@@ -36,14 +36,11 @@ public class User {
     @Email
     private String email;
     @NotNull
-    @Pattern(regexp = "^(?:(?:\\+|0{0,2})91(\\s*|[\\-])?|[0]?)?([6789]\\d{2}([ -]?)\\d{3}([ -]?)\\d{4})$")
+    @Pattern(regexp = "^[0-9]{10}$")
     private String phone;
     @NotNull
     @NotBlank
     private String type;
-    @NotNull
-    @NotBlank
-    private String status;
 
     @OneToOne
     @JoinColumn(name = "account_id")

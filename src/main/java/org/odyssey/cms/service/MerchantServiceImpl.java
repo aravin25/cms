@@ -1,11 +1,15 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.dto.Invoice;
+import org.odyssey.cms.dto.RequestInvoiceDTO;
+import org.odyssey.cms.dto.UserRegistrationDTO;
+import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.NotificationException;
+import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -18,24 +22,36 @@ public class MerchantServiceImpl implements MerchantService{
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
+	private AccountService accountService;
+	@Autowired
 	private PaymentRequestRepository paymentRequestRepository;
 
 	@Autowired
 	private NotificationService notificationService;
 
 	@Override
-	public User createNewMerchant(User newMerchant) throws AccountException, NotificationException {
-		if (!newMerchant.getType().equals("merchant")){
-			throw new AccountException("this user is not a merchant user");
+	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException,NotificationException {
+		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
+		if (addUser.isPresent()) {
+			throw new UserException("User already exist");
 		}
 
-		Optional<User> accountOptional = this.userRepository.findById(newMerchant.getUserId());
-
-		if (accountOptional.isPresent()) {
-			throw new AccountException("user already exists\n" + accountOptional.get().toString());
-		}
-		notificationService.saveNotification(newMerchant.getUserId(),"Merchant","user merchant created");
-		return userRepository.save(newMerchant);
+		User user = new User();
+		user.setUserId(0);
+		user.setName(userRegistrationDTO.getName());
+		user.setPhone(userRegistrationDTO.getPhone());
+		user.setEmail(userRegistrationDTO.getEmail());
+		user.setAddress(userRegistrationDTO.getAddress());
+		user.setType("Merchant");
+		Account account = new Account();
+		account.setAccountId(0);
+		account.setBalance(10000.0);
+		account.setPassword(userRegistrationDTO.getAccountPassword());
+		account = this.accountService.createAccount(account, "Merchant");
+		user.setAccount(account);
+		this.userRepository.save(user);
+    notificationService.saveNotification(newMerchant.getUserId(),"Merchant","user merchant created");
+		return user;
 	}
 
 	@Override
@@ -56,29 +72,33 @@ public class MerchantServiceImpl implements MerchantService{
 	}
 
 	@Override
-	public Invoice generateMerchantInvoice(Transaction transaction, PaymentRequest paymentRequest) throws UserException {
+	public Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException {
 		Invoice invoice=new Invoice();
-		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
-		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
-		if(optionalMerchant.isEmpty()){
-			throw new UserException("Merchant does not exist");
-		} else if (optionalCustomer.isEmpty()) {
-			throw new UserException("Customer does not exist");
+		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.transaction.getTransactionID());
+		if (optionalPaymentRequest.isEmpty()){
+			throw new PaymentRequestException("Payment does not exist");
 		}
-		User merchant = optionalMerchant.get();
+		Optional<User> optionalCustomer = this.userRepository.findById(requestInvoiceDTO.paymentRequest.getCustomerId());
+		Optional<User> optionalMerchant = this.userRepository.findById(requestInvoiceDTO.paymentRequest.getMerchantId());
+		if(optionalCustomer.isEmpty()){
+			throw new UserException("Customer does not exist");
+		} else if (optionalMerchant.isEmpty()) {
+			throw new UserException("Merchant does not exist");
+		}
 		User customer = optionalCustomer.get();
+		User merchant = optionalMerchant.get();
 		StringBuilder invoiceBody = new StringBuilder();
 		invoiceBody.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		invoiceBody.append("<Invoice>\n");
 		invoiceBody.append("	<Id>" + invoice.getInvoiceId() + "</Id>");
-		invoiceBody.append("  <Merchant>\n");
-		invoiceBody.append("    <Name>" + merchant.getName() + "</Name>\n");
-		invoiceBody.append("    <Address>" + merchant.getAddress() + "</Address>\n");
-		invoiceBody.append("  </Merchant>\n");
+		invoiceBody.append("  <Customer>\n");
+		invoiceBody.append("    <Name>" + customer.getName() + "</Name>\n");
+		invoiceBody.append("    <Address>" + customer.getAddress() + "</Address>\n");
+		invoiceBody.append("  </Customer>\n");
 		invoiceBody.append("  <Transaction>\n");
-		invoiceBody.append("    <Amount>" + transaction.getAmount() + "</Amount>\n");
-		invoiceBody.append("    <Date>" + transaction.getTransactionDateTime() + "</Date>\n");
-		invoiceBody.append("    <Customer>" + customer.getName() + "</Customer>\n");
+		invoiceBody.append("    <Amount>" + requestInvoiceDTO.transaction.getAmount() + "</Amount>\n");
+		invoiceBody.append("    <Date>" + requestInvoiceDTO.transaction.getTransactionDateTime() + "</Date>\n");
+		invoiceBody.append("    <Merchant>" + merchant.getName() + "</Merchant>\n");
 		invoiceBody.append("  </Transaction>\n");
 		invoiceBody.append("</Invoice>\n");
 		invoice.setInvoiceBody(invoiceBody.toString());

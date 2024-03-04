@@ -1,25 +1,22 @@
 package org.odyssey.cms.service;
 
-import org.odyssey.cms.entity.CreditCard;
+import org.odyssey.cms.dto.TransactionDTO;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.NotificationException;
-
+import org.odyssey.cms.exception.PaymentRequestException;
+import org.odyssey.cms.exception.TransactionException;
+import org.odyssey.cms.exception.UserException;
 import java.util.List;
 
 public interface TransactionService {
-    public boolean authPin(String inputPin);
-    
-    public boolean processTransaction(Integer customerId, CreditCard creditCard)throws NotificationException;
+    public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException,NotificationException;
 
-    Transaction createTransaction(Transaction newTransaction)throws AccountException,NotificationException;
+    Transaction createTransaction(Transaction newTransaction) throws AccountException, TransactionException,NotificationException;;
 
-    Transaction getTransactionById(Integer transactionId)throws AccountException;
+    Transaction getTransactionById(Integer transactionId) throws AccountException, TransactionException;
 
     List<Transaction> getAllTransactions();
-
-	public List<Transaction> getTransactionsFromThisCycle();
-
-	String creditBalancePayment(Integer customerId, String password, Double amount) throws AccountException, CreditCardException,NotificationException;
+	  void creditBalancePayment(Integer customerId, String password, Double amount) throws AccountException, CreditCardException,NotificationException;;
 }
