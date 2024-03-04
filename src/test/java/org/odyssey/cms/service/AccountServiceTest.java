@@ -54,14 +54,14 @@ public class AccountServiceTest {
     public void createAccountTest() throws AccountException {
         when(accountRepository.findById(account.getAccountId())).thenReturn(Optional.empty());
         when(creditCardService.createCreditCard(any())).thenReturn(creditCard);
-        Account response = accountService.createAccount(account);
+        Account response = accountService.createAccount(account, "Customer");
         Assertions.assertEquals(null, response);
     }
 
     @Test
     public void createExistingAccountTest() throws AccountException{
         when(accountRepository.findById(account.getAccountId())).thenReturn(Optional.of(account));
-        Assertions.assertThrows(AccountException.class, () -> accountService.createAccount(account));
+        Assertions.assertThrows(AccountException.class, () -> accountService.createAccount(account, "Customer"));
     }
 
     @Test
