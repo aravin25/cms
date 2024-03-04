@@ -1,5 +1,6 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.dto.TransactionDTO;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
@@ -37,18 +38,22 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	private CreditCardRepository creditCardRepository;
 	@Autowired
+	private NotificationService notificationService;
+ 
+	@Autowired
 	private CreditCardService creditCardService;
 
 	String expectedPin = "xyz@123";
 
 	@Override
-	public Transaction createTransaction(Transaction newTransaction) throws TransactionException {
+	public Transaction createTransaction(Transaction newTransaction) throws TransactionException, NotificationException  {
 		Optional<Transaction> optionalTransaction = this.transactionRepository.findById(newTransaction.getTransactionID());
 		if (optionalTransaction.isPresent()) {
 			throw new TransactionException("Transaction already exists!");
 		}
 		newTransaction.setTransactionID(0);
 		newTransaction.setTransactionDateTime(LocalDateTime.now());
+    notificationService.saveNotification(newTransaction.getCreditCard().getAccount().getUser().getUserId(),"Transaction","Transaction created");
 		return this.transactionRepository.save(newTransaction);
 	}
 
@@ -103,11 +108,12 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		this.creditCardRepository.save(creditCard);
+    notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Balance Payment");
 		this.accountRepository.save(account);
 	}
 
 	@Override
-	public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException {
+	public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException,NotificationException {
 		Integer paymentRequestId = transactionDTO.getPaymentRequestId();
 
 		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(paymentRequestId);
@@ -163,6 +169,7 @@ public class TransactionServiceImpl implements TransactionService {
 				this.creditCardRepository.save(creditCard);
 			}
 		}
+    notificationService.saveNotification(customerId,"Transaction","Processing");
 		return true;
 	}
 }

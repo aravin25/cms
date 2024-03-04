@@ -8,6 +8,7 @@ import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
@@ -28,13 +29,16 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	@Override
 	public List<User> getAllUsers() {
 	  return this.userRepository.findAll();
   }
 
 	@Override
-	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
+	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, NotificationException {
 		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
 			throw new UserException("User already exist");
@@ -57,12 +61,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 		user.setAccount(account);
 		this.userRepository.save(user);
-
+		notificationService.saveNotification(user.getUserId(),"Customer","customer created");
 		return user;
 	}
 
 	@Override
-	public User updateUser(UserUpdateDTO userUpdateDTO) throws UserException {
+	public User updateUser(UserUpdateDTO userUpdateDTO) throws UserException, NotificationException {
 		Optional<User> addUser = userRepository.findById(userUpdateDTO.getUserId());
 		if (addUser.isEmpty()) {
 			throw new UserException("User doesn't exist");
@@ -71,6 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
 		addUser1.setAddress(userUpdateDTO.getAddress());
 		addUser1.setEmail(userUpdateDTO.getEmail());
 		addUser1.setPhone(userUpdateDTO.getPhone());
+    notificationService.saveNotification(addUser.get().getUserId(),"Customer","Detaile Updated");
 		return userRepository.save(addUser1);
 	}
 

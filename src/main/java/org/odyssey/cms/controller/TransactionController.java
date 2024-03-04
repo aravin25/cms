@@ -5,6 +5,7 @@ import org.odyssey.cms.dto.TransactionDTO;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
@@ -24,7 +25,7 @@ public class TransactionController {
     private PaymentRequestRepository paymentRequestRepository;
 
     @PostMapping("create")
-    public Transaction createTransaction(@RequestBody Transaction transaction) throws AccountException, TransactionException {
+    public Transaction createTransaction(@RequestBody Transaction transaction) throws AccountException, TransactionException,NotificationException {
         return this.transactionService.createTransaction(transaction);
     }
 
@@ -39,12 +40,12 @@ public class TransactionController {
     }
 
     @PostMapping("creditBalancePayment")
-    public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException {
+    public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException, NotificationException {
         this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
     }
   
     @PostMapping("initiate")
-    public boolean transactionInitiate(@RequestBody TransactionDTO transactionDTO) throws AccountException, CreditCardException, PaymentRequestException, UserException, TransactionException {
+    public boolean transactionInitiate(@RequestBody TransactionDTO transactionDTO) throws AccountException, CreditCardException, PaymentRequestException, UserException, TransactionException,NotificationException {
         return this.transactionService.processTransaction(transactionDTO);
     }
 }

@@ -5,6 +5,11 @@ import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
 import org.odyssey.cms.entity.PaymentRequest;
+import org.odyssey.cms.entity.Transaction;
+import org.odyssey.cms.exception.NotificationException;
+import org.odyssey.cms.exception.UserException;
+import org.odyssey.cms.repository.UserRepository;
+import org.odyssey.cms.service.MerchantService;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
@@ -37,18 +42,17 @@ public class UserController {
 
 
 	@PostMapping("/merchant")
-	public User createMerchant(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
-		
+	public User createMerchant(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException,NotificationException {
 		return this.merchantService.createNewMerchant(userRegistrationDTO);
 	}
 
 	@PostMapping("/merchant/paymentRequest")
-	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
+	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException,NotificationException{
 		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
 	}
 
 	@PostMapping("create")
-	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
+	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException,NotificationException {
 		return this.customerService.createUser(userRegistrationDTO);
 	}
 
@@ -63,7 +67,7 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public User updateUser(@RequestBody UserUpdateDTO userUpdateDTO) throws AccountException, UserException {
+	public User updateUser(@RequestBody UserUpdateDTO userUpdateDTO) throws AccountException, UserException,NotificationException {
 		return this.customerService.updateUser(userUpdateDTO);
 	}
 

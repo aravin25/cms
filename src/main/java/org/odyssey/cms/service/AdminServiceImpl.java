@@ -2,6 +2,7 @@ package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.CreditCardQueueException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
@@ -22,7 +23,7 @@ public class AdminServiceImpl implements AdminService {
     private CreditCardService creditCardService;
 
     @Override
-    public String approveAllCreditCard() throws CreditCardQueueException, AccountException, CreditCardException {
+    public String approveAllCreditCard() throws CreditCardQueueException, AccountException, CreditCardException,NotificationException {
 
         List<CreditCardQueue> creditCardQueueList=creditCardQueueRepository.findAll();
         if(creditCardQueueList.isEmpty()){
@@ -37,8 +38,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String approveIndividualCreditCard(String creditCardNumber) throws CreditCardQueueException, AccountException, CreditCardException {
-
+    public String approveIndividualCreditCard(String creditCardNumber) throws CreditCardQueueException, AccountException, CreditCardException,NotificationException {
         Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCreditCardNumber(creditCardNumber);
         if(creditCardQueue.isEmpty()){
             throw new CreditCardQueueException("CREDIT CARD NUMBER NOT PRESENT");
