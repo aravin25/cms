@@ -12,9 +12,7 @@ import org.odyssey.cms.entity.CreditCard;
 public class TransactionDTO {
 
 	@NotNull
-	public String inputPin;
+	public Integer inputPin;
 	@NotNull
-	public Integer userId;
-	@NotNull
-	public CreditCard creditCard;
+	public Integer paymentRequestId;
 }

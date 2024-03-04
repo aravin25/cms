@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CreditCardDTO {
-
     @NotNull
-    private String pinNumber;
-
+    private Integer pinNumber;
 }

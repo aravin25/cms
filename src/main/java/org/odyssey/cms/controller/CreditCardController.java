@@ -6,9 +6,15 @@ import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping("creditCard")
@@ -19,12 +25,11 @@ public class CreditCardController {
     private CreditCardService creditCardService;
 
     @PostMapping("createCreditCard")
-    public CreditCard createCreditCard(@RequestBody CreditCardDTO creditCardDTO) throws AccountException {
+    public CreditCard createCreditCard(@RequestBody CreditCardDTO creditCardDTO) throws AccountException, NotificationException{
         CreditCard creditCard = new CreditCard();
         creditCard.setCardId(0);
         creditCard.setPinNumber(creditCardDTO.getPinNumber());
         return this.creditCardService.createCreditCard(creditCard);
-
     }
 
     @GetMapping("getAllCreditCard")
@@ -33,12 +38,12 @@ public class CreditCardController {
     }
 
     @PutMapping("update/{cardId}/activationStatus")
-    public CreditCard updateActivationStatus(@PathVariable Integer cardId, @RequestBody String newActivationStatus) throws AccountException{
+    public CreditCard updateActivationStatus(@PathVariable Integer cardId, @RequestBody String newActivationStatus) throws AccountException, CreditCardException,NotificationException {
         return this.creditCardService.updateActivationStatus(cardId, newActivationStatus);
     }
 
     @DeleteMapping("delete/{cardId}")
-    public CreditCard deleteCreditCard(@PathVariable Integer cardId) throws AccountException{
+    public CreditCard deleteCreditCard(@PathVariable Integer cardId) throws AccountException, CreditCardException,NotificationException{
         return this.creditCardService.deleteByCreditCard(cardId);
     }
 }
