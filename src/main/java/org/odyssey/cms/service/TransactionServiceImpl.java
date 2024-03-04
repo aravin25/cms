@@ -1,6 +1,5 @@
 package org.odyssey.cms.service;
 
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.dto.TransactionDTO;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
@@ -46,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
 	String expectedPin = "xyz@123";
 
 	@Override
-	public Transaction createTransaction(Transaction newTransaction) throws TransactionException, NotificationException  {
+	public Transaction createTransaction(Transaction newTransaction) throws TransactionException   {
 		Optional<Transaction> optionalTransaction = this.transactionRepository.findById(newTransaction.getTransactionID());
 		if (optionalTransaction.isPresent()) {
 			throw new TransactionException("Transaction already exists!");
@@ -72,7 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public void creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException, NotificationException {
+	public void creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException  {
 		Optional<Account> optionalAccount = this.accountRepository.findById(accountId);
 
 		if (optionalAccount.isEmpty()) {
@@ -113,7 +112,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException,NotificationException {
+	public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException {
 		Integer paymentRequestId = transactionDTO.getPaymentRequestId();
 
 		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(paymentRequestId);

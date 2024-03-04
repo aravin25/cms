@@ -3,7 +3,6 @@ package org.odyssey.cms.service;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class AccountServiceImpl implements AccountService {
     private NotificationService notificationService;
 
     @Override
-    public Account createAccount(Account newAccount, String type) throws AccountException,NotificationException  {
+    public Account createAccount(Account newAccount, String type) throws AccountException  {
         Optional<Account> optionalAccount = this.accountRepository.findById(newAccount.getAccountId());
         if(optionalAccount.isPresent()){
             throw new AccountException("Account already exists!");
@@ -55,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account updateAccount(Account account) throws AccountException,NotificationException {
+    public Account updateAccount(Account account) throws AccountException {
         Optional<Account> optionalAccount = this.accountRepository.findById(account.getAccountId());
         if(optionalAccount.isEmpty()){
             throw new AccountException("Account does not exist!");
@@ -65,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account deleteAccountById(Integer id)throws AccountException,NotificationException{
+    public Account deleteAccountById(Integer id)throws AccountException{
         Optional<Account> accountOpt = this.accountRepository.findById(id);
         if(accountOpt.isEmpty()){
             throw new AccountException("Account does not exist.");

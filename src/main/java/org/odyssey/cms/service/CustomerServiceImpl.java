@@ -8,7 +8,6 @@ import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.exception.AccountException;
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
@@ -38,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
 	@Override
-	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, NotificationException {
+	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException  {
 		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
 			throw new UserException("User already exist");
@@ -66,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public User updateUser(UserUpdateDTO userUpdateDTO) throws UserException, NotificationException {
+	public User updateUser(UserUpdateDTO userUpdateDTO) throws UserException  {
 		Optional<User> addUser = userRepository.findById(userUpdateDTO.getUserId());
 		if (addUser.isEmpty()) {
 			throw new UserException("User doesn't exist");

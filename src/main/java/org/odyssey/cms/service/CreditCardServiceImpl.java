@@ -4,7 +4,6 @@ import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
@@ -48,7 +47,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard createCreditCard(CreditCard creditCard) throws NotificationException {
+    public CreditCard createCreditCard(CreditCard creditCard)  {
         String bin = "4";
         int length = 16;
         StringBuilder cardNumber = new StringBuilder(bin);
@@ -82,7 +81,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws CreditCardException,NotificationException {
+    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws CreditCardException {
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
         if(optionalCreditCard.isEmpty()){
             throw new CreditCardException("Credit card not found.");
@@ -94,7 +93,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard updateAmount(String cardNumber, Double newAmount) throws CreditCardException,NotificationException {
+    public CreditCard updateAmount(String cardNumber, Double newAmount) throws CreditCardException {
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
         if(optionalCreditCard.isEmpty()){
             throw new CreditCardException("Credit card not found.");
@@ -117,7 +116,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public String deleteByCreditCard(String cardNumber) throws CreditCardException,NotificationException {
+    public String deleteByCreditCard(String cardNumber) throws CreditCardException {
         if(creditCardRepository.findByCardNumber(cardNumber).isEmpty()){
             throw new CreditCardException("Credit card not found.");
         }
