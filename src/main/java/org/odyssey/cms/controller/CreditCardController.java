@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@RequestMapping("creditcard")
+@RequestMapping("creditCard")
 @RestController
 public class CreditCardController {
 
@@ -32,13 +32,13 @@ public class CreditCardController {
         return this.creditCardService.getAllCreditCards();
     }
 
-    @PutMapping("updateActivationStatus/{cardId}")
+    @PutMapping("update/{cardId}/activationStatus")
     public CreditCard updateActivationStatus(@PathVariable Integer cardId, @RequestBody String newActivationStatus) throws AccountException{
         return this.creditCardService.updateActivationStatus(cardId, newActivationStatus);
     }
 
     @DeleteMapping("delete/{cardId}")
-    public Integer deleteCreditCard(@PathVariable Integer cardId) throws AccountException{
+    public CreditCard deleteCreditCard(@PathVariable Integer cardId) throws AccountException{
         return this.creditCardService.deleteByCreditCard(cardId);
     }
 }

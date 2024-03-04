@@ -1,5 +1,6 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
@@ -35,8 +36,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public String approveIndividualCreditCard(Integer cardId) throws AccountException {
+        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findByCardId(cardId);
 
-        Optional<CreditCardQueue> creditCardQueue=creditCardQueueRepository.findById(cardId);
         if(creditCardQueue.isEmpty()){
             throw new AccountException("CREDIT CARD NUMBER NOT PRESENT");
         }

@@ -89,13 +89,13 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public Integer deleteByCreditCard(Integer cardId) throws AccountException {
+    public CreditCard deleteByCreditCard(Integer cardId) throws AccountException {
         if(creditCardRepository.findById(cardId).isEmpty()){
             throw new AccountException("Credit card not found.");
         }
         creditCardRepository.deleteById(cardId);
 
-        return cardId;
+        return creditCardRepository.findById(cardId).get();
     }
 
     @Override

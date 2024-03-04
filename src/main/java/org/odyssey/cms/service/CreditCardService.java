@@ -15,6 +15,6 @@ public interface CreditCardService {
     //public CreditCard updateExpireDate(Integer cardId, LocalDate newExpireDate)throws AccountException;
     public CreditCard updateAmount(Integer cardId, Double newAmount)throws AccountException;
     public CreditCard updateActivationStatus(Integer cardId, String newActivationStatus)throws AccountException;
-    Integer deleteByCreditCard(Integer cardId)throws AccountException;
+    CreditCard deleteByCreditCard(Integer cardId)throws AccountException;
     List<CreditCard> getAllAccounts();
 }
