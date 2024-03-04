@@ -98,7 +98,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void deleteAccountByIdTest() throws  AccountException{
+    public void deleteAccountByIdTest() throws AccountException {
         when(accountRepository.findById(1)).thenReturn(Optional.of(account));
         Account response = accountService.deleteAccountById(1);
         Assertions.assertEquals(response, account);

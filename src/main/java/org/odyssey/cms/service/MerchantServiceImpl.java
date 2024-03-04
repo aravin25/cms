@@ -5,10 +5,8 @@ import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.PaymentRequest;
-import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
@@ -30,7 +28,7 @@ public class MerchantServiceImpl implements MerchantService{
 	private NotificationService notificationService;
 
 	@Override
-	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException,NotificationException {
+	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
 		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
 			throw new UserException("User already exist");
@@ -55,7 +53,7 @@ public class MerchantServiceImpl implements MerchantService{
 	}
 
 	@Override
-	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException,NotificationException{
+	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException{
 		Optional<User> accountOptionalMerchant = this.userRepository.findById(merchantId);
 		Optional<User> accountOptionalCustomer = this.userRepository.findById(customerId);
 		if (accountOptionalMerchant.isEmpty()) {

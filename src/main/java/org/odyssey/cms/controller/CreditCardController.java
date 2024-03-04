@@ -3,8 +3,6 @@ package org.odyssey.cms.controller;
 import org.odyssey.cms.dto.CreditCardDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
-import org.odyssey.cms.exception.NotificationException;
-import org.odyssey.cms.repository.CreditCardRepository;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class CreditCardController {
     private CreditCardService creditCardService;
 
     @PostMapping("createCreditCard")
-    public CreditCard createCreditCard(@RequestBody CreditCardDTO creditCardDTO) throws AccountException, NotificationException{
+    public CreditCard createCreditCard(@RequestBody CreditCardDTO creditCardDTO) throws AccountException {
         CreditCard creditCard = new CreditCard();
         creditCard.setCardId(0);
         creditCard.setPinNumber(creditCardDTO.getPinNumber());
@@ -41,12 +39,12 @@ public class CreditCardController {
     }
 
     @PutMapping("updateActivationStatus/{cardNumber}")
-    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException, CreditCardException,NotificationException {
+    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException, CreditCardException {
         return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
     }
 
     @DeleteMapping("delete/{cardNumber}")
-    public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException, CreditCardException,NotificationException{
+    public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException, CreditCardException{
         return this.creditCardService.deleteByCreditCard(cardNumber);
     }
 }

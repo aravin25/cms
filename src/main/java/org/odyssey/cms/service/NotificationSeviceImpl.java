@@ -1,7 +1,6 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.Notification;
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,44 +16,34 @@ public class NotificationSeviceImpl implements NotificationService{
 	private NotificationRepository notificationRepository;
 
 	@Override
-	public List<Notification> getAllNotification(Integer userId) throws NotificationException {
+	public List<Notification> getAllNotification(Integer userId) {
 		List<Notification> allNotification=notificationRepository.findByUserId(userId);
 		return allNotification;
 	}
 
 	@Override
-	public String deleteAllNotification(Integer userId) throws NotificationException {
+	public String deleteAllNotification(Integer userId) {
 		notificationRepository.deleteByUserId(userId);
 		List<Notification> allNotification=notificationRepository.findByUserId(userId);
-		if (allNotification.isEmpty()){
-			return "cleared All notification";
-		}
-		else {
-			throw new NotificationException("error while clearing");
-		}
+		return "cleared All notification";
 	}
 
 	@Override
-	public Notification getNotification(Integer notificationId) throws NotificationException {
+	public Notification getNotification(Integer notificationId)  {
 		Optional<Notification> userNotification=notificationRepository.findById(notificationId);
 		Notification notification= userNotification.get();
 		return notification;
 	}
 
 	@Override
-	public String deleteNotification(Integer notificationId) throws NotificationException {
+	public String deleteNotification(Integer notificationId){
 		notificationRepository.deleteById(notificationId);
 		Optional<Notification> userNotification=notificationRepository.findById(notificationId);
-		if (userNotification.isEmpty()){
-			return "notification cleared";
-		}
-		else {
-			throw new NotificationException("error while clearing");
-		}
+		return "notification cleared";
 	}
 
 	@Override
-	public Boolean saveNotification(Integer userId,String topic,String detail) throws NotificationException {
+	public Boolean saveNotification(Integer userId,String topic,String detail){
 		Notification notification=new Notification(0,userId,topic,detail,LocalDateTime.now());
 		notificationRepository.save(notification);
 		return true;
@@ -63,7 +52,7 @@ public class NotificationSeviceImpl implements NotificationService{
 //			return true;
 //		}
 //		else {
-//			throw new NotificationException("Error can't save");
+//			throw new ("Error can't save");
 //		}
 	}
 }

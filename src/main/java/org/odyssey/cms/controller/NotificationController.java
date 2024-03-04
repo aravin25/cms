@@ -1,7 +1,6 @@
 package org.odyssey.cms.controller;
 
 import org.odyssey.cms.entity.Notification;
-import org.odyssey.cms.exception.NotificationException;
 import org.odyssey.cms.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,27 +17,27 @@ public class NotificationController {
 	private NotificationService notificationService;
 
 	@GetMapping("notifications/{userId}")
-	public List<Notification> getAllUserNotification(@PathVariable Integer userId)throws NotificationException {
+	public List<Notification> getAllUserNotification(@PathVariable Integer userId)  {
 		return notificationService.getAllNotification(userId);
 	}
 
 	@DeleteMapping("notifications/{userId}")
-	public String deleteAllUserNotification(@PathVariable Integer userId)throws NotificationException {
+	public String deleteAllUserNotification(@PathVariable Integer userId) {
 		return notificationService.deleteAllNotification(userId);
 	}
 
 	@GetMapping("notification/{notificationId}")
-	public Notification getNotificationByNotificationId(@PathVariable Integer notificationId)throws NotificationException {
+	public Notification getNotificationByNotificationId(@PathVariable Integer notificationId) {
 		return notificationService.getNotification(notificationId);
 	}
 
 	@DeleteMapping("notification/{notificationId}")
-	public String deleteNotificationByNotificationId(@PathVariable Integer notificationId)throws NotificationException {
+	public String deleteNotificationByNotificationId(@PathVariable Integer notificationId) {
 		return notificationService.deleteNotification(notificationId);
 	}
 
 	@PostMapping("testing/{userId}/{topic}/{detail}")
-	public Boolean testSave(@PathVariable Integer userId,@PathVariable String topic,@PathVariable String detail)throws NotificationException{
+	public Boolean testSave(@PathVariable Integer userId,@PathVariable String topic,@PathVariable String detail) {
 		return notificationService.saveNotification(userId,topic,detail);
 	}
 }
