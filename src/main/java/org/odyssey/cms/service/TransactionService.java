@@ -18,5 +18,5 @@ public interface TransactionService {
     Transaction getTransactionById(Integer transactionId) throws AccountException, TransactionException;
 
     List<Transaction> getAllTransactions();
-	  void creditBalancePayment(Integer customerId, String password, Double amount) throws AccountException, CreditCardException,NotificationException;;
+	void creditBalancePayment(Integer customerId, String password, Double amount) throws AccountException, CreditCardException,NotificationException;;
 }

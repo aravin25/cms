@@ -77,7 +77,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setPinNumber(pin);
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
         this.creditCardQueueRepository.save(creditCardQueue);
-        notificationService.saveNotification(creditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
+//        notificationService.saveNotification(creditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
         return creditCardRepository.save(creditCard);
     }
 

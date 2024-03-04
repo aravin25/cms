@@ -50,7 +50,7 @@ public class MerchantServiceImpl implements MerchantService{
 		account = this.accountService.createAccount(account, "Merchant");
 		user.setAccount(account);
 		this.userRepository.save(user);
-    notificationService.saveNotification(newMerchant.getUserId(),"Merchant","user merchant created");
+    	this.notificationService.saveNotification(user.getUserId(),"Merchant","user merchant created");
 		return user;
 	}
 

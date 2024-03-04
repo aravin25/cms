@@ -35,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
             creditCardService.createCreditCard(creditCard);
             newAccount.setCreditCard(creditCard);
         }
-        notificationService.saveNotification(newAccount.getUser().getUserId(),"Account","account created");
+        //notificationService.saveNotification(newAccount.getUser().getUserId(),"Account","account created");
 
         return this.accountRepository.save(newAccount);
     }
