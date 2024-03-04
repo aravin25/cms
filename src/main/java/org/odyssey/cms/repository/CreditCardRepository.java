@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface CreditCardRepository extends JpaRepository<CreditCard, Integer> {
 
     List<CreditCard> findAll();
+    Optional<CreditCard> findByCardNumber(String cardNumber);
+    Optional<String> deleteByCardNumber(String cardNumber);
 
 }
