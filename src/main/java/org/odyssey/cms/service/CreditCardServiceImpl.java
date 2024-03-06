@@ -32,8 +32,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     private NotificationService notificationService;
 
     @Override
-    public CreditCard getCreditCardById(String cardNumber) throws CreditCardException {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+    public CreditCard getCreditCardById(Integer cardId) throws CreditCardException {
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         if(optionalCreditCard.isEmpty()){
             throw new CreditCardException("Credit card not found.");
         }
@@ -74,27 +74,15 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setActivationStatus("REQUESTED");
 
         creditCard.setPinNumber(pin);
-        CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
+        CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardId());
         this.creditCardQueueRepository.save(creditCardQueue);
 //        notificationService.saveNotification(creditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
         return creditCardRepository.save(creditCard);
     }
 
     @Override
-    public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws CreditCardException {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
-        if(optionalCreditCard.isEmpty()){
-            throw new CreditCardException("Credit card not found.");
-        }
-        CreditCard existingCreditCard = optionalCreditCard.get();
-        existingCreditCard.setExpireDate(newExpireDate);
-        notificationService.saveNotification(existingCreditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard ExpireDate Updated");
-        return creditCardRepository.save(existingCreditCard);
-    }
-
-    @Override
-    public CreditCard updateAmount(String cardNumber, Double newAmount) throws CreditCardException {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+    public CreditCard updateAmount(Integer cardId, Double newAmount) throws CreditCardException {
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         if(optionalCreditCard.isEmpty()){
             throw new CreditCardException("Credit card not found.");
         }
@@ -105,8 +93,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard updateActivationStatus(String cardNumber, String newActivationStatus) throws CreditCardException {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+    public CreditCard updateActivationStatus(Integer cardId, String newActivationStatus) throws CreditCardException {
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         if(optionalCreditCard.isEmpty()){
             throw new CreditCardException("Credit card not found.");
         }
@@ -116,14 +104,14 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public String deleteByCreditCard(String cardNumber) throws CreditCardException {
-        if(creditCardRepository.findByCardNumber(cardNumber).isEmpty()){
+    public CreditCard deleteByCardId(Integer cardId) throws CreditCardException {
+        if(creditCardRepository.findById(cardId).isEmpty()){
             throw new CreditCardException("Credit card not found.");
         }
-        creditCardRepository.deleteByCardNumber(cardNumber);
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findByCardNumber(cardNumber);
+        creditCardRepository.deleteById(cardId);
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(cardId);
         notificationService.saveNotification(optionalCreditCard.get().getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
-        return cardNumber;
+        return optionalCreditCard.get();
     }
 
     @Override

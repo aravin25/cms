@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("creditcard")
+@RequestMapping("creditCard")
 @RestController
 public class CreditCardController {
 
@@ -38,13 +38,13 @@ public class CreditCardController {
         return this.creditCardService.getAllCreditCards();
     }
 
-    @PutMapping("updateActivationStatus/{cardNumber}")
-    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException, CreditCardException {
-        return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
+    @PutMapping("updateActivationStatus/{cardId}")
+    public CreditCard updateActivationStatus(@PathVariable Integer cardId, @RequestBody String newActivationStatus) throws AccountException, CreditCardException {
+        return this.creditCardService.updateActivationStatus(cardId, newActivationStatus);
     }
 
-    @DeleteMapping("delete/{cardNumber}")
-    public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException, CreditCardException{
-        return this.creditCardService.deleteByCreditCard(cardNumber);
+    @DeleteMapping("delete/{cardId}")
+    public CreditCard deleteCreditCard(@PathVariable Integer cardId) throws AccountException, CreditCardException{
+        return this.creditCardService.deleteByCardId(cardId);
     }
 }
