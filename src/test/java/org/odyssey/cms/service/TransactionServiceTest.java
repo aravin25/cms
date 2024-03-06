@@ -196,7 +196,7 @@ public class TransactionServiceTest {
             Transaction createdTransaction = transactionService.createTransaction(newTransaction);
             assertNotNull(createdTransaction);
             assertEquals(newTransaction.getTransactionID(), createdTransaction.getTransactionID());
-        } catch (TransactionException  e) {
+        } catch (TransactionException e) {
             fail("Exception not expected: " + e.getMessage());
         }
     }
