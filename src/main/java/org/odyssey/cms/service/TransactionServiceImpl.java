@@ -145,11 +145,9 @@ public class TransactionServiceImpl implements TransactionService {
 
 		if(Objects.equals(creditCard.getActivationStatus(), "ACTIVATED")) {
 			if (transactionAmount <= 0) {
-				System.out.println("Not possible");
-				return false;
+				throw new TransactionException("Transaction amount cannot be null!");
 			} else if (transactionAmount > creditCard.getCreditLimit() - creditCard.getCreditBalance()) {
-				System.out.println("Transaction amount is exceeding the credit limit.");
-				return false;
+				throw new TransactionException("Transaction amount is exceeding the credit limit.");
 			}  else {
 				creditCard.setCreditBalance(creditCard.getCreditBalance() + transactionAmount);
 				merchantAccount.setBalance(merchantAccount.getBalance() + transactionAmount);
@@ -168,7 +166,7 @@ public class TransactionServiceImpl implements TransactionService {
 				this.creditCardRepository.save(creditCard);
 			}
 		} else {
-			return false;
+			throw new TransactionException("Card is not activated yet!");
 		}
     //notificationService.saveNotification(customerId,"Transaction","Processing");
 		return true;
