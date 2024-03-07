@@ -23,9 +23,12 @@ public class NotificationSeviceImpl implements NotificationService{
 
 	@Override
 	public String deleteAllNotification(Integer userId) {
-		notificationRepository.deleteByUserId(userId);
-		List<Notification> allNotification=notificationRepository.findByUserId(userId);
-		return "cleared All notification";
+		if(notificationRepository.deleteByUserId(userId)){
+			return "cleared All notification";
+		}
+		else{
+			return "error while clearing";
+		}
 	}
 
 	@Override
@@ -39,7 +42,12 @@ public class NotificationSeviceImpl implements NotificationService{
 	public String deleteNotification(Integer notificationId){
 		notificationRepository.deleteById(notificationId);
 		Optional<Notification> userNotification=notificationRepository.findById(notificationId);
-		return "notification cleared";
+		if(userNotification.isEmpty()) {
+			return "notification cleared";
+		}
+		else {
+			return "error while clearing";
+		}
 	}
 
 	@Override

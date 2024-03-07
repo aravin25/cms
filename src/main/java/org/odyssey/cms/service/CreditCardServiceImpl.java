@@ -100,7 +100,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
         CreditCard existingCreditCard = optionalCreditCard.get();
         existingCreditCard.setCreditBalance(newAmount);
-        notificationService.saveNotification(existingCreditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard Update Amount");
+        notificationService.saveNotification(existingCreditCard.getAccount().getUser().getUserId(),"CreditCard","Amount Updated");
         return creditCardRepository.save(existingCreditCard);
     }
 

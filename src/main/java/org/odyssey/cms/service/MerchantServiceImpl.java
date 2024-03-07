@@ -63,8 +63,8 @@ public class MerchantServiceImpl implements MerchantService{
 			throw new AccountException("customer Account doesn't exists: ");
 		}
 		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId,amount);
-		notificationService.saveNotification(merchantId,"Merchant","merchant Requested a payment of"+amount+" to "+customerId);
-		notificationService.saveNotification(customerId,"Customer","customer receved a Requested of"+amount+" form "+merchantId);
+		notificationService.saveNotification(merchantId,"Merchant","Merchant Requested a payment of "+amount+" to "+accountOptionalCustomer.get().getName());
+		notificationService.saveNotification(customerId,"Customer","Customer Received a Payment Request of "+amount+" from "+accountOptionalMerchant.get().getName());
 		this.paymentRequestRepository.save(paymentRequest);
 		return true;
 	}
