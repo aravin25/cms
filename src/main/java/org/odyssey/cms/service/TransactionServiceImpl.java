@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 		newTransaction.setTransactionID(0);
 		newTransaction.setTransactionDateTime(LocalDateTime.now());
-    notificationService.saveNotification(newTransaction.getCreditCard().getAccount().getUser().getUserId(),"Transaction","Transaction created");
+    	notificationService.saveNotification(newTransaction.getCreditCard().getAccount().getUser().getUserId(),"Transaction","Transaction created");
 		return this.transactionRepository.save(newTransaction);
 	}
 
@@ -107,7 +107,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		this.creditCardRepository.save(creditCard);
-    	this.notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Balance Payment");
+    	this.notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Payment Successfully completed");
 		this.accountRepository.save(account);
 	}
 

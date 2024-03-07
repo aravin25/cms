@@ -74,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
 		addUser1.setAddress(userUpdateDTO.getAddress());
 		addUser1.setEmail(userUpdateDTO.getEmail());
 		addUser1.setPhone(userUpdateDTO.getPhone());
-    notificationService.saveNotification(addUser.get().getUserId(),"Customer","Detaile Updated");
+    	notificationService.saveNotification(addUser.get().getUserId(),"Customer","Detail Updated");
 		return userRepository.save(addUser1);
 	}
 
