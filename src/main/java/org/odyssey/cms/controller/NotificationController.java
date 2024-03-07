@@ -35,9 +35,4 @@ public class NotificationController {
 	public String deleteNotificationByNotificationId(@PathVariable Integer notificationId) {
 		return notificationService.deleteNotification(notificationId);
 	}
-
-	@PostMapping("testing/{userId}/{topic}/{detail}")
-	public Boolean testSave(@PathVariable Integer userId,@PathVariable String topic,@PathVariable String detail) {
-		return notificationService.saveNotification(userId,topic,detail);
-	}
 }

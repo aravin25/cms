@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class CreditCardController {
     }
 
     @PutMapping("updateActivationStatus/{cardNumber}")
-    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestBody String newActivationStatus) throws AccountException, CreditCardException {
+    public CreditCard updateActivationStatus(@PathVariable String cardNumber, @RequestParam String newActivationStatus) throws AccountException, CreditCardException {
         return this.creditCardService.updateActivationStatus(cardNumber, newActivationStatus);
     }
 

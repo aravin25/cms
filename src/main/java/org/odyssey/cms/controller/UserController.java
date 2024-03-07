@@ -46,7 +46,7 @@ public class UserController {
 		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
 	}
 
-	@PostMapping("create")
+	@PostMapping("/customer")
 	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
 		return this.customerService.createUser(userRegistrationDTO);
 	}
