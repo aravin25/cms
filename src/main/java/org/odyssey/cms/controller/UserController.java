@@ -5,6 +5,7 @@ import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
 import org.odyssey.cms.entity.PaymentRequest;
+import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.UserRepository;
 import org.odyssey.cms.service.MerchantService;
@@ -72,12 +73,14 @@ public class UserController {
 	}
 
 	@GetMapping("customer/requestInvoice")
-	public Invoice generateCustomerInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException {
+	public Invoice generateCustomerInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	{
 		return customerService.generateCustomerInvoice(requestInvoiceDTO);
 	}
 
 	@GetMapping("merchant/requestInvoice")
-	public Invoice generateMerchantInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException {
+	public Invoice generateMerchantInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	{
 		return merchantService.generateMerchantInvoice(requestInvoiceDTO);
 	}
 

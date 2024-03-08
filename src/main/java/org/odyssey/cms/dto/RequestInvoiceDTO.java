@@ -10,6 +10,6 @@ import org.odyssey.cms.entity.Transaction;
 @NoArgsConstructor
 @Data
 public class RequestInvoiceDTO {
-    public Transaction transaction;
-    public PaymentRequest paymentRequest;
+    public Integer transactionID;
+    public Integer paymentRequestID;
 }

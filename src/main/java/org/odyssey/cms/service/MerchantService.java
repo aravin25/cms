@@ -6,6 +6,7 @@ import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
+import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +15,5 @@ import org.springframework.stereotype.Service;
 public interface MerchantService {
 	User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException;
 	Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId, Double amount)throws AccountException;
-	Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException;
+	Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException;
 }

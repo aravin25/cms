@@ -8,6 +8,7 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
+import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,6 @@ public interface CustomerService {
 	public User getUserById(Integer userId) throws AccountException, UserException;
 	public List<User> getAllUser();
 	public String deleteUser(Integer userId) throws AccountException, UserException;
-	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException;
+	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException;
 	public List<PaymentRequest> getAllPaymentRequests(Integer userId) throws UserException;
 }

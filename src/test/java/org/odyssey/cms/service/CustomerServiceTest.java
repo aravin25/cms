@@ -19,6 +19,7 @@ import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
+import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -35,6 +36,7 @@ public class CustomerServiceTest {
 	private User userCheck;
 	private Account account;
 	private CreditCard creditCard;
+	private Transaction transaction;
 	private List<User> userList;
 	@Mock
 	private PaymentRequest paymentRequest;
@@ -59,6 +61,8 @@ public class CustomerServiceTest {
 	private NotificationService notificationService;
 	@Mock
 	private UserUpdateDTO userUpdateDTO;
+	@Mock
+	private TransactionService transactionService;
 
 	@InjectMocks
 	private CustomerServiceImpl customerService;
@@ -76,6 +80,7 @@ public class CustomerServiceTest {
 		requestInvoiceDTO=new RequestInvoiceDTO(null,null);
 		userList= Arrays.asList(user1,user2);
 		userUpdateDTO=new UserUpdateDTO(0,"no8","abcd@gmail.com","1234567890");
+		transaction = new Transaction(1,100.0, LocalDateTime.now(),null);
 	}
 
 	@Test
@@ -92,13 +97,15 @@ public class CustomerServiceTest {
 
 
 	@Test
-	public void createInvoiceTest()throws UserException, PaymentRequestException {
-		requestInvoiceDTO.setTransaction(new Transaction(1,100.0, LocalDateTime.now(),null));
-		requestInvoiceDTO.setPaymentRequest(new PaymentRequest(1,1,2,100.0));
+	public void createInvoiceTest() throws UserException, PaymentRequestException, TransactionException, AccountException
+	{
+		requestInvoiceDTO.setTransactionID(transaction.getTransactionID());
+		requestInvoiceDTO.setPaymentRequestID(paymentRequest.getPaymentRequestId());
 		paymentRequest=new PaymentRequest(1,1,2,100.0);
 		Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user1));
 		Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(user2));
-		Mockito.when(paymentRequestRepository.findById(requestInvoiceDTO.transaction.getTransactionID())).thenReturn(Optional.of(paymentRequest));
+		Mockito.when(paymentRequestRepository.findById(0)).thenReturn(Optional.of(paymentRequest));
+		Mockito.when(transactionService.getTransactionById(1)).thenReturn(transaction);
 		invoice=customerService.generateCustomerInvoice(requestInvoiceDTO);
 		Optional<Invoice> optionalInvoice=Optional.of(invoice);
 		Assertions.assertEquals(true,optionalInvoice.isPresent());
