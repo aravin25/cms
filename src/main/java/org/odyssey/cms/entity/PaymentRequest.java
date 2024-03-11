@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class PaymentRequest {
 	@NotNull
 	Integer customerId;
 	@NotNull
-	LocalDate paymentRequestDate;
+	LocalDateTime paymentRequestDate;
 	@NotNull
 	@Min(100)
 	Double requestAmount;
