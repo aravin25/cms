@@ -66,6 +66,29 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
+	public List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException
+	{
+		Optional<User> optionalUser = this.userRepository.findById(userId);
+		if(optionalUser.isEmpty()){
+			throw new UserException("User does not exist.");
+		}
+		User user = optionalUser.get();
+		Account account = user.getAccount();
+		if(account == null){
+			throw new AccountException("Account does not exist for the user.");
+		}
+		CreditCard creditCard = account.getCreditCard();
+		if(creditCard == null){
+			throw new CreditCardException("Credit card does not exist for this account");
+		}
+		List<Transaction> transactionList = creditCard.getTransactionList();
+		if (transactionList.isEmpty()){
+			throw new TransactionException("No transactions made by the user.");
+		}
+		return transactionList;
+	}
+
+	@Override
 	public List<Transaction> getAllTransactions() {
 		return this.transactionRepository.findAll();
 	}
