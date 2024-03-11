@@ -5,10 +5,12 @@ import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
 import org.odyssey.cms.entity.Account;
+import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
+import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -30,6 +32,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private TransactionService transactionService;
 
 	@Override
 	public List<User> getAllUsers() {
@@ -103,19 +107,24 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException {
+	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	{
 		Invoice invoice=new Invoice();
-		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.transaction.getTransactionID());
+		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.getPaymentRequestID());
 		if (optionalPaymentRequest.isEmpty()){
 			throw new PaymentRequestException("Payment does not exist");
 		}
-		Optional<User> optionalCustomer = this.userRepository.findById(requestInvoiceDTO.paymentRequest.getCustomerId());
-		Optional<User> optionalMerchant = this.userRepository.findById(requestInvoiceDTO.paymentRequest.getMerchantId());
+		PaymentRequest paymentRequest = optionalPaymentRequest.get();
+		Optional<User> optionalCustomer = this.userRepository.findById(paymentRequest.getCustomerId());
+		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
 		if(optionalCustomer.isEmpty()){
 			throw new UserException("Customer does not exist");
-		} else if (optionalMerchant.isEmpty()) {
+		}
+		if (optionalMerchant.isEmpty()) {
 			throw new UserException("Merchant does not exist");
 		}
+		Integer transactionID = requestInvoiceDTO.transactionID;
+		Transaction transaction = transactionService.getTransactionById(transactionID);
 		User customer = optionalCustomer.get();
 		User merchant = optionalMerchant.get();
 		StringBuilder invoiceBody = new StringBuilder();
@@ -126,8 +135,8 @@ public class CustomerServiceImpl implements CustomerService {
 		invoiceBody.append("    <Address>" + customer.getAddress() + "</Address>\n");
 		invoiceBody.append("  </Customer>\n");
 		invoiceBody.append("  <Transaction>\n");
-		invoiceBody.append("    <Amount>" + requestInvoiceDTO.transaction.getAmount() + "</Amount>\n");
-		invoiceBody.append("    <Date>" + requestInvoiceDTO.transaction.getTransactionDateTime() + "</Date>\n");
+		invoiceBody.append("    <Amount>" + paymentRequest.getRequestAmount() + "</Amount>\n");
+		invoiceBody.append("    <Date>" + transaction.getTransactionDateTime() + "</Date>\n");
 		invoiceBody.append("    <Merchant>" + merchant.getName() + "</Merchant>\n");
 		invoiceBody.append("  </Transaction>\n");
 		invoiceBody.append("</Invoice>\n");

@@ -18,6 +18,7 @@ import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
+import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -32,6 +33,7 @@ public class MerchantServiceTest {
 	private User userCheck;
 	private Account account;
 	private CreditCard creditCard;
+	private Transaction transaction;
 	@Mock
 	private PaymentRequest paymentRequest;
 
@@ -53,6 +55,8 @@ public class MerchantServiceTest {
 
 	@Mock
 	private NotificationService notificationService;
+	@Mock
+	private TransactionService transactionService;
 
 	@InjectMocks
 	private MerchantServiceImpl merchantService;
@@ -68,6 +72,7 @@ public class MerchantServiceTest {
 		paymentRequest=new PaymentRequest(0,1,2,100.0);
 		invoice=new Invoice();
 		requestInvoiceDTO=new RequestInvoiceDTO(null,null);
+		transaction = new Transaction(1,100.0,LocalDateTime.now(),null);
 	}
 	@Test
 	public void createTest()throws AccountException{
@@ -99,7 +104,7 @@ public class MerchantServiceTest {
 	}
 
 	@Test
-	public void creteRequestException1()throws AccountException{
+	public void createRequestException1()throws AccountException{
 		Mockito.when(userRepository.findById(1)).thenReturn(Optional.empty());
 		Mockito.when(userRepository.findById(2)).thenReturn(Optional.empty());
 		Assertions.assertThrows(AccountException.class,()->{
@@ -107,7 +112,7 @@ public class MerchantServiceTest {
 		});
 	}
 	@Test
-	public void creteRequestException2()throws AccountException{
+	public void createRequestException2()throws AccountException{
 		Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user1));
 		Mockito.when(userRepository.findById(2)).thenReturn(Optional.empty());
 		Assertions.assertThrows(AccountException.class,()->{
@@ -116,16 +121,17 @@ public class MerchantServiceTest {
 	}
 
 	@Test
-	public void createInvoiceTest()throws UserException, PaymentRequestException {
-		Boolean checkBoolean;
-		requestInvoiceDTO.setTransaction(new Transaction(1,100.0,LocalDateTime.now(),null));
-		requestInvoiceDTO.setPaymentRequest(new PaymentRequest(1,1,2,100.0));
+	public void createInvoiceTest() throws UserException, PaymentRequestException, TransactionException, AccountException
+	{
+		requestInvoiceDTO.setTransactionID(transaction.getTransactionID());
+		requestInvoiceDTO.setPaymentRequestID(paymentRequest.getPaymentRequestId());
 		paymentRequest=new PaymentRequest(1,1,2,100.0);
 		Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user1));
 		Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(user2));
-		Mockito.when(paymentRequestRepository.findById(requestInvoiceDTO.transaction.getTransactionID())).thenReturn(Optional.of(paymentRequest));
+		Mockito.when(paymentRequestRepository.findById(0)).thenReturn(Optional.of(paymentRequest));
+		Mockito.when(transactionService.getTransactionById(1)).thenReturn(transaction);
 		invoice=merchantService.generateMerchantInvoice(requestInvoiceDTO);
 		Optional<Invoice> optionalInvoice=Optional.of(invoice);
-		Assertions.assertEquals(true,optionalInvoice.isPresent());
+		Assertions.assertEquals(true, optionalInvoice.isPresent());
 	}
 }

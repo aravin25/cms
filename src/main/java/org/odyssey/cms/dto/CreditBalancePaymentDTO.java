@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreditBalancePaymentDTO {
 	@NotNull
-	@NotEmpty
 	private Integer accountId;
 	@NotNull
 	@NotBlank

@@ -1,5 +1,6 @@
 package org.odyssey.cms.controller;
 
+import jakarta.validation.Valid;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.service.AccountService;
@@ -14,7 +15,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @PostMapping("create")
-    public Account createAccount(@RequestBody Account account) throws AccountException  {
+    public Account createAccount(@Valid @RequestBody Account account) throws AccountException  {
         return this.accountService.createAccount(account, "Customer");
     }
 
@@ -29,7 +30,7 @@ public class AccountController {
     }
 
     @PutMapping("update")
-    public Account updateAccount(@RequestBody Account account)throws AccountException {
+    public Account updateAccount(@Valid @RequestBody Account account)throws AccountException {
         return this.accountService.updateAccount(account);
     }
 
