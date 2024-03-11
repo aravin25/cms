@@ -1,5 +1,6 @@
 package org.odyssey.cms.controller;
 
+import jakarta.validation.Valid;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
@@ -63,7 +64,7 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public User updateUser(@RequestBody UserUpdateDTO userUpdateDTO) throws AccountException, UserException {
+	public User updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO) throws AccountException, UserException {
 		return this.customerService.updateUser(userUpdateDTO);
 	}
 
@@ -73,13 +74,13 @@ public class UserController {
 	}
 
 	@GetMapping("customer/requestInvoice")
-	public Invoice generateCustomerInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	public Invoice generateCustomerInvoice(@Valid@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
 	{
 		return customerService.generateCustomerInvoice(requestInvoiceDTO);
 	}
 
 	@GetMapping("merchant/requestInvoice")
-	public Invoice generateMerchantInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	public Invoice generateMerchantInvoice(@Valid @RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
 	{
 		return merchantService.generateMerchantInvoice(requestInvoiceDTO);
 	}

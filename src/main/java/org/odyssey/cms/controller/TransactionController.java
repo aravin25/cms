@@ -1,5 +1,6 @@
 package org.odyssey.cms.controller;
 
+import jakarta.validation.Valid;
 import org.odyssey.cms.dto.CreditBalancePaymentDTO;
 import org.odyssey.cms.dto.TransactionDTO;
 import org.odyssey.cms.entity.Transaction;
@@ -24,7 +25,7 @@ public class TransactionController {
     private PaymentRequestRepository paymentRequestRepository;
 
     @PostMapping("create")
-    public Transaction createTransaction(@RequestBody Transaction transaction) throws AccountException, TransactionException {
+    public Transaction createTransaction(@Valid @RequestBody Transaction transaction) throws AccountException, TransactionException {
         return this.transactionService.createTransaction(transaction);
     }
 
@@ -39,12 +40,12 @@ public class TransactionController {
     }
 
     @PostMapping("creditBalancePayment")
-    public void creditBalancePayment(@RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException  {
+    public void creditBalancePayment(@Valid @RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException  {
         this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
     }
   
     @PostMapping("initiate")
-    public boolean transactionInitiate(@RequestBody TransactionDTO transactionDTO) throws AccountException, CreditCardException, PaymentRequestException, UserException, TransactionException {
+    public boolean transactionInitiate(@Valid @RequestBody TransactionDTO transactionDTO) throws AccountException, CreditCardException, PaymentRequestException, UserException, TransactionException {
         return this.transactionService.processTransaction(transactionDTO);
     }
 }

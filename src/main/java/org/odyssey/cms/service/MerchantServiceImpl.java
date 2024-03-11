@@ -77,7 +77,7 @@ public class MerchantServiceImpl implements MerchantService{
 	public Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
 	{
 		Invoice invoice=new Invoice();
-		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.getTransactionID());
+		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.getPaymentRequestID());
 		if (optionalPaymentRequest.isEmpty()){
 			throw new PaymentRequestException("Payment does not exist");
 		}
@@ -86,7 +86,8 @@ public class MerchantServiceImpl implements MerchantService{
 		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
 		if(optionalCustomer.isEmpty()){
 			throw new UserException("Customer does not exist");
-		} else if (optionalMerchant.isEmpty()) {
+		}
+		if (optionalMerchant.isEmpty()) {
 			throw new UserException("Merchant does not exist");
 		}
 		Integer transactionID = requestInvoiceDTO.transactionID;

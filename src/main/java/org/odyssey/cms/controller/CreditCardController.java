@@ -1,5 +1,6 @@
 package org.odyssey.cms.controller;
 
+import jakarta.validation.Valid;
 import org.odyssey.cms.dto.CreditCardDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
@@ -26,7 +27,7 @@ public class CreditCardController {
     private CreditCardService creditCardService;
 
     @PostMapping("createCreditCard")
-    public CreditCard createCreditCard(@RequestBody CreditCardDTO creditCardDTO) throws AccountException {
+    public CreditCard createCreditCard(@Valid @RequestBody CreditCardDTO creditCardDTO) throws AccountException {
         CreditCard creditCard = new CreditCard();
         creditCard.setCardId(0);
         creditCard.setPinNumber(creditCardDTO.getPinNumber());

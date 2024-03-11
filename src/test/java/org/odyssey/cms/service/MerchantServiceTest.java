@@ -128,10 +128,10 @@ public class MerchantServiceTest {
 		paymentRequest=new PaymentRequest(1,1,2,100.0);
 		Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user1));
 		Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(user2));
-		Mockito.when(paymentRequestRepository.findById(1)).thenReturn(Optional.of(paymentRequest));
+		Mockito.when(paymentRequestRepository.findById(0)).thenReturn(Optional.of(paymentRequest));
 		Mockito.when(transactionService.getTransactionById(1)).thenReturn(transaction);
 		invoice=merchantService.generateMerchantInvoice(requestInvoiceDTO);
 		Optional<Invoice> optionalInvoice=Optional.of(invoice);
-		Assertions.assertEquals(true,optionalInvoice.isPresent());
+		Assertions.assertEquals(true, optionalInvoice.isPresent());
 	}
 }

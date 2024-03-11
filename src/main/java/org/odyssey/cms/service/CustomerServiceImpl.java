@@ -119,7 +119,8 @@ public class CustomerServiceImpl implements CustomerService {
 		Optional<User> optionalMerchant = this.userRepository.findById(paymentRequest.getMerchantId());
 		if(optionalCustomer.isEmpty()){
 			throw new UserException("Customer does not exist");
-		} else if (optionalMerchant.isEmpty()) {
+		}
+		if (optionalMerchant.isEmpty()) {
 			throw new UserException("Merchant does not exist");
 		}
 		Integer transactionID = requestInvoiceDTO.transactionID;
@@ -134,7 +135,7 @@ public class CustomerServiceImpl implements CustomerService {
 		invoiceBody.append("    <Address>" + customer.getAddress() + "</Address>\n");
 		invoiceBody.append("  </Customer>\n");
 		invoiceBody.append("  <Transaction>\n");
-		invoiceBody.append("    <Amount>" + optionalPaymentRequest.get().getRequestAmount() + "</Amount>\n");
+		invoiceBody.append("    <Amount>" + paymentRequest.getRequestAmount() + "</Amount>\n");
 		invoiceBody.append("    <Date>" + transaction.getTransactionDateTime() + "</Date>\n");
 		invoiceBody.append("    <Merchant>" + merchant.getName() + "</Merchant>\n");
 		invoiceBody.append("  </Transaction>\n");
