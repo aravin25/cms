@@ -54,6 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 		user.setEmail(userRegistrationDTO.getEmail());
 		user.setAddress(userRegistrationDTO.getAddress());
 		user.setType("Customer");
+		user.setLogin(false);
 
 		Account account = new Account();
 		account.setAccountId(0);
@@ -75,6 +76,9 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new UserException("User doesn't exist");
 		}
 		User addUser1 = addUser.get();
+		if(addUser1.getLogin()==false){
+			throw new UserException("Not Login");
+		}
 		addUser1.setAddress(userUpdateDTO.getAddress());
 		addUser1.setEmail(userUpdateDTO.getEmail());
 		addUser1.setPhone(userUpdateDTO.getPhone());
@@ -102,6 +106,9 @@ public class CustomerServiceImpl implements CustomerService {
 		if (removeUser.isEmpty()) {
 			throw new UserException("User does not exist.");
 		}
+		if (removeUser.get().getLogin()==false){
+			throw new UserException("Not Login");
+		}
 		this.userRepository.deleteById(userId);
 		return "successfully deleted";
 	}
@@ -123,7 +130,7 @@ public class CustomerServiceImpl implements CustomerService {
 		if (optionalMerchant.isEmpty()) {
 			throw new UserException("Merchant does not exist");
 		}
-		Integer transactionID = requestInvoiceDTO.transactionID;
+		Integer transactionID = requestInvoiceDTO.getTransactionID() ;
 		Transaction transaction = transactionService.getTransactionById(transactionID);
 		User customer = optionalCustomer.get();
 		User merchant = optionalMerchant.get();

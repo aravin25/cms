@@ -41,6 +41,8 @@ public class User {
     @NotNull
     @NotBlank
     private String type;
+    @NotNull
+    private Boolean login;
 
     @OneToOne
     @JoinColumn(name = "account_id")

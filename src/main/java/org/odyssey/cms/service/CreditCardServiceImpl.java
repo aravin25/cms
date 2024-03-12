@@ -132,18 +132,22 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public String pinGeneratation(Integer firstHalf,String cardNumber) throws CreditCardException {
+    public String pinGeneratation(Integer firstHalf,Integer cardId) throws CreditCardException {
         if(firstHalf>99){
             throw new CreditCardException("first half should be two digit");
         }
-        Integer prevPin= creditCardRepository.findByCardNumber(cardNumber).get().getPinNumber();
-        System.out.println(prevPin);
+        Optional<CreditCard> creditCardOptional= creditCardRepository.findById(cardId);
+        if(creditCardOptional.isEmpty()){
+            throw new CreditCardException("Card Not Created");
+        }
+        CreditCard creditCard=creditCardOptional.get();
+        Integer prevPin= creditCard.getPinNumber();
         Integer secfHalf=prevPin%10;
         prevPin=prevPin/10;
         secfHalf=10*(prevPin%10)+secfHalf;
-        creditCardRepository.findByCardNumber(cardNumber).get().setPinNumber((100*firstHalf)+secfHalf);
-        System.out.println(creditCardRepository.findByCardNumber(cardNumber).get().getPinNumber());
-        return "Pin Created Successfully";
+        creditCard.setPinNumber((100*firstHalf)+secfHalf);
+        creditCardRepository.save(creditCard);
+        return ("Pin Created Successfully \n pin: "+creditCard.getPinNumber());
     }
 
     @Override

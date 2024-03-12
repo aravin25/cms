@@ -123,7 +123,9 @@ public class TransactionServiceImpl implements TransactionService {
 
 		PaymentRequest paymentRequest = optionalPaymentRequest.get();
 		CreditCard creditCard = this.creditCardService.getCreditCardByUserId(paymentRequest.getCustomerId());
-
+		if(creditCard.getAccount().getUser().getLogin()==false){
+			throw new UserException("Not Login");
+		}
 		if (!creditCard.getPinNumber().equals(transactionDTO.getInputPin())) {
 			throw new CreditCardException("Provided PIN doesn't match the credit card.");
 		}
@@ -141,7 +143,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		Double transactionAmount = paymentRequest.getRequestAmount();
-		System.out.println(transactionAmount);
+		//System.out.println(transactionAmount);
 
 		if(Objects.equals(creditCard.getActivationStatus(), "ACTIVATED")) {
 			if (transactionAmount <= 0) {
