@@ -19,6 +19,7 @@ public interface CreditCardService {
     public CreditCard updateActivationStatus(String cardNumber, String newActivationStatus) throws AccountException, CreditCardException;
     String deleteByCreditCard(String cardNumber) throws AccountException, CreditCardException;
     List<CreditCard> getAllAccounts();
+    String pinGeneratation(Integer firstHalf,String cardNumber)throws CreditCardException;
 
 	CreditCard getCreditCardByUserId(Integer userId) throws UserException, AccountException, CreditCardException;
 }

@@ -49,4 +49,9 @@ public class CreditCardController {
     public String deleteCreditCard(@PathVariable String cardNumber) throws AccountException, CreditCardException{
         return this.creditCardService.deleteByCreditCard(cardNumber);
     }
+
+    @PutMapping("PinGeneratation/{firstHalf}/{cardNumber}")
+    public String pinGeneratations(@PathVariable Integer firstHalf,@PathVariable String cardNumber)throws CreditCardException{
+        return  creditCardService.pinGeneratation(firstHalf,cardNumber);
+    }
 }
