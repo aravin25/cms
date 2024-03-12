@@ -6,9 +6,11 @@ import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.AccountRepository;
 import org.odyssey.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class UserLoginServiceImpl implements UserLoginService{
 	@Autowired
 	private UserRepository userRepository;
