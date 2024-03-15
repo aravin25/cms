@@ -8,13 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -30,7 +28,8 @@ public class Transaction {
     private Double amount;
     @NotNull
     private LocalDateTime transactionDateTime;
-
+    @NotNull
+    private Integer paymentRequestId;
     @ManyToOne
     @JoinColumn(name = "creditCard_id")
     @JsonBackReference
