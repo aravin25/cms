@@ -8,6 +8,7 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
@@ -32,7 +33,7 @@ public class MerchantServiceImpl implements MerchantService{
 	private TransactionService transactionService;
 
 	@Override
-	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
+	public User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, CreditCardException {
 		Optional<User> addUser = this.userRepository.findById(userRegistrationDTO.getUserId());
 		if (addUser.isPresent()) {
 			throw new UserException("User already exist");

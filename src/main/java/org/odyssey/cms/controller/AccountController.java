@@ -3,6 +3,7 @@ package org.odyssey.cms.controller;
 import jakarta.validation.Valid;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @PostMapping("create")
-    public Account createAccount(@Valid @RequestBody Account account) throws AccountException  {
+    public Account createAccount(@Valid @RequestBody Account account) throws AccountException, CreditCardException {
         return this.accountService.createAccount(account, "Customer");
     }
 

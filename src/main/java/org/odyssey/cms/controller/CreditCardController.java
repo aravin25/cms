@@ -27,7 +27,7 @@ public class CreditCardController {
     private CreditCardService creditCardService;
 
     @PostMapping("createCreditCard")
-    public CreditCard createCreditCard(@Valid @RequestBody CreditCardDTO creditCardDTO) throws AccountException {
+    public CreditCard createCreditCard(@Valid @RequestBody CreditCardDTO creditCardDTO) throws AccountException, CreditCardException {
         CreditCard creditCard = new CreditCard();
         creditCard.setCardId(0);
         creditCard.setPinNumber(creditCardDTO.getPinNumber());

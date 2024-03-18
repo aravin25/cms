@@ -3,6 +3,7 @@ package org.odyssey.cms.service;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private NotificationService notificationService;
 
     @Override
-    public Account createAccount(Account newAccount, String type) throws AccountException  {
+    public Account createAccount(Account newAccount, String type) throws AccountException, CreditCardException {
         Optional<Account> optionalAccount = this.accountRepository.findById(newAccount.getAccountId());
         if(optionalAccount.isPresent()){
             throw new AccountException("Account already exists!");
@@ -31,6 +32,7 @@ public class AccountServiceImpl implements AccountService {
 
         if (type.equals("Customer")) {
             CreditCard creditCard = new CreditCard();
+            creditCard.setVendor("Visa");
             creditCardService.createCreditCard(creditCard);
             newAccount.setCreditCard(creditCard);
         }
