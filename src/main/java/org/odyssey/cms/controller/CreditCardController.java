@@ -5,6 +5,7 @@ import org.odyssey.cms.dto.CreditCardDTO;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
+import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,6 +39,12 @@ public class CreditCardController {
     @GetMapping("getAllCreditCard")
     public List<CreditCard> getAllCreditCard()throws AccountException{
         return this.creditCardService.getAllCreditCards();
+    }
+
+    @GetMapping("creditCard/user")
+    public CreditCard getCreditCardByUserId(Integer userId) throws CreditCardException, AccountException, UserException
+    {
+        return this.creditCardService.getCreditCardByUserId(userId);
     }
 
     @PutMapping("updateActivationStatus/{cardNumber}")

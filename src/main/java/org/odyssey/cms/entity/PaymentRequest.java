@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +27,8 @@ public class PaymentRequest {
 	Integer merchantId;
 	@NotNull
 	Integer customerId;
+	@NotNull
+	LocalDateTime paymentRequestDate;
 	@NotNull
 	@Min(100)
 	Double requestAmount;

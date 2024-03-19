@@ -15,6 +15,9 @@ import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -66,7 +69,7 @@ public class MerchantServiceImpl implements MerchantService{
 		else if (accountOptionalCustomer.isEmpty()) {
 			throw new AccountException("customer Account doesn't exists: ");
 		}
-		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId,amount);
+		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId, LocalDateTime.now(),amount);
 		notificationService.saveNotification(merchantId,"Merchant","Merchant Requested a payment of "+amount+" to "+accountOptionalCustomer.get().getName());
 		notificationService.saveNotification(customerId,"Customer","Customer Received a Payment Request of "+amount+" from "+accountOptionalMerchant.get().getName());
 		this.paymentRequestRepository.save(paymentRequest);
