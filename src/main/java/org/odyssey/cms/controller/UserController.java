@@ -14,6 +14,7 @@ import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.service.CustomerService;
+import org.odyssey.cms.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,9 @@ public class UserController {
 	private CustomerService customerService;
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserLoginService userLoginService;
 
 
 	@PostMapping("/merchant")
@@ -88,6 +92,16 @@ public class UserController {
 	@GetMapping("paymentRequests")
 	public List<PaymentRequest> getAllPaymentRequests(@RequestParam Integer userId) throws UserException {
 		return this.customerService.getAllPaymentRequests(userId);
+	}
+
+	@PostMapping("Login/{email}/{password}")
+	public String loginUser(@PathVariable String email,@PathVariable String password)throws UserException{
+		return userLoginService.logIn(email,password);
+	}
+
+	@PutMapping("Logout/{userId}")
+	public String logoutUser(@PathVariable Integer userId)throws UserException{
+		return userLoginService.logOut(userId);
 	}
 
 }

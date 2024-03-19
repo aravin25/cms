@@ -56,6 +56,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account updateAccount(Account account) throws AccountException {
         Optional<Account> optionalAccount = this.accountRepository.findById(account.getAccountId());
+        if(optionalAccount.get().getUser().getLogin()==false){
+            throw new AccountException("Not Login");
+        }
         if(optionalAccount.isEmpty()){
             throw new AccountException("Account does not exist!");
         }
@@ -66,6 +69,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account deleteAccountById(Integer id)throws AccountException{
         Optional<Account> accountOpt = this.accountRepository.findById(id);
+        if(accountOpt.get().getUser().getLogin()==false){
+            throw new AccountException("Not Login");
+        }
         if(accountOpt.isEmpty()){
             throw new AccountException("Account does not exist.");
         }

@@ -16,6 +16,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.odyssey.cms.entity.CreditCardQueue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CreditCardServiceImpl implements CreditCardService {
@@ -30,6 +34,9 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private JavaMailSender emailSender;
 
     @Override
     public CreditCard getCreditCardById(String cardNumber) throws CreditCardException {
@@ -129,6 +136,36 @@ public class CreditCardServiceImpl implements CreditCardService {
     @Override
     public List<CreditCard> getAllAccounts() {
         return null;
+    }
+
+    @Override
+    public String pinGeneratation(Integer firstHalf,Integer cardId) throws CreditCardException {
+        if(firstHalf>99){
+            throw new CreditCardException("first half should be two digit");
+        }
+        Optional<CreditCard> creditCardOptional= creditCardRepository.findById(cardId);
+        if(creditCardOptional.isEmpty()){
+            throw new CreditCardException("Card Not Created");
+        }
+        CreditCard creditCard=creditCardOptional.get();
+        Integer prevPin= creditCard.getPinNumber();
+        Integer secfHalf=prevPin%10;
+        prevPin=prevPin/10;
+        secfHalf=10*(prevPin%10)+secfHalf;
+        creditCard.setPinNumber((100*firstHalf)+secfHalf);
+        creditCardRepository.save(creditCard);
+
+        String email=creditCard.getAccount().getUser().getEmail();
+        String creditNo=creditCard.getCardNumber();
+        String userName=creditCard.getAccount().getUser().getName();
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("creditcardmanagmentsystem@gmail.com");
+        message.setTo(email);
+        message.setSubject("Pin Change For CreditCard:"+creditNo);
+        message.setText("Hi"+userName+"!\n You Have Currently Requested a pin Change For Creditcard: "+creditNo+
+                " At "+LocalDate.now()+"\n Now User Pin is:"+creditCard.getPinNumber()+"\n\n Thank You,\nCMS TEAM");
+        emailSender.send(message);
+        return ("Pin Created Successfully \n pin: "+creditCard.getPinNumber());
     }
 
     @Override

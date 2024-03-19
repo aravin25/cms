@@ -48,6 +48,7 @@ public class MerchantServiceImpl implements MerchantService{
 		user.setEmail(userRegistrationDTO.getEmail());
 		user.setAddress(userRegistrationDTO.getAddress());
 		user.setType("Merchant");
+		user.setLogin(false);
 		Account account = new Account();
 		account.setAccountId(0);
 		account.setBalance(10000.0);
@@ -63,6 +64,9 @@ public class MerchantServiceImpl implements MerchantService{
 	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException{
 		Optional<User> accountOptionalMerchant = this.userRepository.findById(merchantId);
 		Optional<User> accountOptionalCustomer = this.userRepository.findById(customerId);
+//		if(accountOptionalCustomer.get().getLogin()==false){
+//			throw new AccountException("Not Login");
+//		}
 		if (accountOptionalMerchant.isEmpty()) {
 			throw new AccountException("merchant Account doesn't exists: ");
 		}
@@ -93,7 +97,7 @@ public class MerchantServiceImpl implements MerchantService{
 		if (optionalMerchant.isEmpty()) {
 			throw new UserException("Merchant does not exist");
 		}
-		Integer transactionID = requestInvoiceDTO.transactionID;
+		Integer transactionID = requestInvoiceDTO.getTransactionID();
 		Transaction transaction = transactionService.getTransactionById(transactionID);
 		User customer = optionalCustomer.get();
 		User merchant = optionalMerchant.get();
