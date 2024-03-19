@@ -17,6 +17,7 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
@@ -75,7 +76,7 @@ public class MerchantServiceTest {
 		transaction = new Transaction(1,100.0,LocalDateTime.now(),null);
 	}
 	@Test
-	public void createTest()throws AccountException{
+	public void createTest() throws AccountException, CreditCardException {
 		Mockito.when(userRepository.findById(userRegistrationDTO.getUserId())).thenReturn(Optional.empty());
 		Mockito.when(accountService.createAccount(account,"Merchant")).thenReturn(null);
 		try {
