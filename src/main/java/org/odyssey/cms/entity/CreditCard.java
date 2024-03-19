@@ -44,6 +44,8 @@ public class CreditCard {
     @NotNull
     private Integer pinNumber;
     private Double interestRate = 0.018; // Interest on outstanding balance
+    @NotNull
+    private String vendor; // MasterCard, Visa, AmEx, Discover
 
     @OneToOne(mappedBy = "creditCard")
     @JsonManagedReference

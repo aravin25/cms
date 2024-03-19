@@ -47,25 +47,71 @@ public class CreditCardServiceImpl implements CreditCardService {
         return optionalCreditCard.orElse(null);
     }
 
-
     @Override
     public List<CreditCard> getAllCreditCards() {
         return creditCardRepository.findAll();
     }
 
-    @Override
-    public CreditCard createCreditCard(CreditCard creditCard)  {
-        String bin = "4";
-        int length = 16;
-        StringBuilder cardNumber = new StringBuilder(bin);
-        int randomNumberLength = length - (bin.length() + 1);
-        for (int i = 0; i < randomNumberLength; i++) {
-            int digit = random.nextInt(10);
-            cardNumber.append(digit);
+    public static String generateCardNumber(String cardVendorType) throws CreditCardException {
+        StringBuilder cardNumber = new StringBuilder();
+        switch (cardVendorType) {
+            case "MasterCard": // Starts with 51-55, 2221-2720; Length 16
+                if (random.nextBoolean()) {
+                    cardNumber.append(random.nextInt(55 - 51 + 1) + 51);
+                } else {
+                    cardNumber.append(random.nextInt(2720 - 2221 + 1) + 2221);
+                }
+                break;
+
+            case "Visa": // Starts with 4; Length 16
+                cardNumber.append("4");
+                break;
+
+            case "AmEx": // Starts with 34 or 37; Length 15
+                cardNumber.append(random.nextBoolean() ? "34" : "37");
+                break;
+
+            case "Discover": // Starts with 6011, 644-649, 65; Length 16
+                if (random.nextBoolean()) {
+                    cardNumber.append("6011");
+                } else {
+                    cardNumber.append(random.nextBoolean() ? (random.nextInt(6) + 644) : 65);
+                }
+                break;
+
+            default:
+                throw new CreditCardException("Unsupported card vendor type");
         }
-        int finalDigit = 5;
-        cardNumber.append(finalDigit);
-        String cardNum = cardNumber.toString();
+
+        int length = (cardVendorType.equals("AmEx")) ? 14 : 15;
+        while (cardNumber.length() < length) {
+            cardNumber.append(random.nextInt(10));
+        }
+        cardNumber.append(getLuhnChecksumDigit(cardNumber.toString()));
+
+        return cardNumber.toString();
+    }
+
+    private static int getLuhnChecksumDigit(String number) {
+        int sum = 0;
+        boolean alternate = false;
+        for (int i = number.length() - 1; i >= 0; i--) {
+            int n = Integer.parseInt(number.substring(i, i + 1));
+            if (alternate) {
+                n *= 2;
+                if (n > 9) {
+                    n = (n % 10) + 1;
+                }
+            }
+            sum += n;
+            alternate = !alternate;
+        }
+        return (sum * 9) % 10;
+    }
+
+    @Override
+    public CreditCard createCreditCard(CreditCard creditCard) throws CreditCardException {
+        String cardNum = generateCardNumber(creditCard.getVendor());
         Random randomOne = new Random();
         int cvv = randomOne.nextInt(900) + 100;
         int pin = randomOne.nextInt(9000) + 1000;

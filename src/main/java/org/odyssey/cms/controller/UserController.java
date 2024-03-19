@@ -6,6 +6,7 @@ import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
 import org.odyssey.cms.entity.PaymentRequest;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.UserRepository;
@@ -43,7 +44,7 @@ public class UserController {
 
 
 	@PostMapping("/merchant")
-	public User createMerchant(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
+	public User createMerchant(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, CreditCardException {
 		return this.merchantService.createNewMerchant(userRegistrationDTO);
 	}
 
@@ -53,7 +54,7 @@ public class UserController {
 	}
 
 	@PostMapping("/customer")
-	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException {
+	public User createnewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, CreditCardException {
 		return this.customerService.createUser(userRegistrationDTO);
 	}
 

@@ -7,6 +7,7 @@ import org.odyssey.cms.dto.UserUpdateDTO;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
@@ -18,7 +19,7 @@ import java.util.List;
 public interface CustomerService {
 	List<User> getAllUsers();
 
-	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException;
+	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, CreditCardException;
 	public User updateUser(UserUpdateDTO userUpdateDTO) throws AccountException, UserException;
 	public User getUserById(Integer userId) throws AccountException, UserException;
 	public List<User> getAllUser();

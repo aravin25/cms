@@ -3,12 +3,13 @@ package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 
 import java.util.List;
 
 public interface AccountService {
     //create
-    Account createAccount(Account newAccount, String type) throws AccountException;
+    Account createAccount(Account newAccount, String type) throws AccountException, CreditCardException;
 
     //read
     Account getAccountById(Integer accountId) throws AccountException;

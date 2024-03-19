@@ -11,6 +11,7 @@ import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
+import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.repository.AccountRepository;
 
 import java.time.LocalDate;
@@ -35,6 +36,8 @@ public class AccountServiceTest {
     AccountRepository accountRepository;
     @Mock
     CreditCardService creditCardService;
+    @Mock
+    NotificationService notificationService;
     @InjectMocks
     AccountServiceImpl accountService;
 
@@ -51,7 +54,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void createAccountTest() throws AccountException {
+    public void createAccountTest() throws AccountException, CreditCardException {
         when(accountRepository.findById(account.getAccountId())).thenReturn(Optional.empty());
         when(creditCardService.createCreditCard(any())).thenReturn(creditCard);
         Account response = accountService.createAccount(account, "Customer");
@@ -87,6 +90,7 @@ public class AccountServiceTest {
     @Test
     public void updateAccountTest() throws AccountException {
         when(accountRepository.findById(1)).thenReturn(Optional.of(account));
+        when(notificationService.saveNotification(any(), any(), any())).thenReturn(true);
         Account response = accountService.updateAccount(account);
         Assertions.assertEquals(null, response);
     }

@@ -13,7 +13,7 @@ import java.util.List;
 public interface CreditCardService {
     CreditCard getCreditCardById(String cardNumber) throws AccountException, CreditCardException;
     List<CreditCard> getAllCreditCards();
-    CreditCard createCreditCard(CreditCard creditCard)throws AccountException;
+    CreditCard createCreditCard(CreditCard creditCard) throws AccountException, CreditCardException;
     public CreditCard updateExpireDate(String cardNumber, LocalDate newExpireDate) throws AccountException, CreditCardException;
     public CreditCard updateAmount(String cardNumber, Double newAmount) throws AccountException, CreditCardException;
     public CreditCard updateActivationStatus(String cardNumber, String newActivationStatus) throws AccountException, CreditCardException;

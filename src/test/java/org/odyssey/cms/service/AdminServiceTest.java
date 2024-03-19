@@ -53,7 +53,7 @@ public class AdminServiceTest {
     public void setup(){
         account = new Account();
         transaction = new Transaction();
-        creditCard = new CreditCard(1, "696969", LocalDate.now(), 123, 1234.0, 5000.0, "True", 1234, 0.018, account, transactionList);
+        creditCard = new CreditCard(1, "696969", LocalDate.now(), 123, 1234.0, 5000.0, "True", 1234, 0.018, "Visa", account, transactionList);
         creditCard1 = new CreditCard();
         creditCardQueue = new CreditCardQueue(1, "6969696");
         creditCardQueueList = new ArrayList<>();
