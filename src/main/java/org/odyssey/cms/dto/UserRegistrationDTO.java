@@ -37,4 +37,6 @@ public class UserRegistrationDTO {
 	@NotNull
 	@NotBlank
 	private String accountPassword;
+	@Pattern.List({ @Pattern(regexp = "sbi|icici|hdfc|boa|citi", message = "Accepted values are sbi, icici, hdfc, boa, citi")})
+	private String bankType;
 }
