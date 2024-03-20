@@ -30,6 +30,8 @@ public class PaymentRequest {
 	@NotNull
 	LocalDateTime paymentRequestDate;
 	@NotNull
+	String topic;
+	@NotNull
 	@Min(100)
 	Double requestAmount;
 }

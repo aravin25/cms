@@ -29,7 +29,9 @@ public class Transaction {
     @NotNull
     private LocalDateTime transactionDateTime;
     @NotNull
-    private Integer paymentRequestId;
+    private String topic;
+    @NotNull
+    private String merchant;
     @ManyToOne
     @JoinColumn(name = "creditCard_id")
     @JsonBackReference

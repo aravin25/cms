@@ -137,7 +137,6 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException {
 		Integer paymentRequestId = transactionDTO.getPaymentRequestId();
-
 		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(paymentRequestId);
 
 		if (optionalPaymentRequest.isEmpty()) {
@@ -145,6 +144,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		PaymentRequest paymentRequest = optionalPaymentRequest.get();
+		String topic = paymentRequest.getTopic();
 		CreditCard creditCard = this.creditCardService.getCreditCardByUserId(paymentRequest.getCustomerId());
 		if(creditCard.getAccount().getUser().getLogin()==false){
 			throw new UserException("Not Login");
@@ -160,6 +160,7 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 		User merchant = optionalMerchant.get();
 		Account merchantAccount = merchant.getAccount();
+		String merchantName =merchant.getName();
 
 		if (merchantAccount == null) {
 			throw new AccountException("Account doesn't exist for this merchant");
@@ -182,7 +183,8 @@ public class TransactionServiceImpl implements TransactionService {
 				transaction.setTransactionID(0);
 				transaction.setAmount(transactionAmount);
 				transaction.setCreditCard(creditCard);
-
+				transaction.setTopic(topic);
+				transaction.setMerchant(merchantName);
 				this.createTransaction(transaction);
 
 				this.paymentRequestRepository.deleteById(paymentRequestId);

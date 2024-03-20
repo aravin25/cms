@@ -50,7 +50,7 @@ public class UserController {
 
 	@PostMapping("/merchant/paymentRequest")
 	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
-		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount());
+		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount(),paymentRequest.getTopic());
 	}
 
 	@PostMapping("/customer")
