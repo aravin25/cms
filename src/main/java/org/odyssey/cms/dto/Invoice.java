@@ -1,5 +1,8 @@
 package org.odyssey.cms.dto;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,6 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Invoice {
-    private Integer invoiceId;
     private String invoiceBody;
 }

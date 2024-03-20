@@ -187,7 +187,7 @@ public class TransactionServiceImpl implements TransactionService {
 				transaction.setMerchant(merchantName);
 				this.createTransaction(transaction);
 
-				this.paymentRequestRepository.deleteById(paymentRequestId);
+//				this.paymentRequestRepository.deleteById(paymentRequestId);
 
 				this.accountRepository.save(merchantAccount);
 				this.creditCardRepository.save(creditCard);
