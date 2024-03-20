@@ -9,6 +9,9 @@ import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
+import org.odyssey.cms.repository.AccountRepository;
+import org.odyssey.cms.repository.PaymentRequestRepository;
+import org.odyssey.cms.repository.TransactionRepository;
 import org.odyssey.cms.repository.UserRepository;
 import org.odyssey.cms.service.MerchantService;
 import org.odyssey.cms.entity.User;
@@ -38,6 +41,12 @@ public class UserController {
 	private CustomerService customerService;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private PaymentRequestRepository paymentRequestRepository;
+	@Autowired
+	private TransactionRepository transactionRepository;
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Autowired
 	private UserLoginService userLoginService;
@@ -78,14 +87,14 @@ public class UserController {
 		return this.customerService.deleteUser(userId);
 	}
 
-	@GetMapping("customer/requestInvoice")
-	public Invoice generateCustomerInvoice(@Valid@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	@PostMapping("customer/requestInvoice")
+	public Invoice generateCustomerInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
 	{
 		return customerService.generateCustomerInvoice(requestInvoiceDTO);
 	}
 
-	@GetMapping("merchant/requestInvoice")
-	public Invoice generateMerchantInvoice(@Valid @RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
+	@PostMapping("merchant/requestInvoice")
+	public Invoice generateMerchantInvoice(@RequestBody RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
 	{
 		return merchantService.generateMerchantInvoice(requestInvoiceDTO);
 	}
