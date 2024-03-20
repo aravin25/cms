@@ -12,6 +12,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,7 @@ public class CreditCard {
     private Integer pinNumber;
     private Double interestRate = 0.018; // Interest on outstanding balance
     @NotNull
+    @Pattern.List({ @Pattern(regexp = "MasterCard|Visa|AmEx|Discover", message = "Accepted values are MasterCard, Visa, AmEx, Discover")})
     private String vendor; // MasterCard, Visa, AmEx, Discover
 
     @OneToOne(mappedBy = "creditCard")

@@ -61,6 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
 		account.setAccountId(0);
 		account.setBalance(1000000.0);
 		account.setPassword(userRegistrationDTO.getAccountPassword());
+		account.setBankType(userRegistrationDTO.getBankType());
 
 		account = this.accountService.createAccount(account, "Customer");
 

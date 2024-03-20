@@ -8,12 +8,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 
@@ -33,7 +35,8 @@ public class Account {
     private LocalDate openDate;
     @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
     private String password;
-
+    @Pattern.List({ @Pattern(regexp = "sbi|icici|hdfc|boa|citi", message = "Accepted values are sbi, icici, hdfc, boa, citi")})
+    private String bankType;
     @OneToOne(mappedBy = "account")
     @JsonManagedReference
     private User user;
