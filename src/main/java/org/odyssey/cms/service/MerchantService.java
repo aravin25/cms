@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MerchantService {
 	User createNewMerchant(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, CreditCardException;
-	Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId, Double amount)throws AccountException;
+	Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId, Double amount, String topic)throws AccountException;
 	Invoice generateMerchantInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException;
 }

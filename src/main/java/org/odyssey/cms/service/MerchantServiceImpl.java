@@ -62,7 +62,7 @@ public class MerchantServiceImpl implements MerchantService{
 	}
 
 	@Override
-	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount) throws AccountException{
+	public Boolean newRequest(Integer paymentRequestId, Integer merchantId, Integer customerId,Double amount, String topic) throws AccountException{
 		Optional<User> accountOptionalMerchant = this.userRepository.findById(merchantId);
 		Optional<User> accountOptionalCustomer = this.userRepository.findById(customerId);
 //		if(accountOptionalCustomer.get().getLogin()==false){
@@ -74,7 +74,7 @@ public class MerchantServiceImpl implements MerchantService{
 		else if (accountOptionalCustomer.isEmpty()) {
 			throw new AccountException("customer Account doesn't exists: ");
 		}
-		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId, LocalDateTime.now(),amount);
+		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId, LocalDateTime.now(), topic,amount);
 		notificationService.saveNotification(merchantId,"Merchant","Merchant Requested a payment of "+amount+" to "+accountOptionalCustomer.get().getName());
 		notificationService.saveNotification(customerId,"Customer","Customer Received a Payment Request of "+amount+" from "+accountOptionalMerchant.get().getName());
 		this.paymentRequestRepository.save(paymentRequest);
