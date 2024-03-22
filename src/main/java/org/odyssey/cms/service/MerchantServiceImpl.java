@@ -74,7 +74,7 @@ public class MerchantServiceImpl implements MerchantService{
 		else if (accountOptionalCustomer.isEmpty()) {
 			throw new AccountException("customer Account doesn't exists: ");
 		}
-		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId, LocalDateTime.now(), topic,amount);
+		PaymentRequest paymentRequest=new PaymentRequest(0,merchantId,customerId, LocalDateTime.now(), topic, "PENDING",amount);
 		notificationService.saveNotification(merchantId,"Merchant","Merchant Requested a payment of "+amount+" to "+accountOptionalCustomer.get().getName());
 		notificationService.saveNotification(customerId,"Customer","Customer Received a Payment Request of "+amount+" from "+accountOptionalMerchant.get().getName());
 		this.paymentRequestRepository.save(paymentRequest);

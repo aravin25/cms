@@ -32,6 +32,8 @@ public class PaymentRequest {
 	@NotNull
 	String topic;
 	@NotNull
+	String status;
+	@NotNull
 	@Min(100)
 	Double requestAmount;
 }

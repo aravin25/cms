@@ -186,7 +186,7 @@ public class TransactionServiceImpl implements TransactionService {
 				transaction.setTopic(topic);
 				transaction.setMerchant(merchantName);
 				this.createTransaction(transaction);
-
+				paymentRequest.setStatus("COMPLETED");
 //				this.paymentRequestRepository.deleteById(paymentRequestId);
 
 				this.accountRepository.save(merchantAccount);
