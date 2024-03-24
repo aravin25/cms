@@ -2,6 +2,7 @@ package org.odyssey.cms.service;
 
 
 import org.odyssey.cms.entity.Account;
+import org.odyssey.cms.entity.LastPayment;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
 
@@ -20,5 +21,9 @@ public interface AccountService {
 
     //delete
     Account deleteAccountById(Integer id)throws AccountException;
+
+    Boolean createLasteDate(LastPayment lastPayment)throws AccountException;
+
+    LastPayment getLastDate(Integer accountId)throws AccountException;
 
 }

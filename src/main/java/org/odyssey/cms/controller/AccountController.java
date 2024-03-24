@@ -2,6 +2,7 @@ package org.odyssey.cms.controller;
 
 import jakarta.validation.Valid;
 import org.odyssey.cms.entity.Account;
+import org.odyssey.cms.entity.LastPayment;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.service.AccountService;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RequestMapping("account")
 @RestController
+@CrossOrigin
 public class AccountController {
     @Autowired
     private AccountService accountService;
@@ -38,6 +40,16 @@ public class AccountController {
     @DeleteMapping("delete/{id}")
     public Account deleteAccountById(@PathVariable("id") Integer accountId)throws AccountException {
         return this.accountService.deleteAccountById(accountId);
+    }
+
+    @PostMapping("/LastDate/create")
+    public Boolean createLastDate(@RequestBody LastPayment lastPayment) throws AccountException, CreditCardException {
+        return this.accountService.createLasteDate(lastPayment);
+    }
+
+    @GetMapping("/LastDate/{id}")
+    public LastPayment getAllAccounts(@PathVariable("id") Integer accountId) throws AccountException{
+        return this.accountService.getLastDate(accountId);
     }
 
 }

@@ -2,9 +2,11 @@ package org.odyssey.cms.service;
 
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
+import org.odyssey.cms.entity.LastPayment;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.repository.AccountRepository;
+import org.odyssey.cms.repository.LastPaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private LastPaymentRepository lastPaymentRepository;
 
     @Override
     public Account createAccount(Account newAccount, String type) throws AccountException, CreditCardException {
@@ -80,6 +85,28 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository.deleteById(id);
         notificationService.saveNotification(accountOpt.get().getUser().getUserId(),"Account","account Deleted");
         return accountOpt.get();
+    }
+
+    @Override
+    public Boolean createLasteDate(LastPayment lastPayment) throws AccountException {
+        Optional<LastPayment> lastPayments=lastPaymentRepository.findByAccountId(lastPayment.getAccountId());
+        if(lastPayments.isEmpty()) {
+            lastPaymentRepository.save(lastPayment);
+        }
+        else{
+            lastPaymentRepository.delete(lastPayment);
+            lastPaymentRepository.save(lastPayment);
+        }
+        return true;
+    }
+
+    @Override
+    public LastPayment getLastDate(Integer accountId) throws AccountException {
+        Optional<LastPayment> lastPayments=lastPaymentRepository.findByAccountId(accountId);
+        if (lastPayments.isEmpty()){
+            throw new AccountException("No Last Payment");
+        }
+        return lastPayments.get();
     }
 
 }

@@ -1,11 +1,13 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.dto.TransactionDTO;
+import org.odyssey.cms.entity.LastPayment;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.exception.TransactionException;
 import org.odyssey.cms.exception.UserException;
+import org.odyssey.cms.repository.LastPaymentRepository;
 import org.odyssey.cms.repository.PaymentRequestRepository;
 import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.CreditCard;
@@ -19,6 +21,7 @@ import org.odyssey.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +41,12 @@ public class TransactionServiceImpl implements TransactionService {
 	private CreditCardRepository creditCardRepository;
 	@Autowired
 	private NotificationService notificationService;
+
+	@Autowired
+	private LastPaymentRepository lastPaymentRepository;
+
+	@Autowired
+	private AccountService accountService;
  
 	@Autowired
 	private CreditCardService creditCardService;
@@ -132,6 +141,7 @@ public class TransactionServiceImpl implements TransactionService {
 		this.creditCardRepository.save(creditCard);
     	this.notificationService.saveNotification(optionalAccount.get().getUser().getUserId(),"Transaction","Payment Successfully completed");
 		this.accountRepository.save(account);
+		accountService.createLasteDate(new LastPayment(0,accountId,amount, LocalDate.now()));
 	}
 
 	@Override
