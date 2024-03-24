@@ -74,28 +74,28 @@ public class TransactionServiceImpl implements TransactionService {
 		return optionalTransaction.get();
 	}
 
-	@Override
-	public List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException
-	{
-		Optional<User> optionalUser = this.userRepository.findById(userId);
-		if(optionalUser.isEmpty()){
-			throw new UserException("User does not exist.");
-		}
-		User user = optionalUser.get();
-		Account account = user.getAccount();
-		if(account == null){
-			throw new AccountException("Account does not exist for the user.");
-		}
-		CreditCard creditCard = account.getCreditCard();
-		if(creditCard == null){
-			throw new CreditCardException("Credit card does not exist for this account");
-		}
-		List<Transaction> transactionList = creditCard.getTransactionList();
-		if (transactionList.isEmpty()){
-			throw new TransactionException("No transactions made by the user.");
-		}
-		return transactionList;
-	}
+//	@Override
+//	public List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException
+//	{
+//		Optional<User> optionalUser = this.userRepository.findById(userId);
+//		if(optionalUser.isEmpty()){
+//			throw new UserException("User does not exist.");
+//		}
+//		User user = optionalUser.get();
+//		Account account = user.getAccount();
+//		if(account == null){
+//			throw new AccountException("Account does not exist for the user.");
+//		}
+//		List<CreditCard> creditCards = account.getCreditCards();
+//		if(creditCard == null){
+//			throw new CreditCardException("Credit card does not exist for this account");
+//		}
+//		List<Transaction> transactionList = creditCard.getTransactionList();
+//		if (transactionList.isEmpty()){
+//			throw new TransactionException("No transactions made by the user.");
+//		}
+//		return transactionList;
+//	}
 
 	@Override
 	public List<Transaction> getAllTransactions() {
@@ -103,7 +103,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public void creditBalancePayment(Integer accountId, String password, Double amount) throws AccountException, CreditCardException  {
+	public void creditBalancePayment(Integer accountId, String password, Double amount, String cardNumber) throws AccountException, CreditCardException  {
 		Optional<Account> optionalAccount = this.accountRepository.findById(accountId);
 
 		if (optionalAccount.isEmpty()) {
@@ -119,7 +119,7 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new AccountException("Passwords don't match. Can't pay credit balance");
 		}
 
-		CreditCard creditCard = account.getCreditCard();
+		CreditCard creditCard = creditCardService.getCreditCardById(cardNumber);
 
 		if (creditCard == null) {
 			throw new CreditCardException("Credit card should exist to pay credit balance");
@@ -145,7 +145,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException {
+	public boolean processTransaction(TransactionDTO transactionDTO, String cardNumber) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException {
 		Integer paymentRequestId = transactionDTO.getPaymentRequestId();
 		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(paymentRequestId);
 
@@ -154,8 +154,11 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 		PaymentRequest paymentRequest = optionalPaymentRequest.get();
+
 		String topic = paymentRequest.getTopic();
-		CreditCard creditCard = this.creditCardService.getCreditCardByUserId(paymentRequest.getCustomerId());
+		List<CreditCard> creditCards = this.creditCardService.getCreditCardsByUserId(paymentRequest.getCustomerId());
+		CreditCard creditCard = creditCards.stream().filter(card -> Objects.equals(card.getCardNumber(), cardNumber)).findFirst().get();
+
 		if(creditCard.getAccount().getUser().getLogin()==false){
 			throw new UserException("Not Login");
 		}

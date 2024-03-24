@@ -2,6 +2,7 @@ package org.odyssey.cms.controller;
 
 import jakarta.validation.Valid;
 import org.odyssey.cms.dto.Invoice;
+import org.odyssey.cms.dto.PaymentRequestDTO;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
@@ -100,7 +101,7 @@ public class UserController {
 	}
 
 	@GetMapping("paymentRequests")
-	public List<PaymentRequest> getAllPaymentRequests(@RequestParam Integer userId) throws UserException {
+	public List<PaymentRequestDTO> getAllPaymentRequests(@RequestParam Integer userId) throws UserException {
 		return this.customerService.getAllPaymentRequests(userId);
 	}
 

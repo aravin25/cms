@@ -6,6 +6,7 @@ import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.UserException;
+import org.odyssey.cms.repository.AccountRepository;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.odyssey.cms.repository.UserRepository;
@@ -31,6 +32,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     private CreditCardRepository creditCardRepository;
     @Autowired
     private CreditCardQueueRepository creditCardQueueRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private NotificationService notificationService;
@@ -125,8 +128,41 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("REQUESTED");
-
         creditCard.setPinNumber(pin);
+
+        CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
+        this.creditCardQueueRepository.save(creditCardQueue);
+//        notificationService.saveNotification(creditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
+        return creditCardRepository.save(creditCard);
+    }
+
+    @Override
+    public CreditCard createCreditCardByAccountId(CreditCard creditCard, Integer accountId) throws CreditCardException, AccountException {
+        String cardNum = generateCardNumber(creditCard.getVendor());
+        Random randomOne = new Random();
+        int cvv = randomOne.nextInt(900) + 100;
+        int pin = randomOne.nextInt(9000) + 1000;
+
+        LocalDate today = LocalDate.now();
+        LocalDate expDate = today.plusYears(5);
+
+        creditCard.setCardNumber(cardNum);
+        creditCard.setCvv(cvv);
+        creditCard.setCreditBalance(50000.0);
+        creditCard.setExpireDate(expDate);
+        creditCard.setCreditLimit(100000.0);
+        creditCard.setActivationStatus("REQUESTED");
+        creditCard.setPinNumber(pin);
+        creditCard.setVendor(creditCard.getVendor());
+
+        Optional<Account> OptAccount = this.accountRepository.findById(accountId);
+        if(OptAccount.isEmpty()){
+            throw new AccountException("Account is not present");
+        }
+
+        Account account = OptAccount.get();
+        creditCard.setAccount(account);
+
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());
         this.creditCardQueueRepository.save(creditCardQueue);
 //        notificationService.saveNotification(creditCard.getAccount().getUser().getUserId(),"CreditCard","CreditCard created");
@@ -215,7 +251,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard getCreditCardByUserId(Integer userId) throws UserException, AccountException, CreditCardException {
+    public List<CreditCard> getCreditCardsByUserId(Integer userId) throws UserException, AccountException, CreditCardException {
         Optional<User> optionalUser = this.userRepository.findById(userId);
 
         if (optionalUser.isEmpty()) {
@@ -227,12 +263,12 @@ public class CreditCardServiceImpl implements CreditCardService {
         if (account == null) {
             throw new AccountException("Account doesn't exist for this user. Can't fetch credit card.");
         }
-        CreditCard creditCard = account.getCreditCard();
+        List<CreditCard> creditCards = account.getCreditCards();
 
-        if (creditCard == null) {
+        if (creditCards == null) {
             throw new CreditCardException("Credit card doesn't exist for this account. Can't fetch credit card.");
         }
 
-        return creditCard;
+        return creditCards;
     }
 }

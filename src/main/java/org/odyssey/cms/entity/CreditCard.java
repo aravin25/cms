@@ -1,11 +1,13 @@
 package org.odyssey.cms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -49,13 +51,15 @@ public class CreditCard {
     @Pattern.List({ @Pattern(regexp = "MasterCard|Visa|AmEx|Discover", message = "Accepted values are MasterCard, Visa, AmEx, Discover")})
     private String vendor; // MasterCard, Visa, AmEx, Discover
 
-    @OneToOne(mappedBy = "creditCard")
-    @JsonManagedReference
-    private Account account;
+
     @OneToMany(mappedBy = "creditCard")
     @JsonManagedReference
     private List<Transaction> transactionList = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name="account")
+    @JsonBackReference
+    private Account account;
     public void addInterest() {
         creditBalance += (double) Math.round(100 * creditBalance * interestRate) / 100;
     }

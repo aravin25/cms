@@ -32,8 +32,17 @@ public class CreditCardController {
         CreditCard creditCard = new CreditCard();
         creditCard.setCardId(0);
         creditCard.setPinNumber(creditCardDTO.getPinNumber());
+        creditCard.setVendor("Visa");
         return this.creditCardService.createCreditCard(creditCard);
+    }
 
+    @PostMapping("accountId")
+    public CreditCard createCreditCardByAccountId(@Valid @RequestBody CreditCardDTO creditCardDTO, @RequestParam Integer accountId) throws AccountException, CreditCardException {
+        CreditCard creditCard = new CreditCard();
+        creditCard.setCardId(0);
+        creditCard.setPinNumber(creditCardDTO.getPinNumber());
+        creditCard.setVendor(creditCardDTO.getVendor());
+        return this.creditCardService.createCreditCardByAccountId(creditCard, accountId);
     }
 
     @GetMapping("getAllCreditCard")
@@ -42,9 +51,9 @@ public class CreditCardController {
     }
 
     @GetMapping("creditCard/user")
-    public CreditCard getCreditCardByUserId(Integer userId) throws CreditCardException, AccountException, UserException
+    public List<CreditCard> getCreditCardByUserId(Integer userId) throws CreditCardException, AccountException, UserException
     {
-        return this.creditCardService.getCreditCardByUserId(userId);
+        return this.creditCardService.getCreditCardsByUserId(userId);
     }
 
     @PutMapping("updateActivationStatus/{cardNumber}")
