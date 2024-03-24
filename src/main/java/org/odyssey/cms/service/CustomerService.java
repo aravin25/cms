@@ -1,6 +1,7 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.dto.Invoice;
+import org.odyssey.cms.dto.PaymentRequestDTO;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
@@ -25,5 +26,5 @@ public interface CustomerService {
 	public List<User> getAllUser();
 	public String deleteUser(Integer userId) throws AccountException, UserException;
 	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException;
-	public List<PaymentRequest> getAllPaymentRequests(Integer userId) throws UserException;
+	public List<PaymentRequestDTO> getAllPaymentRequests(Integer userId) throws UserException;
 }

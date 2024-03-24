@@ -3,6 +3,7 @@ package org.odyssey.cms.controller;
 import jakarta.validation.Valid;
 import org.odyssey.cms.dto.CreditBalancePaymentDTO;
 import org.odyssey.cms.dto.TransactionDTO;
+import org.odyssey.cms.entity.CreditCard;
 import org.odyssey.cms.entity.Transaction;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
@@ -34,10 +35,10 @@ public class TransactionController {
         return this.transactionService.getTransactionById(transactionId);
     }
 
-    @GetMapping("user/all/{userId}")
-    public List<Transaction> getTransactionByUserId(@PathVariable("userId") Integer userId) throws UserException, AccountException, TransactionException, CreditCardException{
-        return this.transactionService.getTransactionByUserId(userId);
-    }
+//    @GetMapping("user/all/{userId}")
+//    public List<Transaction> getTransactionByUserId(@PathVariable("userId") Integer userId) throws UserException, AccountException, TransactionException, CreditCardException{
+//        return this.transactionService.getTransactionByUserId(userId);
+//    }
 
     @GetMapping("all")
     public List<Transaction> getAllTransactions(){
@@ -45,12 +46,12 @@ public class TransactionController {
     }
 
     @PostMapping("creditBalancePayment")
-    public void creditBalancePayment(@Valid @RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO) throws AccountException, CreditCardException  {
-        this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount());
+    public void creditBalancePayment(@Valid @RequestBody CreditBalancePaymentDTO creditBalancePaymentDTO, @RequestParam String cardNumber) throws AccountException, CreditCardException  {
+        this.transactionService.creditBalancePayment(creditBalancePaymentDTO.getAccountId(), creditBalancePaymentDTO.getPassword(), creditBalancePaymentDTO.getAmount(), cardNumber);
     }
   
     @PostMapping("initiate")
-    public boolean transactionInitiate(@Valid @RequestBody TransactionDTO transactionDTO) throws AccountException, CreditCardException, PaymentRequestException, UserException, TransactionException {
-        return this.transactionService.processTransaction(transactionDTO);
+    public boolean transactionInitiate(@Valid @RequestBody TransactionDTO transactionDTO, @RequestParam String cardNumber) throws AccountException, CreditCardException, PaymentRequestException, UserException, TransactionException {
+        return this.transactionService.processTransaction(transactionDTO, cardNumber);
     }
 }

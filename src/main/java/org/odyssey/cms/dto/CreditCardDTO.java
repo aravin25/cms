@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 public class CreditCardDTO {
     @NotNull
     private Integer pinNumber;
+    @NotNull
+    private String vendor;
 }

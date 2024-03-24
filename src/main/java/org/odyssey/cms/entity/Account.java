@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -18,6 +19,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,9 +43,8 @@ public class Account {
     @OneToOne(mappedBy = "account")
     @JsonManagedReference
     private User user;
-    @OneToOne
-    @JoinColumn(name = "creditCard_id")
-    @JsonBackReference
-    private CreditCard creditCard;
+    @OneToMany(mappedBy = "account")
+    @JsonManagedReference
+    private List<CreditCard> creditCards = new ArrayList<>();
 
 }

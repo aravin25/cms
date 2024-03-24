@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,11 @@ public class AccountServiceImpl implements AccountService {
         if (type.equals("Customer")) {
             CreditCard creditCard = new CreditCard();
             creditCard.setVendor("Visa");
-            creditCardService.createCreditCard(creditCard);
-            newAccount.setCreditCard(creditCard);
+            CreditCard creditCard1 = creditCardService.createCreditCard(creditCard);
+//            List<CreditCard> creditCards = new ArrayList<>();
+//            creditCards.add(creditCard1);
+//            newAccount.setCreditCards(creditCards);
+            creditCard1.setAccount(newAccount);
         }
         //notificationService.saveNotification(newAccount.getUser().getUserId(),"Account","account created");
 

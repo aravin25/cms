@@ -1,6 +1,7 @@
 package org.odyssey.cms.service;
 
 import org.odyssey.cms.dto.Invoice;
+import org.odyssey.cms.dto.PaymentRequestDTO;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -160,18 +162,33 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<PaymentRequest> getAllPaymentRequests(Integer userId) throws UserException {
+	public List<PaymentRequestDTO> getAllPaymentRequests(Integer userId) throws UserException {
 		Optional<User> optionalUser = this.userRepository.findById(userId);
 		if (optionalUser.isEmpty()) {
 			throw new UserException("User doesn't exist");
 		}
 		User user = optionalUser.get();
 		if (user.getType().equals("Customer")) {
-			return this.paymentRequestRepository.findByCustomerId(userId);
-		} else if (user.getType().equals("Merchant")) {
-			return this.paymentRequestRepository.findByMerchantId(userId);
+			return this.paymentRequestRepository.findByCustomerId(userId).stream()
+					.map(this::convertToDTO).collect(Collectors.toList());
 		}
 
+//		} else if (user.getType().equals("Merchant")) {
+//			return this.paymentRequestRepository.findByMerchantId(userId);
+//		}
+
 		return new ArrayList<>();
+	}
+
+	public PaymentRequestDTO convertToDTO(PaymentRequest paymentRequest) {
+		PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
+		User user = this.userRepository.findById(paymentRequest.getMerchantId()).get();
+		paymentRequestDTO.setPaymentRequestId(paymentRequest.getPaymentRequestId());
+		paymentRequestDTO.setRequestAmount(paymentRequest.getRequestAmount());
+		paymentRequestDTO.setPaymentRequestDate(paymentRequest.getPaymentRequestDate());
+		paymentRequestDTO.setTopic(paymentRequest.getTopic());
+		paymentRequestDTO.setMerchantName(user.getName());
+		paymentRequestDTO.setStatus(paymentRequest.getStatus());
+		return paymentRequestDTO;
 	}
 }

@@ -10,12 +10,12 @@ import org.odyssey.cms.exception.UserException;
 import java.util.List;
 
 public interface TransactionService {
-    public boolean processTransaction(TransactionDTO transactionDTO) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException;
+    public boolean processTransaction(TransactionDTO transactionDTO, String cardNumber) throws PaymentRequestException, AccountException, CreditCardException, UserException, TransactionException;
 
     Transaction createTransaction(Transaction newTransaction) throws AccountException, TransactionException;
 
     Transaction getTransactionById(Integer transactionId) throws AccountException, TransactionException;
-    List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException;
+//    List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException;
     List<Transaction> getAllTransactions();
-    void creditBalancePayment(Integer customerId, String password, Double amount) throws AccountException, CreditCardException;
+    void creditBalancePayment(Integer customerId, String password, Double amount, String cardNumber) throws AccountException, CreditCardException;
 }
