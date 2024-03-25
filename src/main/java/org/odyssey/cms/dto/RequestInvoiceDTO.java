@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class RequestInvoiceDTO {
     public Integer transactionID;
-    public Integer paymentRequestID;
+//    public Integer paymentRequestID;
 }
