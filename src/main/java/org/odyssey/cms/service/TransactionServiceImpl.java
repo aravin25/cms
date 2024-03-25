@@ -198,6 +198,7 @@ public class TransactionServiceImpl implements TransactionService {
 				transaction.setCreditCard(creditCard);
 				transaction.setTopic(topic);
 				transaction.setMerchant(merchantName);
+				transaction.setPaymentRequestId(transactionDTO.getPaymentRequestId());
 				this.createTransaction(transaction);
 				paymentRequest.setStatus("COMPLETED");
 //				this.paymentRequestRepository.deleteById(paymentRequestId);
