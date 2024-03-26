@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -74,28 +75,28 @@ public class TransactionServiceImpl implements TransactionService {
 		return optionalTransaction.get();
 	}
 
-//	@Override
-//	public List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException
-//	{
-//		Optional<User> optionalUser = this.userRepository.findById(userId);
-//		if(optionalUser.isEmpty()){
-//			throw new UserException("User does not exist.");
-//		}
-//		User user = optionalUser.get();
-//		Account account = user.getAccount();
-//		if(account == null){
-//			throw new AccountException("Account does not exist for the user.");
-//		}
-//		List<CreditCard> creditCards = account.getCreditCards();
-//		if(creditCard == null){
-//			throw new CreditCardException("Credit card does not exist for this account");
-//		}
-//		List<Transaction> transactionList = creditCard.getTransactionList();
-//		if (transactionList.isEmpty()){
-//			throw new TransactionException("No transactions made by the user.");
-//		}
-//		return transactionList;
-//	}
+	@Override
+	public List<Transaction> getTransactionByUserId(Integer userId) throws UserException, AccountException, TransactionException, CreditCardException
+	{
+		Optional<User> optionalUser = this.userRepository.findById(userId);
+		if(optionalUser.isEmpty()){
+			throw new UserException("User does not exist.");
+		}
+		User user = optionalUser.get();
+		Account account = user.getAccount();
+		if(account == null){
+			throw new AccountException("Account does not exist for the user.");
+		}
+		List<CreditCard> creditCards = account.getCreditCards();
+		if(creditCards == null){
+			throw new CreditCardException("Credit card does not exist for this account");
+		}
+		List<Transaction> transactionList = creditCards.stream().flatMap(creditCard -> creditCard.getTransactionList().stream()).collect(Collectors.toList());
+		if (transactionList.isEmpty()){
+			throw new TransactionException("No transactions made by the user.");
+		}
+		return transactionList;
+	}
 
 	@Override
 	public List<Transaction> getAllTransactions() {

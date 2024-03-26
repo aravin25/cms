@@ -45,6 +45,7 @@ public class UserLoginServiceImpl implements UserLoginService{
 		}
 		else {
 			user.setLogin(false);
+			userRepository.save(user);
 			return "Logout successful";
 		}
 	}
