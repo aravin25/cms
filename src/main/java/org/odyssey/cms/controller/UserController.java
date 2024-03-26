@@ -61,7 +61,7 @@ public class UserController {
 		return this.merchantService.createNewMerchant(userRegistrationDTO);
 	}
 
-	@PostMapping("/merchant/paymentRequest")
+	@PostMapping("/merchant/newPaymentRequest")
 	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
 		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount(),paymentRequest.getTopic());
 	}
@@ -109,10 +109,15 @@ public class UserController {
 	}
 
 	@PostMapping("Login")
-	public String loginUser(@RequestParam String email, @RequestParam String password, HttpServletResponse response)throws UserException{
+	public String loginUser(@RequestParam String email, @RequestParam String password, HttpServletResponse response)throws UserException {
 		User user = userLoginService.logIn(email, password);
 
 		return "Login Successful\n" + user.getUserId().toString() + "," + user.getType();
+	}
+
+	@GetMapping("merchant/paymentRequests")
+	public List<PaymentRequestDTO> getAllPaymentRequestsForMerchant(@RequestParam Integer userId) throws UserException {
+		return this.merchantService.getAllPaymentRequestsForMerchant(userId);
 	}
 
 	@PutMapping("Logout")
