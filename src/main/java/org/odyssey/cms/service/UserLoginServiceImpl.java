@@ -17,7 +17,7 @@ public class UserLoginServiceImpl implements UserLoginService{
 	@Autowired
 	private AccountRepository accountRepository;
 	@Override
-	public String logIn(String email, String password) throws UserException {
+	public User logIn(String email, String password) throws UserException {
 		Optional<User> checkUser= userRepository.findByEmail(email);
 		if (checkUser.isEmpty()){
 			throw new UserException("Enter Valid User Name");
@@ -30,7 +30,8 @@ public class UserLoginServiceImpl implements UserLoginService{
 		}
 		user.setLogin(true);
 		userRepository.save(user);
-		return "Login Successful";
+
+		return user;
 	}
 
 	@Override
@@ -45,6 +46,7 @@ public class UserLoginServiceImpl implements UserLoginService{
 		}
 		else {
 			user.setLogin(false);
+			userRepository.save(user);
 			return "Logout successful";
 		}
 	}

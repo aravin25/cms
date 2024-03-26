@@ -1,5 +1,8 @@
 package org.odyssey.cms.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.PaymentRequestDTO;
@@ -73,8 +76,8 @@ public class UserController {
 		return this.customerService.getAllUser();
 	}
 
-	@GetMapping("all/{userId}")
-	public User getUserByIds(@PathVariable("userId") Integer userId) throws AccountException, UserException {
+	@GetMapping("{userId}")
+	public User getUserById(@PathVariable("userId") Integer userId) throws AccountException, UserException {
 		return this.customerService.getUserById(userId);
 	}
 
@@ -105,13 +108,15 @@ public class UserController {
 		return this.customerService.getAllPaymentRequests(userId);
 	}
 
-	@PostMapping("Login/{email}/{password}")
-	public String loginUser(@PathVariable String email,@PathVariable String password)throws UserException{
-		return userLoginService.logIn(email,password);
+	@PostMapping("Login")
+	public String loginUser(@RequestParam String email, @RequestParam String password, HttpServletResponse response)throws UserException{
+		User user = userLoginService.logIn(email, password);
+
+		return "Login Successful\n" + user.getUserId().toString() + "," + user.getType();
 	}
 
-	@PutMapping("Logout/{userId}")
-	public String logoutUser(@PathVariable Integer userId)throws UserException{
+	@PutMapping("Logout")
+	public String logoutUser(@RequestParam Integer userId, HttpServletResponse response)throws UserException{
 		return userLoginService.logOut(userId);
 	}
 
