@@ -105,8 +105,8 @@ public class UserController {
 		return this.customerService.getAllPaymentRequests(userId);
 	}
 
-	@PostMapping("Login/{email}/{password}")
-	public String loginUser(@PathVariable String email,@PathVariable String password)throws UserException{
+	@PostMapping("Login")
+	public String loginUser(@RequestParam String email,@RequestParam String password)throws UserException{
 		return userLoginService.logIn(email,password);
 	}
 
