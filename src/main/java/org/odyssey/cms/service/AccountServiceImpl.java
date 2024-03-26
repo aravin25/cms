@@ -39,6 +39,7 @@ public class AccountServiceImpl implements AccountService {
         if (type.equals("Customer")) {
             CreditCard creditCard = new CreditCard();
             creditCard.setVendor("Visa");
+            creditCard.setBank(newAccount.getBankType());
             CreditCard creditCard1 = creditCardService.createCreditCard(creditCard);
 //            List<CreditCard> creditCards = new ArrayList<>();
 //            creditCards.add(creditCard1);

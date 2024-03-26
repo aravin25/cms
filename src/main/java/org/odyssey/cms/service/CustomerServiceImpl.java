@@ -1,5 +1,6 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.dto.AccountResponseDTO;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.PaymentRequestDTO;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
@@ -48,6 +49,24 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<User> getAllUsers() {
 	  return this.userRepository.findAll();
   }
+
+	@Override
+	public AccountResponseDTO getAccount(Integer userId) throws UserException, AccountException {
+		Optional<User> optionalUser = this.userRepository.findById(userId);
+		if (optionalUser.isEmpty()) {
+			throw new UserException("User doesn't exist");
+		}
+		User user = optionalUser.get();
+		Account account = user.getAccount();
+
+		if (account == null) {
+			throw new AccountException("Account doesn't exist for user: " + userId);
+		}
+
+		AccountResponseDTO accountResponseDTO = new AccountResponseDTO(account.getAccountId(), account.getBankType());
+
+		return accountResponseDTO;
+	}
 
 	@Override
 	public User createUser(UserRegistrationDTO userRegistrationDTO) throws AccountException, UserException, CreditCardException {

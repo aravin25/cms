@@ -4,11 +4,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.odyssey.cms.dto.AccountResponseDTO;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.PaymentRequestDTO;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
+import org.odyssey.cms.entity.Account;
 import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.TransactionException;
@@ -123,6 +125,11 @@ public class UserController {
 	@PutMapping("Logout")
 	public String logoutUser(@RequestParam Integer userId)throws UserException{
 		return userLoginService.logOut(userId);
+	}
+
+	@GetMapping("account")
+	public AccountResponseDTO getAccount(@RequestParam Integer userId) throws AccountException, UserException {
+		return this.customerService.getAccount(userId);
 	}
 
 }

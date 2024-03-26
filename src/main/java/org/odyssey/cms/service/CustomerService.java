@@ -1,11 +1,11 @@
 package org.odyssey.cms.service;
 
+import org.odyssey.cms.dto.AccountResponseDTO;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.PaymentRequestDTO;
 import org.odyssey.cms.dto.RequestInvoiceDTO;
 import org.odyssey.cms.dto.UserRegistrationDTO;
 import org.odyssey.cms.dto.UserUpdateDTO;
-import org.odyssey.cms.entity.PaymentRequest;
 import org.odyssey.cms.entity.User;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
@@ -27,4 +27,6 @@ public interface CustomerService {
 	public String deleteUser(Integer userId) throws AccountException, UserException;
 	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException;
 	public List<PaymentRequestDTO> getAllPaymentRequests(Integer userId) throws UserException;
+
+	AccountResponseDTO getAccount(Integer userId) throws UserException, AccountException;
 }

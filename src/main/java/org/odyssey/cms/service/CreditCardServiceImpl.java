@@ -161,6 +161,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
 
         Account account = OptAccount.get();
+        creditCard.setBank(account.getBankType());
         creditCard.setAccount(account);
 
         CreditCardQueue creditCardQueue= new CreditCardQueue(0,creditCard.getCardNumber());

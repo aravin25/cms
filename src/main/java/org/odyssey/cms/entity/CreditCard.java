@@ -50,7 +50,9 @@ public class CreditCard {
     @NotNull
     @Pattern.List({ @Pattern(regexp = "MasterCard|Visa|AmEx|Discover", message = "Accepted values are MasterCard, Visa, AmEx, Discover")})
     private String vendor; // MasterCard, Visa, AmEx, Discover
-
+    @NotNull
+    @Pattern.List({ @Pattern(regexp = "boa|citi|hdfc|icici|sbi", message = "Accepted values are boa, citi, hdfc, icici, sbi")})
+    private String bank;
 
     @OneToMany(mappedBy = "creditCard")
     @JsonManagedReference
