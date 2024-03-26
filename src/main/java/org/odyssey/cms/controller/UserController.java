@@ -24,6 +24,7 @@ import org.odyssey.cms.exception.PaymentRequestException;
 import org.odyssey.cms.service.CustomerService;
 import org.odyssey.cms.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ import java.util.List;
 
 @RequestMapping("user")
 @RestController
+@CrossOrigin
 public class UserController {
 	@Autowired
 	private MerchantService merchantService;
