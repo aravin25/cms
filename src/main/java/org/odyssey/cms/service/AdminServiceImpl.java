@@ -4,6 +4,7 @@ import org.odyssey.cms.entity.CreditCardQueue;
 import org.odyssey.cms.exception.AccountException;
 import org.odyssey.cms.exception.CreditCardException;
 import org.odyssey.cms.exception.CreditCardQueueException;
+import org.odyssey.cms.exception.UserException;
 import org.odyssey.cms.repository.CreditCardQueueRepository;
 import org.odyssey.cms.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,21 @@ public class AdminServiceImpl implements AdminService {
 		creditCardService.updateActivationStatus(creditCardNumber, "ACTIVATED");
 		creditCardQueueRepository.delete(creditCardQueue.get());
 		return "ACTIVATION COMPLETED";
+    }
+    @Override
+    public List<CreditCardQueue> getAllCreditCardQueue(){
+        return this.creditCardQueueRepository.findAll();
+    }
+
+    @Override
+    public String logInAdmin(String email, String password) throws UserException
+    {
+        if(!email.equals("admin@gmail.com")){
+            throw new UserException("Enter Valid EmailID");
+        }
+        if (!password.equals("Admin@123")){
+            throw new UserException("Enter Valid Password");
+        }
+        return "Login Successful";
     }
 }

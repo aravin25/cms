@@ -45,7 +45,9 @@ public class MerchantServiceImpl implements MerchantService{
 		if (addUser.isPresent()) {
 			throw new UserException("User already exist");
 		}
-
+		if (userRegistrationDTO.getEmail().equals("admin@gmail.com")){
+			throw new UserException("User already exist");
+		}
 		User user = new User();
 		user.setUserId(0);
 		user.setName(userRegistrationDTO.getName());

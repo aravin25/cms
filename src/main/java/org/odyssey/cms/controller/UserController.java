@@ -109,7 +109,7 @@ public class UserController {
 	}
 
 	@PostMapping("Login")
-	public String loginUser(@RequestParam String email, @RequestParam String password, HttpServletResponse response)throws UserException {
+	public String loginUser(@RequestParam String email, @RequestParam String password)throws UserException {
 		User user = userLoginService.logIn(email, password);
 
 		return "Login Successful\n" + user.getUserId().toString() + "," + user.getType();
@@ -121,7 +121,7 @@ public class UserController {
 	}
 
 	@PutMapping("Logout")
-	public String logoutUser(@RequestParam Integer userId, HttpServletResponse response)throws UserException{
+	public String logoutUser(@RequestParam Integer userId)throws UserException{
 		return userLoginService.logOut(userId);
 	}
 
