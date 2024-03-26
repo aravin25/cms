@@ -98,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
             lastPaymentRepository.save(lastPayment);
         }
         else{
-            lastPaymentRepository.delete(lastPayment);
+            lastPaymentRepository.delete(lastPayments.get());
             lastPaymentRepository.save(lastPayment);
         }
         return true;
