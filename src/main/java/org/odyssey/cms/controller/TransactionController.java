@@ -35,10 +35,10 @@ public class TransactionController {
         return this.transactionService.getTransactionById(transactionId);
     }
 
-//    @GetMapping("user/all/{userId}")
-//    public List<Transaction> getTransactionByUserId(@PathVariable("userId") Integer userId) throws UserException, AccountException, TransactionException, CreditCardException{
-//        return this.transactionService.getTransactionByUserId(userId);
-//    }
+    @GetMapping("user/all")
+    public List<Transaction> getTransactionByUserId(@RequestParam Integer userId) throws UserException, AccountException, TransactionException, CreditCardException{
+        return this.transactionService.getTransactionByUserId(userId);
+    }
 
     @GetMapping("all")
     public List<Transaction> getAllTransactions(){

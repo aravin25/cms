@@ -58,6 +58,11 @@ public class CustomerServiceImpl implements CustomerService {
 		if (userRegistrationDTO.getEmail().equals("admin@gmail.com")){
 			throw new UserException("User already exist");
 		}
+		addUser = this.userRepository.findByEmail(userRegistrationDTO.getEmail());
+		if (addUser.isPresent()) {
+			throw new UserException("User by this Email already exist");
+		}
+
 		User user = new User();
 		user.setUserId(0);
 		user.setName(userRegistrationDTO.getName());
@@ -129,7 +134,9 @@ public class CustomerServiceImpl implements CustomerService {
 	public Invoice generateCustomerInvoice(RequestInvoiceDTO requestInvoiceDTO) throws UserException, PaymentRequestException, TransactionException, AccountException
 	{
 		Invoice invoice=new Invoice();
-		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(requestInvoiceDTO.getPaymentRequestID());
+		Transaction transaction = transactionService.getTransactionById(requestInvoiceDTO.getTransactionID());
+		Integer paymentRequestId = transaction.getPaymentRequestId();
+		Optional<PaymentRequest> optionalPaymentRequest = this.paymentRequestRepository.findById(paymentRequestId);
 		if (optionalPaymentRequest.isEmpty()){
 			throw new PaymentRequestException("Payment does not exist");
 		}
@@ -142,8 +149,8 @@ public class CustomerServiceImpl implements CustomerService {
 		if (optionalMerchant.isEmpty()) {
 			throw new UserException("Merchant does not exist");
 		}
-		Integer transactionID = requestInvoiceDTO.getTransactionID() ;
-		Transaction transaction = transactionService.getTransactionById(transactionID);
+//		Integer transactionID = requestInvoiceDTO.getTransactionID() ;
+//		Transaction transaction = transactionService.getTransactionById(transactionID);
 		User customer = optionalCustomer.get();
 		User merchant = optionalMerchant.get();
 		StringBuilder invoiceBody = new StringBuilder();

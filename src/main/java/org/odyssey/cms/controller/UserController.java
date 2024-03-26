@@ -1,5 +1,8 @@
 package org.odyssey.cms.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.odyssey.cms.dto.Invoice;
 import org.odyssey.cms.dto.PaymentRequestDTO;
@@ -58,7 +61,7 @@ public class UserController {
 		return this.merchantService.createNewMerchant(userRegistrationDTO);
 	}
 
-	@PostMapping("/merchant/paymentRequest")
+	@PostMapping("/merchant/newPaymentRequest")
 	public Boolean newPaymentRequest(@RequestBody PaymentRequest paymentRequest)throws AccountException{
 		return this.merchantService.newRequest(0,paymentRequest.getMerchantId(),paymentRequest.getCustomerId(),paymentRequest.getRequestAmount(),paymentRequest.getTopic());
 	}
@@ -73,8 +76,8 @@ public class UserController {
 		return this.customerService.getAllUser();
 	}
 
-	@GetMapping("all/{userId}")
-	public User getUserByIds(@PathVariable("userId") Integer userId) throws AccountException, UserException {
+	@GetMapping("{userId}")
+	public User getUserById(@PathVariable("userId") Integer userId) throws AccountException, UserException {
 		return this.customerService.getUserById(userId);
 	}
 
@@ -106,12 +109,19 @@ public class UserController {
 	}
 
 	@PostMapping("Login")
-	public String loginUser(@RequestParam String email,@RequestParam String password)throws UserException{
-		return userLoginService.logIn(email,password);
+	public String loginUser(@RequestParam String email, @RequestParam String password)throws UserException {
+		User user = userLoginService.logIn(email, password);
+
+		return "Login Successful\n" + user.getUserId().toString() + "," + user.getType();
 	}
 
-	@PutMapping("Logout/{userId}")
-	public String logoutUser(@PathVariable Integer userId)throws UserException{
+	@GetMapping("merchant/paymentRequests")
+	public List<PaymentRequestDTO> getAllPaymentRequestsForMerchant(@RequestParam Integer userId) throws UserException {
+		return this.merchantService.getAllPaymentRequestsForMerchant(userId);
+	}
+
+	@PutMapping("Logout")
+	public String logoutUser(@RequestParam Integer userId)throws UserException{
 		return userLoginService.logOut(userId);
 	}
 
