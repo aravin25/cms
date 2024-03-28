@@ -29,6 +29,8 @@ public class AccountServiceTest {
     Account account1;
     CreditCard creditCard;
     CreditCard creditCard1;
+    List<CreditCard> creditCardList;
+    List<CreditCard> creditCardList1;
     User user;
     User user1;
     List<Account> allAccounts = new ArrayList<>();
@@ -47,8 +49,11 @@ public class AccountServiceTest {
         user1 = new User();
         creditCard = new CreditCard();
         creditCard1 = new CreditCard();
-        account = new Account(1, 10000.0, LocalDate.now(), "Abec@12345", user, creditCard);
-        account1 = new Account(2, 15000.0, LocalDate.now(), "Abec@12345", user1, creditCard1);
+        creditCardList.add(creditCard);
+        creditCardList1.add(creditCard1);
+
+        account = new Account(1, 10000.0, LocalDate.now(), "Abec@12345", "sbi", user, creditCardList);
+        account1 = new Account(2, 15000.0, LocalDate.now(), "Abec@12345", "sbi", user1, creditCardList1);
         allAccounts.add(account);
         allAccounts.add(account1);
     }

@@ -124,7 +124,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
         creditCard.setCardNumber(cardNum);
         creditCard.setCvv(cvv);
-        creditCard.setCreditBalance(50000.0);
+        creditCard.setCreditBalance(0.0);
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("REQUESTED");
@@ -148,7 +148,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
         creditCard.setCardNumber(cardNum);
         creditCard.setCvv(cvv);
-        creditCard.setCreditBalance(50000.0);
+        creditCard.setCreditBalance(0.0);
         creditCard.setExpireDate(expDate);
         creditCard.setCreditLimit(100000.0);
         creditCard.setActivationStatus("REQUESTED");

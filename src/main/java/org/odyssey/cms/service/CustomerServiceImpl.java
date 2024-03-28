@@ -77,8 +77,8 @@ public class CustomerServiceImpl implements CustomerService {
 		if (userRegistrationDTO.getEmail().equals("admin@gmail.com")){
 			throw new UserException("User already exist");
 		}
-		addUser = this.userRepository.findByEmail(userRegistrationDTO.getEmail());
-		if (addUser.isPresent()) {
+		Optional<User> optionalUser = this.userRepository.findByEmail(userRegistrationDTO.getEmail());
+		if (optionalUser.isPresent()) {
 			throw new UserException("User by this Email already exist");
 		}
 
